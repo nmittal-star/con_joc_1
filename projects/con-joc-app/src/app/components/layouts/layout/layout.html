@@ -1,0 +1,10 @@
+<eh-header [menuItems]="menuItems" [headerLogo]="headerLogo"  [profileSettings]="profileMenuItems"
+  [languageSettings]="languagesDropdownItems" (profileItemClick)="logout()" 
+  ></eh-header>
+  <app-sub-header [config]="subHeaderConfig" [breadcrumbs]="breadcrumbs"
+  (tabChange)="tabsConfigFromChild!.selectedIndex = $event">
+</app-sub-header>
+
+  <div class="layout-content">
+  <router-outlet></router-outlet>
+</div>

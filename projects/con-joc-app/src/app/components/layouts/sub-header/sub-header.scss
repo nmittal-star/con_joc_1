@@ -1,0 +1,23 @@
+.sub-header-bar {
+    // width: 100%;
+	background-color: #C8BAFF;
+    padding: 10px 68px 0px 68px;
+    .tab-container {
+        display: flex;
+        margin-top: 0.5rem;
+
+        ::ng-deep .mat-mdc-tab-link {
+            padding: 0 15px !important;
+            letter-spacing: 0.02rem;
+            &.mdc-tab--active {
+                font-weight: bold;
+            }
+        }
+
+        ::ng-deep .mat-mdc-tab-nav-bar.single-tab .mat-mdc-tab-link {
+            font-size: 1.25rem;
+            font-weight: 700 !important;
+            justify-content: flex-start;
+        }
+    }
+}

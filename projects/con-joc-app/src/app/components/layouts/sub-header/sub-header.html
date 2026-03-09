@@ -1,0 +1,30 @@
+<div class="sub-header-bar">
+  <div class="breadcrumbs">
+    @if (config?.breadcrumb) {
+      <eh-breadcrumbs [items]="breadcrumbs"></eh-breadcrumbs>
+    }
+  </div>
+
+  <div class="tab-container">
+    <nav
+      mat-tab-nav-bar
+      [tabPanel]="tabPanel"
+      [class.single-tab]="config?.tabs?.length === 1"
+      color="primary"
+      >
+      @for (tab of config.tabs; track tab) {
+        <a
+          mat-tab-link
+          [routerLink]="tab.path"
+          [relativeTo]="config.parentRoute"
+          (click)="activeTab = tab.path ?? ''"
+          [active]="activeTab === tab.path"
+          [disabled]="config?.tabs?.length === 1"
+          >
+          {{ tab.title | translate }}
+        </a>
+      }
+    </nav>
+    <mat-tab-nav-panel #tabPanel></mat-tab-nav-panel>
+  </div>
+</div>
