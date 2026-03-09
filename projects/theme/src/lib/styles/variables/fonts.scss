@@ -1,0 +1,32 @@
+// Font based variables
+$font-size-x-sm: 0.8rem;
+$font-size-sm: 0.9rem;
+$font-size: 1rem;
+$font-size-md: 1.1rem;
+
+// Font families
+$font-primary: 'Noto Sans', Helvetica, sans-serif;
+
+@mixin typography-large-bold {
+    font-size: 1.06rem;
+    font-weight: 600;
+    line-height: 1.625rem;
+}
+
+@mixin typography-body-regular {
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1.31rem;
+}
+
+@mixin typography-small-regular {
+    font-size: 0.75rem;
+    font-weight: 400;
+    line-height: 1.125rem;
+}
+
+@mixin typography-caption-regular {
+    font-size: 0.75rem;
+    font-weight: 400;
+    line-height: 1.125rem;
+}

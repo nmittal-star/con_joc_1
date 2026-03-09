@@ -1,0 +1,75 @@
+// Custom Theming for Angular Material 20 (MDC-based)
+// Docs: https://material.angular.io/guide/mdc-migration
+@use '@angular/material' as mat;
+@use './palettes' as palettes; 
+@use './material-override.scss';// Assuming you define $primary-palette etc. here
+
+// ✅ 1. Load Material Core Styles (Only Once)
+@include mat.core();
+
+// ✅ 2. Define Custom Font
+@font-face {
+  font-family: 'Noto Sans';
+  src: url('/assets/fonts/NotoSans-Regular.ttf') format('truetype');
+}
+
+// ✅ 3. Define Typography Config (MDC style)
+$fb-typography: mat.define-typography-config((
+  font-family: '"Noto Sans", Helvetica, sans-serif',
+  headline-1: (
+    font-size: 3rem,
+    font-weight: 600,
+    line-height: 3.5rem
+  ),
+  headline-6: (
+    font-size: 1.1rem,
+    font-weight: 600,
+    line-height: 1.625rem
+  ),
+  body-1: (
+    font-size: 0.875rem,
+    font-weight: 400,
+    line-height: 1.31rem
+  ),
+  body-2: (
+    font-size: 0.75rem,
+    font-weight: 400,
+    line-height: 1.125rem
+  ),
+  caption: (
+    font-size: 0.75rem,
+    font-weight: 400,
+    line-height: 1.125rem
+  ),
+  button: (
+    font-size: 0.875rem,
+    font-weight: 500,
+    line-height: 1.25rem,
+    letter-spacing: 0.05em,
+    text-transform: none
+  )
+));
+
+// ✅ 4. Define Theme Palettes
+$theme-primary: mat.define-palette(palettes.$primary-palette);
+$theme-accent: mat.define-palette(palettes.$accent-palette);
+$theme-warn: mat.define-palette(palettes.$warn-palette);
+
+// ✅ 5. Create Theme Object (Light or Dark)
+$fb-theme: mat.define-light-theme((
+  color: (
+    primary: $theme-primary,
+    accent: $theme-accent,
+    warn: $theme-warn,
+  ),
+  typography: $fb-typography,
+  density: 0, // 0 is default; can use -1 (comfortable), 1 (compact), etc.
+));
+
+// ✅ 6. Include All Component Themes
+@include mat.all-component-themes($fb-theme);
+
+// OPTIONAL: To scope styles only to a section
+// .my-app-theme {
+//   @include mat.all-component-colors($fb-theme);
+// }

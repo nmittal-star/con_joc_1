@@ -13,7 +13,12 @@
     "experimentalDecorators": true,
     "importHelpers": true,
     "target": "ES2022",
-    "module": "preserve"
+    "module": "preserve",
+    "paths": {
+      "theme": [
+        "./dist/theme"
+      ]
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
@@ -21,5 +26,19 @@
     "strictInputAccessModifiers": true,
     "strictTemplates": true
   },
-  "files": []
+  "files": [],
+  "references": [
+    {
+      "path": "./projects/con-joc-app/tsconfig.app.json"
+    },
+    {
+      "path": "./projects/con-joc-app/tsconfig.spec.json"
+    },
+    {
+      "path": "./projects/theme/tsconfig.lib.json"
+    },
+    {
+      "path": "./projects/theme/tsconfig.spec.json"
+    }
+  ]
 }

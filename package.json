@@ -23,18 +23,34 @@
   "private": true,
   "packageManager": "npm@11.6.2",
   "dependencies": {
+    "@angular/animations": "^21.0.3",
+    "@angular/cdk": "^21.0.2",
     "@angular/common": "^21.1.0",
     "@angular/compiler": "^21.1.0",
     "@angular/core": "^21.1.0",
     "@angular/forms": "^21.1.0",
+    "@angular/material": "^21.0.2",
     "@angular/platform-browser": "^21.1.0",
     "@angular/router": "^21.1.0",
+    "@eh-library/common": "file:../../library/ng_frontend-1/ng_frontend-1/dist/eh-library/eh-library-common-0.0.1.tgz",
+    "@ngx-translate/core": "^17.0.0",
+    "@ngx-translate/http-loader": "^17.0.0",
+    "angular-in-memory-web-api": "^0.21.0",
+    "jspdf": "^4.1.0",
+    "jspdf-autotable": "^5.0.7",
+    "ngx-mat-select-search": "^8.0.4",
     "rxjs": "~7.8.0",
-    "tslib": "^2.3.0"
+    "tslib": "^2.3.0",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
+    "@angular/build": "^21.1.4",
     "@angular/cli": "^21.1.4",
     "@angular/compiler-cli": "^21.1.0",
-    "typescript": "~5.9.2"
+    "@types/node": "^20.17.19",
+    "jsdom": "^27.1.0",
+    "ng-packagr": "^21.1.0",
+    "typescript": "~5.9.2",
+    "vitest": "^4.0.8"
   }
 }

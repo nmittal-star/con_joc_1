@@ -1,0 +1,25 @@
+// @import './variables/font.scss';
+@use './variables/colors.scss';
+@use './variables/fonts.scss';
+
+@mixin font($size, $weight, $line-height, $color: colors.$foreground, $family: fonts.$font-primary) {
+    font-size: $size;
+    font-family: $family;
+    font-weight: $weight;
+    line-height: $line-height;
+    color: $color;
+}
+
+@mixin gradient($direction, $color-stops...) {
+    @if is-direction($direction) == false {
+        $color-stops: $direction, $color-stops;
+        $direction: 180deg;
+    }
+    background: -webkit-linear-gradient(legacy-direction($direction), $color-stops);
+    background: linear-gradient($direction, $color-stops);
+}
+
+@mixin typography-large-bold {
+  @include font(1.125rem, 700, 1.5);
+}
+

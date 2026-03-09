@@ -1,0 +1,120 @@
+// Color Variables
+
+// Base
+$action: #7857FE;
+$foreground: #1f1f1f;
+$accent: #3bd5bb;
+
+// Semantic
+$success: #18a957;
+$warning: #ffbb38;
+$error: #df1642;
+$error-subtle: #fce8e8;
+$error-emphasis: #de1616;
+$warning-subtle: #fff8eb;
+$warning-emphasis: #ffbb38;
+$info-subtle: #d0dcf6;
+$info-emphasis: #185df4;
+
+// Background
+$bg-subtle: #eeeeee;
+$bg-muted: #e0e0e0;
+$bg-surface: #ffffff;
+$bg-canvas: #fbfbfb;
+
+// Foreground
+$fg-subtle: #757575;
+$fg-muted: #616161;
+$fg-default: #1f1f1f;
+$fg-on-accent: #ffffff;
+$fg-branded: #216291;
+
+// Secondary
+$secondary-subtle: #eff9f8;
+$secondary-emphasis: #2ca099;
+$secondary-muted: #9deae5;
+
+// Action
+$action-disabled: #757575;
+$action-disabled-subtle: #bdbdbd;
+$action-muted: #5493bf;
+$action-emphasis: #124970;
+$action-subtle: #e8eff3;
+
+// Text
+$fg-selected: #000000;
+$fg-on-dark: #ffffff;
+
+// Blue
+$blue-100: #DBE9F3;
+$blue-200: #bad6ea;
+$blue-300: #91b8d4;
+$blue-400: #5493bf;
+$blue-600: #1c71ae;
+$blue-700: #156196;
+$blue-800: #124970;
+$blue-900: #0d3653;
+
+// Grey
+$grey-100: #f5f5f5;
+$grey-300: #e0e0e0;
+$grey-600: #737373;
+$grey-900: #323232;
+$grey-divider: #d9d9d9;
+
+// Turquoise
+$turquoise-50: #eff9f8;
+$turquoise-300: #9deae5;
+$turquoise-800: #1c746e;
+
+// Purple
+$purple-400: #7e60db;
+
+// Gradient
+$gradient-figgies: linear-gradient(270deg, #2db9b0 0%, #64d5d0 50%, #9deae5 100%);
+$gradient-border: linear-gradient(
+    90deg,
+    rgba(217, 217, 217, 0) 24.22%,
+    #eff9f8 49.89%,
+    rgba(217, 217, 217, 0) 78.11%
+);
+
+// Divider
+$gradient-divider-fg: linear-gradient(
+    90deg,
+    rgba($turquoise-300, 0) 0%,
+    $turquoise-300 7.29%,
+    $purple-400 49.97%,
+    $turquoise-300 92.19%,
+    rgba($turquoise-300, 0) 100%
+);
+$gradient-divider-accent: linear-gradient(
+    90deg,
+    rgba($grey-divider, 0) 7.39%,
+    $accent 36.08%,
+    $accent 63.88%,
+    rgba($grey-divider, 0) 92.12%
+);
+$gradient-divider-accent-shadow: linear-gradient(
+    90deg,
+    rgba($grey-divider, 0) 22.69%,
+    $turquoise-300 49.89%,
+    rgba($grey-divider, 0) 78.11%
+);
+$gradient-divider-shadow: linear-gradient(
+    90deg,
+    rgba($grey-divider, 0) 24.22%,
+    $turquoise-50 49.89%,
+    rgba($grey-divider, 0) 78.11%
+);
+
+// Borders
+$border-input-default: #bdbdbd;
+
+// Form Field State
+$form-field-valid: #11763d;
+$form-field-invalid: #9c1010;
+$form-field-disabled: #bdbdbd;
+
+// theme/fg/selected
+$fg-selected: #171717;
