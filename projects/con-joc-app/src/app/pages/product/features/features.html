@@ -1,0 +1,5 @@
+  <eh-table [columns]="columns" [tableTitle]="'Features'" [config]="featuresConfig" [dataSource$]="dataSources$"
+        [paginationConfig]="paginationConfig" (pageChange)="onPageChange($event)"
+        (sizeChange)="onPageSizeChange($event)" (search)="onSearch($event)" (sortChange)="onSortChange($event)"
+       [extraButtons]="extraButtons" >
+    </eh-table>
