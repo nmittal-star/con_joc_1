@@ -1,0 +1,16 @@
+<h3>Split Tables</h3>
+
+
+<mat-divider></mat-divider>
+
+<div class="container">
+    <eh-select [formGroup]="splitTableForm" [config]="selectConfig" fControlName="name"></eh-select>
+    <eh-select [formGroup]="splitTableForm" [config]="selectClusterConfig" fControlName="cluster"></eh-select>
+
+    <eh-textbox [formGroup]="splitTableForm" [label]="'Password'" placeholder="Enter Password" fControlName="password"></eh-textbox>
+
+
+
+    <eh-button type="primary" [label]="'Generate Queries'" (click)="onSubmit()">
+    </eh-button>
+</div>

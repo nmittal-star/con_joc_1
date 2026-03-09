@@ -1,0 +1,12 @@
+  <div class="container">
+
+    <h3 class="section-title">Import — NPANXX</h3>
+
+    <eh-drop-area class="drop-area" [config]="dropSingleConfig" (filesDropped)="handleDrop($event)">
+    </eh-drop-area>
+</div>
+  
+  <eh-table [columns]="columns" [tableTitle]="'Global StateTracker Rules by State'" [config]="statetrackerConfig" [dataSource$]="dataSources$"
+        [paginationConfig]="paginationConfig" (pageChange)="onPageChange($event)"
+        (sizeChange)="onPageSizeChange($event)"  (sortChange)="onSortChange($event)">
+    </eh-table>

@@ -1,0 +1,24 @@
+<div class="form-container">
+  <eh-select [formGroup]="reputationForm" [config]="selectConfig" fControlName="type"></eh-select>
+
+  <div *ngIf="reputationForm.get('type')?.value =='Call'">
+    <eh-select [formGroup]="reputationForm" [config]="selectProviderConfig" fControlName="provider"></eh-select>
+
+    <div *ngIf="reputationForm.get('provider')?.value == 'Twilio'">
+      <eh-select [formGroup]="reputationForm" [config]="selectSubProviderConfig" fControlName="subprovider"></eh-select>
+    </div>
+  </div>
+
+  <eh-textbox [formGroup]="reputationForm" fControlName="from_number" [label]="'From Number'"></eh-textbox>
+
+  <div *ngIf="reputationForm.get('type')?.value == 'SMS'" [formGroup]="reputationForm">
+    <eh-textarea formControlName="note" label="Note" [rows]="1" [maxLength]="10"></eh-textarea>
+  </div>
+
+  <div *ngIf="reputationForm.get('provider')?.value == 'Nomorobo'">
+    <eh-textbox [formGroup]="reputationForm" fControlName="to_number" [label]="'To Number'"></eh-textbox>
+  </div>
+
+  <eh-button type="primary" [label]="'Submit'" (click)="onSubmit()">
+            </eh-button>
+</div>

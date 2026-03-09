@@ -1,0 +1,4 @@
+  <eh-table [columns]="columns" [tableTitle]="'Sinch Order Queue'" [config]="sinchorderConfig" [dataSource$]="dataSources$"
+        [paginationConfig]="paginationConfig" (pageChange)="onPageChange($event)"
+        (sizeChange)="onPageSizeChange($event)" (search)="onSearch($event)" (sortChange)="onSortChange($event)" [advanceFilterConfig]="advFilterConfig" >
+    </eh-table>

@@ -1,0 +1,35 @@
+<h3>Emergency Transfer</h3>
+
+<div class="form-row">
+  <eh-select
+    [formGroup]="emergencyForm"
+    [config]="selectConfig"
+    formControlName="cluster"
+    class="select-small">
+  </eh-select>
+</div>
+
+<div *ngIf="emergencyForm.get('cluster')?.value" class="form-row">
+  <eh-select
+    [formGroup]="emergencyForm"
+    [config]="registrationConfig"
+    formControlName="registration_server"
+    class="select-small">
+  </eh-select>
+
+  <eh-select
+    [formGroup]="emergencyForm"
+    [config]="fromServerConfig"
+    formControlName="from_server"
+    class="select-small">
+  </eh-select>
+</div>
+
+<div *ngIf="emergencyForm.get('from_server')?.value" class="form-row">
+  <eh-select
+    [formGroup]="emergencyForm"
+    [config]="toServerConfig"
+    formControlName="to_servers"
+    class="select-small">
+  </eh-select>
+</div>

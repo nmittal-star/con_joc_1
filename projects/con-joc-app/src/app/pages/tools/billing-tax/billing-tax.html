@@ -1,0 +1,13 @@
+<h3>Billing Tax Report</h3>
+<p>Tax report will be sent as email attachment to predefined email addresses. If there any error on report data, it will be also notified via email</p>
+
+<mat-divider></mat-divider>
+
+<div class="billing-container">
+    <eh-select [formGroup]="billingTaxForm" [config]="selectConfig" fControlName="account"></eh-select>
+
+    <eh-datepicker [formGroup]="billingTaxForm" [config]="dateFieldConfig"></eh-datepicker>
+
+    <eh-button type="primary" [label]="'Email Report'" (click)="onSubmit()">
+    </eh-button>
+</div>

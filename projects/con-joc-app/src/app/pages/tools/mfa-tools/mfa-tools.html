@@ -1,0 +1,17 @@
+<h3>MFA Tools</h3>
+
+<mat-divider></mat-divider>
+<div class="main-container">
+    <div class="parent">
+        <eh-textbox [label]="'From Email'" [formGroup]="mfaForm" fControlName="form_email"></eh-textbox>
+        <eh-textbox [label]="'To Email'" [formGroup]="mfaForm" fControlName="to_email"></eh-textbox>
+    </div>
+
+
+    <!-- <mat-divider></mat-divider> -->
+
+    <div class="container">
+        <eh-button [label]="'Send Email'" (click)="onSubmit()"></eh-button>
+        <eh-button [label]="'Reset'" (click)="onClear()"></eh-button>
+    </div>
+</div>

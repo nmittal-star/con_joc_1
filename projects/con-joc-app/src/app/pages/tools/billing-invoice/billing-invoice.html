@@ -1,0 +1,13 @@
+<h3>Billing Invoice Verification Report</h3>
+<p>Invoice Verification report will be sent as email attachment to predefined email addresses.</p>
+
+<mat-divider></mat-divider>
+
+<div class="billing-container">
+    <eh-select [formGroup]="billingForm" [config]="selectConfig" fControlName="account"></eh-select>
+
+    <eh-datepicker [formGroup]="billingForm" [config]="dateFieldConfig"></eh-datepicker>
+
+    <eh-button type="primary" [label]="'Email Report'" (click)="onSubmit()">
+    </eh-button>
+</div>
