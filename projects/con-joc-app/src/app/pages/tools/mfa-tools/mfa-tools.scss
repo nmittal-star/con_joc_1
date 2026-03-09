@@ -1,0 +1,41 @@
+// .container{
+//     display: flex;
+//     justify-content: flex-end;
+//     gap:1rem;
+//     margin-top: 10px
+// }
+
+// .parent{
+//     width: 100%;
+//     max-width: 800px;
+//     min-width: 300px;
+//     margin-top: 10px
+// }
+
+
+.main-container {
+  padding: 20px;
+  max-width: 600px;
+}
+
+.parent {
+  display: flex;
+  gap: 10px;
+  margin: 20px 0;
+  flex-direction: column;
+}
+
+.parent eh-textbox {
+  flex: 1;
+  min-width: 220px;
+}
+
+.container {
+  display: flex;
+  gap: 15px;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+
+
