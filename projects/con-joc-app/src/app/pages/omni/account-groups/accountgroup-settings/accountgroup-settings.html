@@ -1,0 +1,159 @@
+
+<div class="header-section">
+  <h3 class="section-title">Account Groups</h3>
+  <eh-button class="edit-toggle" type="primary" [label]="isEditmode ? 'Cancel' : 'Edit'" (click)="toggleEditMode()"></eh-button>
+</div>
+
+@if (!isEditmode) {
+  <div class="grid-container">
+    <div class="pair">
+      <span class="label">ID</span>
+      <span class="value">{{ settingsForm.getRawValue().id }}</span>
+    </div>
+    <div class="pair">
+      <span class="label"> Name</span>
+      <span class="value">{{ settingsForm.getRawValue().name }}</span>
+    </div>
+    <div class="pair">
+      <span class="label"> Description</span>
+      <span class="value">{{ settingsForm.getRawValue().description }}</span>
+    </div>
+    <div class="pair">
+      <span class="label"> Status</span>
+      <span class="value">{{ settingsForm.getRawValue().status }}</span>
+    </div>
+
+    <!-- <div class="pair">
+  <span class="label">Active</span>
+  <eh-checkbox
+    [formGroup]="settingsForm"
+    [config]="checkboxConfig"
+    fControlName="active"
+    >
+  </eh-checkbox>
+</div> -->
+  </div>
+}
+
+
+@if (isEditmode) {
+  <form class="drawer-form" [formGroup]="settingsForm">
+
+  <div class="row">
+    <div class="field">
+      <eh-textbox
+        [formGroup]="settingsForm"
+        fControlName="id"
+        label="ID"
+        [isRequired]="true">
+      </eh-textbox>
+    </div>
+
+    <div class="field">
+      <eh-textbox
+        [formGroup]="settingsForm"
+        fControlName="name"
+        label="Name">
+      </eh-textbox>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="field">
+      <eh-textbox
+        [formGroup]="settingsForm"
+        fControlName="description"
+        label="Description"
+        [isRequired]="true">
+      </eh-textbox>
+    </div>
+
+    <!-- <div class ="field checkbox-field">
+     
+      <eh-checkbox
+        [formGroup]="settingsForm"
+        [config]="checkboxConfig"
+        fControlName="active">
+      </eh-checkbox>
+    </div> -->
+
+    <div class="field">
+      <eh-select [formGroup]="settingsForm" [config]="selectConfig" fControlName="status"></eh-select>
+    </div>
+  </div>
+
+</form>
+}
+
+@if (isEditmode) {
+  <div class="drawer-footer-actions">
+    <eh-button  type="primary" [label]="'Back'" (click)="goBack()"></eh-button>
+    <eh-button  type="primary" [label]="'Save Changes'" (click)="saveChanges()"></eh-button>
+  </div>
+}
+
+
+<mat-divider></mat-divider>
+
+
+
+<!-- Account Table -->
+
+<eh-table  [tableTitle]="'Account in this Group'" [columns]="Columns" [config]="accountConfig" [dataSource$]="settingsDataSource$"  [paginationConfig]="paginationConfig" 
+    (pageChange)="onAccountPageChange($event)"
+  (sizeChange)="onAccountPageSizeChange($event)"
+  (search)="onAccountSearch($event)"
+  (export)="onAccountExport($event)" [extraButtons]="extraButtons">
+</eh-table>
+
+
+
+
+
+
+
+<div>
+  <ng-template #namesTemplate>
+    <div>
+      <eh-textbox [formGroup]="accountForm" fControlName="id" placeholder="Enter Account ID"
+        label="Account ID">
+      </eh-textbox>
+      <eh-textbox [formGroup]="accountForm" fControlName="name" placeholder="Enter Name"
+        label="Name">
+      </eh-textbox>
+    </div>
+  </ng-template>
+</div>
+
+<!-- Impersonation Table -->
+
+<eh-table
+  [tableTitle]="'Impersonation Maintenance'"
+  [columns]="ImpersonationColumns"
+  [config]="impersonationConfig"
+  [dataSource$]="impersonationDataSource$"
+  [paginationConfig]="impersonationPaginationConfig"
+  (pageChange)="onImpersonationPageChange($event)"
+  (sizeChange)="onImpersonationPageSizeChange($event)"
+  (search)="onImpersonationSearch($event)"
+  (export)="onImpersonationExport($event)"
+  [extraButtons]="ImpersonationButtons">
+</eh-table>
+
+
+
+<div>
+  <ng-template #impersonationTemplate>
+    <div>
+      
+      <eh-select [formGroup]="impersonationForm" [config]="fromAccountConfig" fControlName="from_account"></eh-select>
+
+      <eh-select [formGroup]="impersonationForm" [config]="fromUserConfig" fControlName="from_user"></eh-select>
+
+      <eh-select [formGroup]="impersonationForm" [config]="toAccountConfig" fControlName="to_account"></eh-select>
+
+      <eh-select [formGroup]="impersonationForm" [config]="toUserConfig" fControlName="to_user"></eh-select>
+
+    </div>
+  </ng-template>
+</div>

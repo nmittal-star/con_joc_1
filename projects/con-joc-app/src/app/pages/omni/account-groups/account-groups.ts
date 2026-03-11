@@ -1,16 +1,17 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Component, TemplateRef, ViewChild } from '@angular/core';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { Sort } from '@angular/material/sort';
-import { ButtonType, PaginationConfig, TableColumn, TableComponent, TableConfig, TableFilterConfig, UserData } from '@eh-library/common';
+import { ButtonType, CheckboxComponent, DialogService, DrawerComponent, FieldConfig, PaginationConfig, SelectComponent, SnackbarConfig, TableColumn, TableComponent, TableConfig, TableFilterConfig, TextboxComponent, UserData } from '@eh-library/common';
 import { BehaviorSubject, Observable, Subject, takeUntil } from 'rxjs';
 import { AccountGroupsDataService } from '../../../data-access/omni/account-groups/account-group.api';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-account-groups',
   standalone: true,
-  imports: [CommonModule, TableComponent, ReactiveFormsModule, FormsModule, MatIconModule],
+  imports: [CommonModule, TableComponent, ReactiveFormsModule, FormsModule, MatIconModule,TextboxComponent,CheckboxComponent,SelectComponent],
   templateUrl: './account-groups.html',
   styleUrl: './account-groups.scss',
 })
@@ -20,14 +21,19 @@ export class AccountGroups {
   readonly dataSources$: Observable<UserData[]> = this.dataSubject.asObservable()
   private totalRecordsSubject = new BehaviorSubject<number>(0);
 
+  @ViewChild('namesTemplate', { static: true }) namesTemplate!: TemplateRef<any>;
+
   extraButtons = [
     {
       label: 'Add Account Group',
       type: 'primary' as ButtonType,
       icon: 'add',
-      // click: () => this.open()
+      click: () => this.open()
     }
   ]
+
+
+
 
   fullData: any[] = []
   currentPage = 1;
@@ -37,6 +43,8 @@ export class AccountGroups {
   endRecord = 10;
   currentSearchTerm = '';
   currentSort: Sort = { active: '', direction: '' };
+   dialogRef: any;
+
 
   accountgroupsConfig: TableConfig = {
     showSearch: true,
@@ -50,16 +58,70 @@ export class AccountGroups {
   }
 
 
+   checkboxConfig = {
+    name: 'active',
+    id: 'active',
+    label: 'Active',
+    value: true,
+    indeterminate: false,
+    highlighted: true,
+    utilityClasses: 'custom-checkbox'
+  };
+
+  
+   selectConfig: FieldConfig = {
+    name: 'status',
+    label: 'Status',
+    placeholder: 'Select Status',
+    hasSearch: false,
+    options: [
+      { key: 'Active', value: 'Active' },
+      { key: 'InActive', value: 'InActive' },
+      
+
+    ]
+  };
+
+
+   snackconfig: SnackbarConfig[] = [
+    {
+      id: 'success1',
+      text: 'Form Created Successfully',
+      type: 'success',
+      showClose: true,
+      delay: 1000,
+      dismissOnAction: true,
+      ariaLabel: 'Success Snackbar',
+      bold: true,
+      useFadeAnimation: true,
+      mode: 'list'
+    },
+    {
+      id: 'success1',
+      text: 'Form Updated Successfully',
+      type: 'success',
+      showClose: true,
+      delay: 1000,
+      dismissOnAction: true,
+      ariaLabel: 'Success Snackbar',
+      bold: true,
+      useFadeAnimation: true,
+      mode: 'list'
+    },
+
+
+  ]
+
   advFilterConfig: TableFilterConfig = {
     field: {
       name: 'field',
       placeholder: 'Choose',
       hasSearch: true,
       options: [
-        { key: 'Blacklist ID', value: 'id' },
-        { key: 'DNIS', value: 'dnis' },
-        { key: 'Insert Date/Time', value: 'dateTime' },
-        { key: 'Submitted By', value: 'submittedBy' },
+        { key: 'Accounts', value: 'accounts' },
+        { key: 'ID', value: 'id' },
+        { key: 'Name', value: 'name' },
+        { key: 'Status', value: 'status' },
       ]
     },
     operator: {
@@ -77,10 +139,10 @@ export class AccountGroups {
       placeholder: 'Order Field',
       hasSearch: true,
       options: [
-        { key: 'Blacklist ID', value: 'id' },
-        { key: 'DNIS', value: 'dnis' },
-        { key: 'Insert Date/Time', value: 'dateTime' },
-        { key: 'Submitted By', value: 'submittedBy' },
+        { key: 'Accounts', value: 'accounts' },
+        { key: 'ID', value: 'id' },
+        { key: 'Name', value: 'name' },
+        { key: 'Status', value: 'status' },
       ]
     },
   };
@@ -90,7 +152,7 @@ export class AccountGroups {
   readonly columns: TableColumn[] = [
     { key: 'sl', label: 'Sl.No', sortable: false },
     { key: 'id', label: 'ID', searchable: true },
-    { key: 'name', label: 'Name', sortable: true, searchable: true },
+    { key: 'name', label: 'Name', sortable: true, searchable: true,clickable:true,onClick:(row)=>{this.onClickSettings(row)} },
     { key: 'description', label: 'Description', sortable: true, searchable: true },
     { key: 'accounts', label: 'Accounts', sortable: true, searchable: true },
     { key: 'impersonation', label: 'Impersonation', sortable: true, searchable: true },
@@ -108,8 +170,10 @@ export class AccountGroups {
       ],
     },
   ];
+ 
+  
 
-  constructor(private accountGroupsDataService: AccountGroupsDataService) { }
+  constructor(private accountGroupsDataService: AccountGroupsDataService,private dialogService: DialogService,private router:Router) { }
   ngOnInit() {
     this.loadAccountGroups()
 
@@ -136,6 +200,16 @@ export class AccountGroups {
       endRecord: this.endRecord
     };
   }
+
+
+   accountGroupsForm = new FormGroup({
+    name: new FormControl(''),
+    description: new FormControl(''),
+    status: new FormControl(''),
+
+  })
+
+
 
 
   loadAccountGroups(
@@ -240,6 +314,7 @@ export class AccountGroups {
   }
 
   editSettings(row: any) {
+    this.router.navigate(['/settings',row.id])
 
   }
   deleteRow(row: any) {
@@ -247,5 +322,38 @@ export class AccountGroups {
   }
 
 
+   open(): void {
+    this.dialogRef = this.dialogService.open({
+      title: 'Create Account Group',
+      dialogContent: this.namesTemplate,
+      actionButtons: [
+        { label: 'Save', type: 'primary', disabled: true, onClick: () => this.onConfirmClick() },
+      ],
+      width: '500px',
+      panelClass: 'custom-dialog-panel'
+    });
+  }
+
+  onConfirmClick(): void {
+   console.log(this.accountGroupsForm.value,'value');
+   this.accountGroupsForm.reset()
+   this.dialogRef.close()
+   
+  }
+
+  cancel(): void {
+    this.dialogRef.close();
+  }
+
+
+  onClickSettings(row:any){
+
+     localStorage.setItem(
+    'selectedAccountgroupId',
+    JSON.stringify(row)
+  );
+
+    this.router.navigate(['/settings',row.id])
+  }
 
 }

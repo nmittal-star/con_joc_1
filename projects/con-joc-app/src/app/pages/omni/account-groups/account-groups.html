@@ -1,5 +1,24 @@
-  <eh-table [columns]="columns" [tableTitle]="'Account Groups'" [config]="accountgroupsConfig" [dataSource$]="dataSources$"
-        [paginationConfig]="paginationConfig" (pageChange)="onPageChange($event)"
-        (sizeChange)="onPageSizeChange($event)" (search)="onSearch($event)" (sortChange)="onSortChange($event)"
-        [advanceFilterConfig]="advFilterConfig" [extraButtons]="extraButtons" >
-    </eh-table>
+<eh-table [columns]="columns" [tableTitle]="'Account Groups'" [config]="accountgroupsConfig"
+  [dataSource$]="dataSources$" [paginationConfig]="paginationConfig" (pageChange)="onPageChange($event)"
+  (sizeChange)="onPageSizeChange($event)" (search)="onSearch($event)" (sortChange)="onSortChange($event)"
+  [advanceFilterConfig]="advFilterConfig" [extraButtons]="extraButtons">
+</eh-table>
+
+
+
+<div>
+  <ng-template #namesTemplate>
+    <div>
+      <eh-textbox [formGroup]="accountGroupsForm" fControlName="name" placeholder="Enter Account Group Name"
+        label="Account Group Name">
+      </eh-textbox>
+      <eh-textbox [formGroup]="accountGroupsForm" fControlName="description" placeholder="Enter Description"
+        label="Description">
+      </eh-textbox>
+      <!-- <eh-checkbox [formGroup]="accountGroupsForm" [config]="checkboxConfig" fControlName="active">
+      </eh-checkbox> -->
+      <eh-select [formGroup]="accountGroupsForm" [config]="selectConfig" fControlName="status"></eh-select>
+
+    </div>
+  </ng-template>
+</div>
