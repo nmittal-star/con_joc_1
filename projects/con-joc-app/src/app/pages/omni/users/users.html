@@ -1,4 +1,156 @@
-  <eh-table [columns]="columns" [tableTitle]="'Users'" [config]="accountgroupsConfig" [dataSource$]="dataSources$"
-        [paginationConfig]="paginationConfig" (pageChange)="onPageChange($event)"
-        (sizeChange)="onPageSizeChange($event)" (search)="onSearch($event)" (sortChange)="onSortChange($event)" >
+<eh-drawer #drawer class="table-attached-drawer closed" [contentTemplate]="nameForm" [config]="drawerConfig"
+  [footerTemplate]="drawerFooter" (onClose)="handleDrawerClose()">
+
+
+
+  <div class="table-with-drawer-container">
+
+
+    <!-- TABLE -->
+
+    <eh-table [columns]="columns" [tableTitle]="'Users'" [config]="usersConfig" [dataSource$]="dataSources$"
+      [paginationConfig]="paginationConfig" (pageChange)="onPageChange($event)" (sizeChange)="onPageSizeChange($event)"
+      (search)="onSearch($event)" (sortChange)="onSortChange($event)">
     </eh-table>
+
+
+  </div>
+</eh-drawer>
+
+
+<!-- DRAWER CONTENT TEMPLATE -->
+<ng-template #nameForm>
+
+  <div class="edit-toggle">
+    @if (!isEditMode) {
+    <eh-button type="primary" [label]="'Edit'" (click)="setEditMode(true)"></eh-button>
+    }
+    @if (isEditMode) {
+    <eh-button type="primary" [label]="'Cancel'" (click)="setEditMode(false)"></eh-button>
+    }
+
+  </div>
+
+  @if (isEditMode) {
+  <div>
+    <form class="drawer-form" [formGroup]="userForm">
+      <div class="row">
+        <div class="field">
+          <eh-textbox [formGroup]="userForm" fControlName="id" label="Account ID" placeholder="Enter Account ID">
+          </eh-textbox>
+        </div>
+        <div class="field">
+          <eh-textbox [formGroup]="userForm" fControlName="title" label="Title" placeholder="Enter Title">
+          </eh-textbox>
+        </div>
+      </div>
+      <div class="row">
+        <div class="field">
+          <eh-textbox [formGroup]="userForm" fControlName="first_name" label="First Name"
+            placeholder="Enter First Name ">
+          </eh-textbox>
+
+        </div>
+        <div class="field">
+          <eh-textbox [formGroup]="userForm" fControlName="last_name" label="Last Name" placeholder="Enter Last Name">
+          </eh-textbox>
+        </div>
+      </div>
+      <div class="row">
+        <div class="field">
+          <eh-textbox [formGroup]="userForm" fControlName="email" label="Email" placeholder="Email">
+          </eh-textbox>
+
+        </div>
+        <div class="field">
+          <eh-textbox [formGroup]="userForm" fControlName="talkdesk_userid" label="Talkdesk User Id"
+            placeholder="Enter Talkdesk User Id">
+          </eh-textbox>
+        </div>
+      </div>
+      <div class="row">
+        <div class="field">
+          <eh-select [formGroup]="userForm" [config]="selectConfig" fControlName="record_remote_session"></eh-select>
+        </div>
+        <div class="field">
+          <eh-select [formGroup]="userForm" [config]="logDebugConfig" fControlName="low_debug_level"></eh-select>
+
+        </div>
+      </div>
+
+
+    </form>
+  </div>
+  }
+
+
+
+
+
+
+  @if (drawerDetails && !isEditMode) {
+  <div class="details-container">
+    <div class="detail-row">
+      <i class="icon ri-user-line"></i>
+      <span class="label">Account Id</span>
+      <span class="value">{{ drawerDetails.id || 'Empty' }}</span>
+    </div>
+    <div class="detail-row">
+      <i class="icon ri-mail-line"></i>
+      <span class="label">Title</span>
+      <span class="value">{{ drawerDetails.title || 'Empty' }}</span>
+    </div>
+    <div class="detail-row">
+      <i class="icon ri-global-line"></i>
+      <span class="label">First Name</span>
+      <span class="value">{{ drawerDetails.first_name || 'Empty' }}</span>
+    </div>
+    <div class="detail-row">
+      <i class="icon ri-linkedin-line"></i>
+      <span class="label">Last Name</span>
+      <span class="value">{{ drawerDetails.last_name || 'Empty' }}</span>
+    </div>
+    <div class="detail-row">
+      <i class="icon ri-building-line"></i>
+      <span class="label">Email</span>
+      <span class="value">{{ drawerDetails.email || 'Empty' }}</span>
+    </div>
+    <div class="detail-row">
+      <i class="icon ri-briefcase-line"></i>
+      <span class="label">Talkdesk User Id</span>
+      <span class="value">{{ drawerDetails.talkdesk_userid || 'Empty' }}</span>
+    </div>
+    <div class="detail-row">
+      <i class="icon ri-map-pin-line"></i>
+      <span class="label">Record Remote Session</span>
+      <span class="value">{{ drawerDetails.record_remote_session || 'Empty' }}</span>
+    </div>
+    <div class="detail-row">
+      <i class="icon ri-add-line"></i>
+      <span class="label">Low Debug Level</span>
+      <span class="value">{{ drawerDetails.low_debug_level || 'Empty' }}</span>
+    </div>
+
+  </div>
+  }
+
+
+</ng-template>
+
+
+
+<!-- DRAWER FOOTER -->
+<ng-template #drawerFooter>
+  <div class="drawer-footer-actions">
+    @if (isEditMode) {
+    <!-- <eh-button type="primary" [label]="'Back'" (click)="closeDrawer()"></eh-button> -->
+    }
+
+    @if (isEditMode) {
+
+
+    <eh-button type="primary" [label]="'Save Changes'" (click)="saveChanges()"></eh-button>
+    }
+
+  </div>
+</ng-template>
