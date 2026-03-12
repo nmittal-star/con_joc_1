@@ -5,7 +5,8 @@ export const users: Users[] =
 [
   {
     "sl": 1,
-    "name": "TRU-RODEL Gemma Rose Balayo",
+    "first_name": "TRU-RODEL ",
+    "last_name":"Gemma Rose Balayo",
     "email": "gemma.balayo@outlook.com",
     "id": 201,
     "registration": "66.85.245.64",
@@ -15,7 +16,8 @@ export const users: Users[] =
   },
   {
     "sl": 2,
-    "name": "TRU-RODEL Joe Art Indang",
+    "first_name": "TRU-RODEL ",
+    "last_name":"Joe Art Indang",
     "email": "jaindangtrualliantinc@gmail.com",
     "id": 202,
     "registration": "66.85.245.64",
@@ -25,7 +27,8 @@ export const users: Users[] =
   },
   {
     "sl": 3,
-    "name": "TRU-RODEL Jarold Daurog",
+    "first_name": "TRU-RODEL ",
+    "last_name":"Jarold Daurog",
     "email": "jarold.daurog1@outlook.com",
     "id": 203,
     "registration": "66.85.245.64",
@@ -35,7 +38,8 @@ export const users: Users[] =
   },
   {
     "sl": 4,
-    "name": "TRU-RODEL Demy Gania",
+    "first_name": "TRU-RODEL ",
+    "last_name":"Demy Gania",
     "email": "demy.gania2@outlook.com",
     "id": 204,
     "registration": "66.85.245.64",
@@ -45,7 +49,8 @@ export const users: Users[] =
   },
     {
     "sl": 5,
-    "name": "TRU-RODEL Gemma Rose Balayo",
+    "first_name": "TRU-RODEL ",
+    "last_name":"Gemma Rose Balayo",
     "email": "gemma.balayo@outlook.com",
     "id": 201,
     "registration": "66.85.245.64",
@@ -55,7 +60,8 @@ export const users: Users[] =
   },
   {
     "sl": 6,
-    "name": "TRU-RODEL Joe Art Indang",
+    "first_name": "TRU-RODEL ",
+    "last_name":"Joe Art Indang",
     "email": "jaindangtrualliantinc@gmail.com",
     "id": 202,
     "registration": "66.85.245.64",
@@ -65,7 +71,8 @@ export const users: Users[] =
   },
   {
     "sl": 7,
-    "name": "TRU-RODEL Jarold Daurog",
+    "first_name": "TRU-RODEL ",
+    "last_name":"Jarold Daurog",
     "email": "jarold.daurog1@outlook.com",
     "id": 203,
     "registration": "66.85.245.64",
@@ -75,7 +82,8 @@ export const users: Users[] =
   },
   {
     "sl": 8,
-    "name": "TRU-RODEL Demy Gania",
+    "first_name": "TRU-RODEL ",
+    "last_name":"Demy Gania",
     "email": "demy.gania2@outlook.com",
     "id": 204,
     "registration": "66.85.245.64",

@@ -1,6 +1,7 @@
 export interface Users {
     sl:number;
-    name:string;
+    first_name:string;
+    last_name:string;
     email:string;
     id:number;
     registration:string;
