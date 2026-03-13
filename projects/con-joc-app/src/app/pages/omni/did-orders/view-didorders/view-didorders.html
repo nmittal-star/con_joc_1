@@ -1,0 +1,4 @@
+  <eh-table [columns]="columns" [tableTitle]="'View DID Orders'" [config]="viewdidordersConfig" [dataSource$]="dataSources$"
+        [paginationConfig]="paginationConfig"  (search)="onSearch($event)" (pageChange)="onPageChange($event)"
+        (sizeChange)="onPageSizeChange($event)"  (sortChange)="onSortChange($event)" >
+    </eh-table>

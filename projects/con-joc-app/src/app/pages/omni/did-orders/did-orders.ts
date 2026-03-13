@@ -6,6 +6,7 @@ import { Sort } from '@angular/material/sort';
 import { ButtonType, PaginationConfig, TableColumn, TableComponent, TableConfig, TableFilterConfig, UserData } from '@eh-library/common';
 import { BehaviorSubject, Observable, Subject, takeUntil } from 'rxjs';
 import { DIDOrdersDataService } from '../../../data-access/omni/did-orders/did-orders.api';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-did-orders',
@@ -48,10 +49,19 @@ export class DidOrders {
         placeholder: 'Choose',
         hasSearch: true,
         options: [
-          { key: 'Blacklist ID', value: 'id' },
-          { key: 'DNIS', value: 'dnis' },
-          { key: 'Insert Date/Time', value: 'dateTime' },
-          { key: 'Submitted By', value: 'submittedBy' },
+          { key: 'ID', value: 'id' },
+          { key: 'Account', value: 'account' },
+          { key: 'Order Type', value: 'orderType' },
+          { key: 'Number Type', value: 'numberType' },
+          { key: 'Total', value: 'total' },
+          { key: '# DIDs', value: 'dids' },
+          { key: '# Processed', value: 'processed' },
+          { key: '# Processing', value: 'processing' },
+          { key: '# Errored', value: 'errored' },
+          { key: 'status', value: 'status' },
+          { key: '# Imports', value: 'imports' },
+          { key: 'Payment Status', value: 'paymentStatus' },
+          
         ]
       },
       operator: {
@@ -68,20 +78,44 @@ export class DidOrders {
         name: 'orderField',
         placeholder: 'Order Field',
         hasSearch: true,
-        options: [
-          { key: 'Blacklist ID', value: 'id' },
-          { key: 'DNIS', value: 'dnis' },
-          { key: 'Insert Date/Time', value: 'dateTime' },
-          { key: 'Submitted By', value: 'submittedBy' },
+         options: [
+          { key: 'ID', value: 'id' },
+          { key: 'Account', value: 'account' },
+          { key: 'Order Type', value: 'orderType' },
+          { key: 'Number Type', value: 'numberType' },
+          { key: 'Total', value: 'total' },
+          { key: '# DIDs', value: 'dids' },
+          { key: '# Processed', value: 'processed' },
+          { key: '# Processing', value: 'processing' },
+          { key: '# Errored', value: 'errored' },
+          { key: 'status', value: 'status' },
+          { key: '# Imports', value: 'imports' },
+          { key: 'Payment Status', value: 'paymentStatus' },
+         
+          
         ]
       },
     };
   
   
+      readonly STATUS_TOOLTIP_MAP: Record<string, string> = {
+  NEW: 'new order was created, and not begun processing',
+  PROCESSING: 'order is currently processing',
+  PROCESSED: 'all items have been processed (not paid)',
+  PARTIAL_PROCESSED: 'if any numbers failed or were not found and other processing is complete',
+  FINISHED: 'all items have been processed and paid',
+  ERROR: 'an error has occurred that is preventing order from completing'
+};
   
+   readonly PAYMENTSTATUS_TOOLTIP_MAP: Record<string, string> = {
+  UNPAID: 'no payments have been made for order',
+  PARTIAL_PAYMENT: 'partial payments have been made for order',
+  PAID: 'order is completely paid',
+ 
+};
       readonly columns: TableColumn[] = [
       { key: 'sl', label: 'Sl.No', sortable: false },
-      { key: 'id', label: 'ID', searchable: true },
+      { key: 'id', label: 'ID', searchable: true ,clickable:true,onClick:(row)=>{this.viewOrders(row)}},
       { key: 'account', label: 'Account', sortable: true, searchable: true },
       { key: 'orderType', label: 'Order Type', sortable: true, searchable: true },
       { key: 'numberType', label: 'Number Type', sortable: true, searchable: true },
@@ -93,8 +127,8 @@ export class DidOrders {
       { key: 'imports', label: '# Imports', searchable: true },
       { key: 'date', label: 'Date', sortable: true, searchable: true },
       { key: 'lastProcessed', label: 'Last Processed', sortable: true, searchable: true },
-      { key: 'status', label: 'Status', sortable: true, searchable: true },
-      { key: 'paymentStatus', label: 'Payment Status', sortable: true, searchable: true },
+      { key: 'status', label: 'Status', sortable: true, searchable: true,icon:'info',tooltip: (row) => this.STATUS_TOOLTIP_MAP[row.status] },
+      { key: 'paymentStatus', label: 'Payment Status', sortable: true, searchable: true,icon:'info',tooltip:(row)=>this.PAYMENTSTATUS_TOOLTIP_MAP[row.paymentStatus] },
       { key: 'percentage', label: 'Percentage', sortable: true, searchable: true },
       { key: 'pendingPayment', label: 'Pending Payment', sortable: true, searchable: true },
       { key: 'payment', label: 'Payment', sortable: true, searchable: true },
@@ -111,7 +145,7 @@ export class DidOrders {
       },
     ];
   
-    constructor(private didOrdersDataService:DIDOrdersDataService){}
+    constructor(private didOrdersDataService:DIDOrdersDataService,private router :Router){}
     ngOnInit(){
       this.loadDIDOrders()
   
@@ -248,6 +282,15 @@ export class DidOrders {
   
     // }
   
-  
+  viewOrders(row:any){
+
+  //    localStorage.setItem(
+  //   'selectedAccountgroupId',
+  //   JSON.stringify(row)
+  // );
+
+    this.router.navigate(['/view-did-orders',row.id])
+  }
+
 
 }

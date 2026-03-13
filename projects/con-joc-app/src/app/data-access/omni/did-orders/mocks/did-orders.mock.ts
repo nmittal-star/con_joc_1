@@ -1,4 +1,4 @@
-import { Orders } from "../did-orders.interface";
+import { Orders, ViewOrders } from "../did-orders.interface";
 
 export const didorders: Orders[] = [
   {
@@ -14,8 +14,8 @@ export const didorders: Orders[] = [
     "imports": 3,
     "date": "2026-02-15T09:30:00Z",
     "lastProcessed": "2026-02-17T14:20:00Z",
-    "status": "Completed",
-    "paymentStatus": "Paid",
+    "status": "FINISHED",
+    "paymentStatus": "PAID",
     "percentage": 80,
     "pendingPayment": 0,
     "payment": "Successful"
@@ -33,8 +33,8 @@ export const didorders: Orders[] = [
     "imports": 10,
     "date": "2026-02-14T11:00:00Z",
     "lastProcessed": "2026-02-18T10:45:00Z",
-    "status": "Processing",
-    "paymentStatus": "Pending",
+    "status": "PROCESSING",
+    "paymentStatus": "PARTIAL_PAYMENT",
     "percentage": 60,
     "pendingPayment": 1200.50,
     "payment": "Pending"
@@ -52,8 +52,8 @@ export const didorders: Orders[] = [
     "imports": 0,
     "date": "2026-02-10T08:15:00Z",
     "lastProcessed": "2026-02-16T16:00:00Z",
-    "status": "Completed",
-    "paymentStatus": "Paid",
+    "status": "NEW",
+    "paymentStatus": "UNPAID",
     "percentage": 100,
     "pendingPayment": 0,
     "payment": "Successful"
@@ -71,10 +71,57 @@ export const didorders: Orders[] = [
     "imports": 2,
     "date": "2026-02-16T13:40:00Z",
     "lastProcessed": "2026-02-18T12:10:00Z",
-    "status": "In Progress",
-    "paymentStatus": "Partial",
+    "status": "PROCESSED",
+    "paymentStatus": "PAID",
     "percentage": 33,
     "pendingPayment": 150.00,
     "payment": "Partially Paid"
+  }
+]
+
+export const vieworders : ViewOrders[]=[
+  {
+    "id": 57090706,
+    "isPaid": null,
+    "did": "2622661939",
+    "vendor": "Inteliquent",
+    "status": "ERROR",
+    "error": "Did not recieve an OK when releasing DID in Provider.",
+    "replacedWith": null,
+    "lastReplaceAttempt": null,
+    
+  },
+  {
+    "id": 57090704,
+    "isPaid": null,
+    "did": "2312813387",
+    "vendor": "Inteliquent",
+    "status": "ERROR",
+    "error": "Did not recieve an OK when releasing DID in Provider.",
+    "replacedWith": null,
+    "lastReplaceAttempt": null,
+    
+  },
+  {
+    "id": 57090700,
+    "isPaid": null,
+    "did": "2312708070",
+    "vendor": "Inteliquent",
+    "status": "ERROR",
+    "error": "Did not recieve an OK when releasing DID in Provider.",
+    "replacedWith": null,
+    "lastReplaceAttempt": null,
+    
+  },
+  {
+    "id": 57090674,
+    "isPaid": null,
+    "did": "4142343019",
+    "vendor": "Inteliquent",
+    "status": "ERROR",
+    "error": "Did not recieve an OK when releasing DID in Provider.",
+    "replacedWith": null,
+    "lastReplaceAttempt": null,
+    
   }
 ]

@@ -46,6 +46,11 @@ export const routes: Routes = [
                     import('./pages/omni/did-orders/did-orders').then(m => m.DidOrders),
                 data: { breadcrumb: 'DID Orders' }
             },
+             {
+                path: 'view-did-orders/:id',
+                loadComponent: () => import('./pages/omni/did-orders/view-didorders/view-didorders').then(m => m.ViewDidorders),
+                data: { breadcrumb: 'View Omni DID Orders' }
+            },
             {
                 path: 'state-call-time',
                 loadComponent: () =>

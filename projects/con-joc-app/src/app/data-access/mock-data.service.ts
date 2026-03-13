@@ -8,7 +8,7 @@ import { statecall } from './omni/statecall-times/mocks/statecall-times.mock';
 import { transactions } from './omni/transactions/mocks/transactions.mock';
 import { memberlogs } from './logs/member-logs/mocks/member-logs.mock';
 import { releaselogs } from './logs/release-logs/mocks/release-logs.mock';
-import { didorders } from './omni/did-orders/mocks/did-orders.mock';
+import { didorders, vieworders } from './omni/did-orders/mocks/did-orders.mock';
 import { systemstatuslogs } from './logs/system-status-logs/mocks/system-status-logs.mock';
 import { didlogs } from './logs/did-logs/mocks/did-logs.mock';
 import { products } from './product/products/mocks/products.mocks';
@@ -53,6 +53,6 @@ export class MockDataService implements InMemoryDbService {
     // }
 
     createDb() {
-    return {accounts,accountgroups,users,transactions,didorders,statecall,memberlogs,releaselogs,systemstatuslogs,didlogs,products,features,productcomponent,addons,extensionsearch,redissearch,cronmanager,providerrates,omnifield,omniacl,billingcomponent,emaillists,vaproject,clusters,vendors,statetracker,featureflags,blacklist,versions,featuresettings,oauthclient,activedefense,dnotools,purpose,sinchorder,repcheckcsvfile,metabasereports,databasestatuses,dispositiondelays,npanxxupload,omnidids,settings,impersonation}
+    return {accounts,accountgroups,users,transactions,didorders,statecall,memberlogs,releaselogs,systemstatuslogs,didlogs,products,features,productcomponent,addons,extensionsearch,redissearch,cronmanager,providerrates,omnifield,omniacl,billingcomponent,emaillists,vaproject,clusters,vendors,statetracker,featureflags,blacklist,versions,featuresettings,oauthclient,activedefense,dnotools,purpose,sinchorder,repcheckcsvfile,metabasereports,databasestatuses,dispositiondelays,npanxxupload,omnidids,settings,impersonation,vieworders}
     }
 }

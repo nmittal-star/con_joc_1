@@ -17,3 +17,17 @@ export interface Orders {
   pendingPayment: number;      
   payment: string;             
 }
+
+
+export interface ViewOrders {
+  id: number;
+  isPaid: boolean | null;
+  did: string;
+  vendor: string;
+  status: "ERROR" | "SUCCESS" | "PENDING";
+  error?: string;
+  replacedWith?: string | null;
+  lastReplaceAttempt?: string | null;
+ 
+
+}
