@@ -1,4 +1,4 @@
-import { StateCall } from "../statecall-times.interface";
+import { StateCall, StateCallHolidays } from "../statecall-times.interface";
 
 
 export const statecall: StateCall[] = [
@@ -29,5 +29,23 @@ export const statecall: StateCall[] = [
     "name": "ndiana 8pm restriction",
     "startTime": "09:00 AM	",
     "endTime": "08:00 PM"
+  }
+]
+
+export const statecallholidays:StateCallHolidays[]=[
+  {
+    'sl':1,
+    'date':'12/03/2026',
+    'name':''
+  },
+   {
+    'sl':2,
+    'date':'19/03/2026',
+    'name':''
+  },
+   {
+    'sl':3,
+    'date':'18/03/2026',
+    'name':''
   }
 ]

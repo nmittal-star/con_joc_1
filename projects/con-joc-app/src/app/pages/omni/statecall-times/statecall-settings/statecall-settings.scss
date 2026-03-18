@@ -1,0 +1,103 @@
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 19px; 
+}
+
+.field {
+  flex: 1 1 calc(33.33% - 16px); 
+  box-sizing: border-box;
+}
+
+
+.section-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-left: 3px;
+  color: #222;
+
+}
+
+
+.drawer-footer-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px; 
+  margin: 20px 0px;
+  
+}
+
+.table-header{
+    display: flex;
+    justify-content: space-between;
+    padding: 25px 10px 0px 0px;
+
+}
+
+.clustertable{
+  padding: 10px;
+}
+
+.edit-toggle{
+  padding-right:10px;
+}
+
+.header-section{
+  display: flex;
+  justify-content: space-between;
+  font-size: 18px;
+  font-weight: 600;
+  margin-left: 9px;
+  color: #222;
+  padding-top: 10px;
+
+
+}
+
+
+
+
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); 
+  column-gap: 40px;
+  row-gap: 20px;
+  width: 100%;
+  margin: 30px 10px;
+}
+
+.pair {
+  display: contents;
+}
+
+.label {
+  grid-column: span 1;
+  font-weight: bold;
+  justify-self: start;
+}
+
+.value {
+  grid-column: span 1;
+  justify-self: start;
+}
+
+
+
+.rows {
+  display: grid;
+  grid-template-columns: 120px 1fr 1fr;
+  gap: 16px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.header {
+  display: grid;
+  grid-template-columns: 120px 1fr 1fr;
+  font-weight: bold;
+  margin-bottom: 10px;
+  gap:25px
+
+}
+
