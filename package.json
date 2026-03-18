@@ -32,7 +32,7 @@
     "@angular/material": "^21.0.2",
     "@angular/platform-browser": "^21.1.0",
     "@angular/router": "^21.1.0",
-    "@eh-library/common": "file:../../library/ng_frontend-1/ng_frontend-1/dist/eh-library/eh-library-common-0.0.1.tgz",
+    "@eh-library/common": "file:../../TRR_1/ng_frontend/dist/eh-library/eh-library-common-0.0.1.tgz",
     "@ngx-translate/core": "^17.0.0",
     "@ngx-translate/http-loader": "^17.0.0",
     "angular-in-memory-web-api": "^0.21.0",

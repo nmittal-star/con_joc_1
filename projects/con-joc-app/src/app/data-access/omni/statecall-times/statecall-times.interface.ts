@@ -7,3 +7,9 @@ export interface StateCall{
     
     
 }
+
+export interface StateCallHolidays{
+    sl:number;
+    date:string;
+    name:string
+}
