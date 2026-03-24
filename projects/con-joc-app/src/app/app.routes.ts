@@ -59,6 +59,21 @@ export const routes: Routes = [
                 data: { breadcrumb: 'State Call Times' }
             },
 
+            {
+  path: 'statecall-settings',
+  loadComponent: () =>
+    import('./pages/omni/statecall-times/statecall-settings/statecall-settings')
+      .then(m => m.StatecallSettings),
+  data: { breadcrumb: 'State Call Times Settings' }
+},
+{
+  path: 'statecall-settings/:name',
+  loadComponent: () =>
+    import('./pages/omni/statecall-times/statecall-settings/statecall-settings')
+      .then(m => m.StatecallSettings),
+  data: { breadcrumb: 'State Call Times Settings' }
+},
+
             // Logs
 
             {

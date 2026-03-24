@@ -1,0 +1,165 @@
+<h3>
+  State Call Time Settings /
+  {{ settingsForm.getRawValue().name || 'New' }}
+</h3>
+
+<mat-divider></mat-divider>
+
+
+<div class="header-section">
+  <h3 class="section-title">General Settings</h3>
+
+  @if (!isCreateMode) {
+  <eh-button
+    class="edit-toggle"
+    type="primary"
+    [label]="isEditmode ? 'Cancel' : 'Edit'"
+    (click)="toggleEditMode()">
+  </eh-button>
+}
+</div>
+
+@if (isViewMode) {
+  <div class="grid-container">
+    <div class="pair">
+      <span class="label">State</span>
+      <span class="value">{{ settingsForm.getRawValue().state }}</span>
+    </div>
+
+    <div class="pair">
+      <span class="label">Call Time Name</span>
+      <span class="value">{{ settingsForm.getRawValue().name }}</span>
+    </div>
+
+    <div class="pair">
+      <span class="label">Default Start</span>
+      <span class="value">{{ settingsForm.getRawValue().startTime }}</span>
+    </div>
+
+    <div class="pair">
+      <span class="label">Default Stop</span>
+      <span class="value">{{ settingsForm.getRawValue().endTime }}</span>
+    </div>
+  </div>
+}
+
+
+@if (isEditmode || isCreateMode) {
+  <form class="drawer-form" [formGroup]="settingsForm">
+
+    <div class="row">
+      <div class="field">
+        <eh-select
+          [formGroup]="settingsForm"
+          [config]="selectConfig"
+          fControlName="state">
+        </eh-select>
+      </div>
+
+      <div class="field">
+        <eh-textbox
+          [formGroup]="settingsForm"
+          fControlName="name"
+          label="Name">
+        </eh-textbox>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <eh-timepicker
+          [config]="configBasic"
+          [formGroup]="settingsForm"
+          fControlName="startTime"
+          (valueChange)="updateTimesValue($event)">
+        </eh-timepicker>
+      </div>
+
+      <div class="field">
+        <eh-timepicker
+          [config]="configBasic"
+          [formGroup]="settingsForm"
+          fControlName="endTime"
+          (valueChange)="updateTimesValue($event)">
+        </eh-timepicker>
+      </div>
+    </div>
+
+  </form>
+
+  <div class="drawer-footer-actions">
+    <eh-button type="primary" label="Back" (click)="goBack()"></eh-button>
+    <eh-button type="primary" label="Save Changes" (click)="saveChanges()"></eh-button>
+  </div>
+}
+
+<mat-divider></mat-divider>
+
+
+<div>
+  <h4>Custom Calling Times</h4>
+
+  <div class="header">
+    <span>Days</span>
+    <span>Start</span>
+    <span>Stop</span>
+  </div>
+
+  <form [formGroup]="scheduleForm">
+
+    @for (day of days; track day) {
+      <div class="rows">
+
+        <div class="font-medium">{{ day }}</div>
+
+        <div class="time-field">
+          <eh-timepicker
+            [config]="configBasic"
+            (valueChange)="updateTimeValue(day, 'start', $event)">
+          </eh-timepicker>
+        </div>
+
+        <div class="time-field">
+          <eh-timepicker
+            [config]="configBasic"
+            (valueChange)="updateTimeValue(day, 'end', $event)">
+          </eh-timepicker>
+        </div>
+
+      </div>
+    }
+
+  </form>
+</div>
+
+<mat-divider></mat-divider>
+
+<eh-table
+  [columns]="columns"
+  [tableTitle]="'State Call Time Holidays'"
+  [config]="statecallConfig"
+  [dataSource$]="dataSources$"
+  [paginationConfig]="paginationConfig"
+  (pageChange)="onPageChange($event)"
+  (sizeChange)="onPageSizeChange($event)"
+  (sortChange)="onSortChange($event)"
+  [extraButtons]="extraButtons">
+</eh-table>
+
+<div>
+  <ng-template #namesTemplate>
+    <div>
+      <eh-datepicker
+        [formGroup]="holidaysForm"
+        [config]="dateFieldConfig">
+      </eh-datepicker>
+
+      <eh-textbox
+        [formGroup]="holidaysForm"
+        fControlName="name"
+        placeholder="Enter Name"
+        label="Name">
+      </eh-textbox>
+    </div>
+  </ng-template>
+</div>

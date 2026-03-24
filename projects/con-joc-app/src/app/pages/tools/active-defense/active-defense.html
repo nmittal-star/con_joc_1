@@ -1,5 +1,120 @@
-  <eh-table [columns]="columns" [tableTitle]="'Active Defense Accounts'" [config]="activedefenseConfig" [dataSource$]="dataSources$"
-        [paginationConfig]="paginationConfig" (pageChange)="onPageChange($event)"
-        (sizeChange)="onPageSizeChange($event)"  (sortChange)="onSortChange($event)"
-       [extraButtons]="extraButtons"  >
-    </eh-table>
+<eh-drawer #drawer class="table-attached-drawer closed" [config]="drawerConfig" [contentTemplate]="nameForm"
+  [footerTemplate]="drawerFooter" (onClose)="handleDrawerClose()">
+
+  <eh-table [columns]="columns" [tableTitle]="'Active Defense Accounts'" [config]="activedefenseConfig"
+    [dataSource$]="dataSources$" [paginationConfig]="paginationConfig" (pageChange)="onPageChange($event)"
+    (sizeChange)="onPageSizeChange($event)" (sortChange)="onSortChange($event)" [extraButtons]="extraButtons">
+  </eh-table>
+
+</eh-drawer>
+
+
+
+<ng-template #nameForm>
+
+  <div class="p-4">
+
+    @if (drawerDetails) {
+    <div class="flex justify-end mb-4">
+      @if (!isEditMode) {
+      <eh-button type="primary" label="Edit" (click)="setEditMode(true)"></eh-button>
+      }
+      @if (isEditMode) {
+      <eh-button type="primary" label="Cancel" (click)="setEditMode(false)"></eh-button>
+      }
+    </div>
+    }
+
+    @if (isEditMode) {
+    <div class="grid grid-cols-1 md:grid-cols-2  items-start">
+
+      <eh-select class="w-full" [formGroup]="defenseForm" [config]="selectConfig" fControlName="id">
+      </eh-select>
+
+      <eh-textbox class="w-full" [formGroup]="defenseForm" fControlName="min_dial_level"
+        placeholder="Enter Min.Dial Level" label="Minimum Dial Level">
+      </eh-textbox>
+
+      <eh-textbox class="w-full" [formGroup]="defenseForm" fControlName="throttle_percentage"
+        placeholder="Enter Throttle Percentage" label="Throttle Percentage">
+      </eh-textbox>
+
+      <eh-textbox class="w-full" [formGroup]="defenseForm" fControlName="throttle_duration"
+        placeholder="Enter Throttle Duration" label="Throttle Duration">
+      </eh-textbox>
+
+      <eh-textbox class="w-full" [formGroup]="defenseForm" fControlName="trigger_percentage"
+        placeholder="Enter Trigger Percentage" label="Trigger Percentage">
+      </eh-textbox>
+
+      <eh-textbox class="w-full" [formGroup]="defenseForm" fControlName="trigger_duration"
+        placeholder="Enter Trigger Duration" label="Trigger Duration">
+      </eh-textbox>
+
+      <eh-select class="w-full" [formGroup]="defenseForm" [config]="selectEnabledConfig" fControlName="enabled">
+      </eh-select>
+
+    </div>
+    }
+
+
+    @if (drawerDetails && !isEditMode) {
+    <div class="space-y-3 max-w-md">
+      <div class="flex pb-2">
+        <span class="text-gray-500 w-40 block">Account ID</span>
+        <span class="font-semibold flex-grow">{{ drawerDetails.id || 'Empty' }}</span>
+      </div>
+
+      <div class="flex pb-2">
+        <span class="text-gray-500 w-40 block">Minimum Dial Level</span>
+        <span class="font-semibold flex-grow">{{ drawerDetails.min_dial_level || 'Empty' }}</span>
+      </div>
+
+      <div class="flex pb-2">
+        <span class="text-gray-500 w-40 block">Throttle Percentage</span>
+        <span class="font-semibold flex-grow">{{ drawerDetails.throttle_percentage || 'Empty' }}</span>
+      </div>
+
+      <div class="flex pb-2">
+        <span class="text-gray-500 w-40 block">Throttle Duration</span>
+        <span class="font-semibold flex-grow">{{ drawerDetails.throttle_duration || 'Empty' }}</span>
+      </div>
+
+      <div class="flex pb-2">
+        <span class="text-gray-500 w-40 block">Trigger Percentage</span>
+        <span class="font-semibold flex-grow">{{ drawerDetails.trigger_percentage || 'Empty' }}</span>
+      </div>
+
+      <div class="flex pb-2">
+        <span class="text-gray-500 w-40 block">Trigger Duration</span>
+        <span class="font-semibold flex-grow">{{ drawerDetails.trigger_duration || 'Empty' }}</span>
+      </div>
+
+      <div class="flex pb-2">
+        <span class="text-gray-500 w-40 block">Created At</span>
+        <span class="font-semibold flex-grow">{{ drawerDetails.created_at || 'Empty' }}</span>
+      </div>
+
+      <div class="flex pb-2">
+        <span class="text-gray-500 w-40 block">Enabled</span>
+        <span class="font-semibold flex-grow">{{ drawerDetails.enabled  }}</span>
+      </div>
+    </div>
+    }
+
+  </div>
+
+</ng-template>
+
+
+
+<ng-template #drawerFooter>
+  <div class="flex justify-end gap-2 p-4 border-t">
+
+    @if (isEditMode) {
+    <eh-button label="{{ drawerDetails ? 'Update' : 'Save' }}" (click)="saveChanges()">
+    </eh-button>
+    }
+
+  </div>
+</ng-template>
