@@ -1,0 +1,174 @@
+/* Card container for settings fields */
+.settings-card {
+	background: #f8fafc;
+	border-radius: 0.75rem;
+	box-shadow: 0 2px 16px 0 rgba(80, 120, 200, 0.07);
+	padding: 2rem 2.5rem 1.5rem 2.5rem;
+	margin-bottom: 2rem;
+	border: 1px solid #e0e7ef;
+	max-width: 950px;
+	margin-left: 0;
+	margin-right: 0;
+}
+/* Heading band styles */
+
+.heading-band {
+	background: linear-gradient(90deg, #e0edff 0%, #f5faff 100%); /* very light blue gradient */
+	color: #23406e;
+	padding: 0.85rem 1.5rem;
+	border-radius: 0.65rem;
+	margin-bottom: 1.5rem;
+	text-align: left;
+	font-weight: 500;
+	letter-spacing: 0.01em;
+	box-shadow: 0 2px 12px 0 rgba(80, 120, 200, 0.07);
+	border: 1px solid #dbeafe;
+	transition: background 0.3s;
+	margin-left: 0;
+	margin-right: 0;
+}
+
+.heading-band.h1 {
+	font-size: 2rem;
+	font-weight: 600;
+	background: linear-gradient(90deg, #dbeafe 0%, #f0f7ff 100%);
+}
+
+.heading-band.h2 {
+	font-size: 1.25rem;
+	margin-top: 2rem;
+	margin-bottom: 1rem;
+	background: linear-gradient(90deg, #e0edff 0%, #f5faff 100%);
+}
+
+.heading-band.h1 {
+	font-size: 2rem;
+}
+
+.heading-band.h2 {
+	font-size: 1.25rem;
+	margin-top: 2rem;
+	margin-bottom: 1rem;
+}
+/* Professional two-column layout and compact Material fields */
+
+
+.general-setting-form {
+	display: grid !important;
+	grid-template-columns: 1fr 1fr !important;
+	gap: 1.5rem !important;
+	margin: 0 !important;
+	max-width: 900px !important;
+	justify-items: start !important;
+	text-align: left !important;
+}
+
+@media (max-width: 900px) {
+	.general-setting-form {
+		grid-template-columns: 1fr !important;
+		max-width: 100% !important;
+		gap: 1rem !important;
+		padding: 0 1rem !important;
+	}
+	.settings-card {
+		padding: 1.2rem 0.5rem 1rem 0.5rem !important;
+		max-width: 100% !important;
+	}
+	.heading-band {
+		padding: 0.7rem 1rem !important;
+		font-size: 1.1rem !important;
+	}
+}
+
+@media (max-width: 600px) {
+	.general-setting-form {
+		grid-template-columns: 1fr !important;
+		gap: 0.7rem !important;
+		padding: 0 0.2rem !important;
+	}
+	.settings-card {
+		padding: 0.7rem 0.2rem 0.7rem 0.2rem !important;
+	}
+	.heading-band {
+		font-size: 1rem !important;
+		padding: 0.5rem 0.5rem !important;
+	}
+	.field-row {
+		flex-direction: column !important;
+		align-items: stretch !important;
+		margin-bottom: 1rem !important;
+	}
+	.field-label {
+		min-width: 0 !important;
+		margin-right: 0 !important;
+		margin-bottom: 0.3rem !important;
+		text-align: left !important;
+		width: 100% !important;
+	}
+	.field-input {
+		width: 100% !important;
+		margin-top: 0 !important;
+	}
+}
+
+/* Field row for label/input alignment */
+.field-row {
+	display: flex;
+	align-items: center;
+	margin-bottom: 1.2rem;
+}
+.field-label {
+	min-width: 160px;
+	color: #7b8ca6;
+	font-weight: 500;
+	margin-right: 1.2rem;
+	text-align: right;
+	flex-shrink: 0;
+	letter-spacing: 0.01em;
+}
+.field-label::after {
+	content: ':';
+	margin-left: 0.2em;
+}
+.field-input {
+	flex: 1 1 0%;
+    margin-top: 10px;
+}
+
+.general-setting-form .mat-form-field {
+	width: 100% !important;
+	font-size: 0.95rem !important;
+	margin-bottom: 0.5rem !important;
+	text-align: left !important;
+	align-items: flex-start !important;
+}
+
+.general-setting-form input.mat-input-element,
+.general-setting-form textarea.mat-input-element,
+.general-setting-form select.mat-select {
+	font-size: 0.95rem !important;
+	padding: 0.25rem 0.5rem !important;
+	height: 2rem !important;
+	border-radius: 0.375rem !important;
+}
+
+.general-setting-form .mat-checkbox-layout {
+	font-size: 0.95rem !important;
+}
+
+.general-setting-form .mat-radio-button {
+	font-size: 0.95rem !important;
+	margin-right: 0.5rem !important;
+}
+
+.general-setting-form .mat-label {
+	font-weight: 500 !important;
+	color: #7b8ca6 !important; /* lighter, soft blue-gray */
+	text-align: left !important;
+}
+
+/* For custom label containers in eh-textbox/eh-textarea */
+.general-setting-form .label-container {
+	color: #7b8ca6 !important;
+	font-weight: 500 !important;
+}

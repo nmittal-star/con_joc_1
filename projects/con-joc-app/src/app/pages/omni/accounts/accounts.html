@@ -3,3 +3,11 @@
         (sizeChange)="onPageSizeChange($event)" (search)="onSearch($event)" (sortChange)="onSortChange($event)"
         [advanceFilterConfig]="advFilterConfig" [extraButtons]="extraButtons" >
     </eh-table>
+
+    @if (showGeneralSetting) {
+      <app-general-setting
+  [fields]="fieldsArray"
+  [formGroup]="form"
+  (close)="showGeneralSetting = false">
+</app-general-setting>
+    }

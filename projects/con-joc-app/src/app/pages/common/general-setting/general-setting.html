@@ -1,0 +1,86 @@
+<h1 class="heading-band h1">General Setting</h1>
+@if (form) {
+  <div class="settings-card">
+    <form [formGroup]="form" class="general-setting-form">
+      @for (field of fields; track field.name) {
+        @if (field.type === 'text' || field.type === 'password' || field.type === 'email' || field.type === 'number') {
+          <div class="field-row">
+            <span class="field-label">{{ field.labels }}</span>
+            <div class="field-input">
+              <eh-textbox
+                [formGroup]="form"
+                [config]="field"
+                fControlName="{{field.name}}"
+                label=""
+              ></eh-textbox>
+            </div>
+          </div>
+        }
+        @if (field.type === 'checkbox') {
+          <div class="field-row">
+            <span class="field-label">{{ field.labels }}</span>
+            <div class="field-input">
+              <eh-checkbox
+                [formGroup]="form"
+                [config]="field"
+                fControlName="{{field.name}}"
+                label=""
+              ></eh-checkbox>
+            </div>
+          </div>
+        }
+        @if (field.type === 'select') {
+          <div class="field-row">
+            <span class="field-label">{{ field.labels }}</span>
+            <div class="field-input">
+              <eh-select
+                [formGroup]="form"
+                [config]="field"
+                fControlName="{{field.name}}"
+                label=""
+              ></eh-select>
+            </div>
+          </div>
+        }
+        @if (field.type === 'radio') {
+          <div class="field-row">
+            <span class="field-label">{{ field.labels }}</span>
+            <div class="field-input">
+              <eh-radio-button
+                [formGroup]="form"
+                [config]="field"
+                fControlName="{{field.name}}"
+                label=""
+              ></eh-radio-button>
+            </div>
+          </div>
+        }
+        @if (field.type === 'textarea') {
+          <div class="field-row">
+            <span class="field-label">{{ field.labels }}</span>
+            <div class="field-input">
+              <eh-textarea
+                [formGroup]="form"
+                [config]="field"
+                fControlName="{{field.name}}"
+                label=""
+              ></eh-textarea>
+            </div>
+          </div>
+        }
+      }
+    </form>
+  </div>
+
+  <!-- Account Notes Card -->
+  <div class="account-notes-card">
+    <h2 class="heading-band h2">Account Notes</h2>
+    <eh-textarea
+      [formGroup]="form"
+      fControlName="accountNotes"
+      label=""
+      placeholder="Enter any notes about this account..."
+    ></eh-textarea>
+  </div>
+}
+

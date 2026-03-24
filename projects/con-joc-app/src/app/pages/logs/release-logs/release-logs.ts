@@ -6,6 +6,7 @@ import { Sort } from '@angular/material/sort';
 import { ButtonType, PaginationConfig, TableColumn, TableComponent, TableConfig, TableFilterConfig, UserData } from '@eh-library/common';
 import { BehaviorSubject, Observable, Subject, takeUntil } from 'rxjs';
 import { ReleaseLogsDataService } from '../../../data-access/logs/release-logs/release-logs.api';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-release-logs',
@@ -52,7 +53,7 @@ export class ReleaseLogs {
 
     readonly columns: TableColumn[] = [
     { key: 'sl', label: 'Sl.No', sortable: false },
-    { key: 'id', label: 'ID', searchable: true },
+    { key: 'id', label: 'ID', searchable: true ,clickable:true,onClick:(row)=>{this.onClickSettings(row)} },
     { key: 'type', label: 'Type', sortable: true, searchable: true },
     { key: 'notes', label: 'Notes', sortable: true, searchable: true },
     { key: 'tickets', label: 'Tickets', sortable: true, searchable: true },
@@ -75,7 +76,7 @@ export class ReleaseLogs {
   ];
 
 
-    constructor(private releaseLogsDataService:ReleaseLogsDataService){}
+    constructor(private releaseLogsDataService:ReleaseLogsDataService, private router: Router){}
     ngOnInit(){
       this.loadReleaseLogs()
   
@@ -194,6 +195,15 @@ export class ReleaseLogs {
 
   onPageChange(page: number) {
     this.loadReleaseLogs(page, this.pageSize, this.currentSearchTerm, this.currentSort);
+  }
+
+  onClickSettings(row:any){
+
+    localStorage.setItem(
+      'selectedReleaseLog',
+      JSON.stringify(row)
+    );
+    this.router.navigate(['/view-page', row.id]);
   }
 
   onPageSizeChange(size: number) {

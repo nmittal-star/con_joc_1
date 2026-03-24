@@ -1,3 +1,4 @@
+    
 import { Routes } from '@angular/router';
 
 export const routes: Routes = [
@@ -368,6 +369,16 @@ export const routes: Routes = [
                     import('./pages/tools/billing-invoice/billing-invoice').then(m => m.BillingInvoice),
                 data: { breadcrumb: 'Billing Invoice Verification Report' }
             },
+            {
+        path: 'general-setting/:id',
+        loadComponent: () => import('./pages/common/general-setting/general-setting').then(m => m.GeneralSetting),
+        data: { breadcrumb: 'General Setting' }
+    },
+    {
+        path: 'view-page/:id',
+        loadComponent: () => import('./pages/common/view-page/view-page').then(m => m.ViewPage),
+        data: { breadcrumb: 'View Page' }
+    },
             {
                 path: 'billing-tax-report',
                 loadComponent: () =>
