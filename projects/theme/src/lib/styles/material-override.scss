@@ -1086,3 +1086,8 @@ mat-drawer-backdrop {
   min-height: 1rem !important;
   max-height: 25rem !important
 }
+
+h1, h2, h3, h4, h5, h6 {
+    font-size: revert !important;
+    font-weight: 600 !important;
+}

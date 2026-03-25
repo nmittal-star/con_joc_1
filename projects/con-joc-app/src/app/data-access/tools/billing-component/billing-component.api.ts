@@ -13,4 +13,8 @@ export class BillingComponentDataService {
     getBillingComponent(): Observable<any> {
         return this.http.get(this.apiUrl);
     }
+
+    updateBillingComponent(id:number,data:any):Observable<any>{
+        return this.http.put(`${this.apiUrl}/${id}`,data)
+    }
 }

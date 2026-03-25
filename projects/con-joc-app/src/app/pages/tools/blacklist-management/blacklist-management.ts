@@ -1,15 +1,15 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Component, TemplateRef, ViewChild } from '@angular/core';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { Sort } from '@angular/material/sort';
-import { ButtonType, PaginationConfig, TableColumn, TableComponent, TableConfig, TableFilterConfig, UserData } from '@eh-library/common';
+import { ButtonComponent, ButtonType, DrawerComponent, DrawerConfig, PaginationConfig, TableColumn, TableComponent, TableConfig, TableFilterConfig, TextareaComponent, UserData } from '@eh-library/common';
 import { BehaviorSubject, Observable, Subject, takeUntil } from 'rxjs';
 import { BlacklistDataService } from '../../../data-access/tools/blacklist-management/blacklist-management.api';
 @Component({
   selector: 'app-blacklist-management',
   standalone: true,
-  imports: [CommonModule, TableComponent, ReactiveFormsModule, FormsModule, MatIconModule],
+  imports: [CommonModule, TableComponent, ReactiveFormsModule, FormsModule, MatIconModule, TextareaComponent, DrawerComponent, ButtonComponent],
   templateUrl: './blacklist-management.html',
   styleUrl: './blacklist-management.scss',
 })
@@ -23,12 +23,13 @@ export class BlacklistManagement {
       label: 'Add DNIS',
       type: 'primary' as ButtonType,
       icon: 'add',
-      // click: () => this.open()
+      click: () => this.open()
     }
   ]
 
+  @ViewChild('drawer') drawer!: DrawerComponent;
 
-
+  drawerDetails: any = {}
   fullData: any[] = []
   currentPage = 1;
   pageSize = 20;
@@ -37,6 +38,13 @@ export class BlacklistManagement {
   endRecord = 10;
   currentSearchTerm = '';
   currentSort: Sort = { active: '', direction: '' };
+
+  blacklistForm = new FormGroup({
+    dnis: new FormControl('', Validators.required),
+    description: new FormControl(''),
+
+
+  })
 
   blacklistConfig: TableConfig = {
     showSearch: true,
@@ -49,7 +57,14 @@ export class BlacklistManagement {
     isCheckBox: false
   }
 
-    advFilterConfig: TableFilterConfig = {
+  drawerConfig: DrawerConfig = {
+    title: '',
+    hasClose: true,
+    closeOnBackdropClick: true,
+    autoOpen: false
+
+  }
+  advFilterConfig: TableFilterConfig = {
     field: {
       name: 'field',
       placeholder: 'Choose',
@@ -94,11 +109,12 @@ export class BlacklistManagement {
 
 
   ];
+ 
 
 
   constructor(private blacklistDataService: BlacklistDataService) { }
   ngOnInit() {
-    this.loadCronManager()
+    this.loadBlacklist()
 
   }
 
@@ -124,7 +140,7 @@ export class BlacklistManagement {
   }
 
 
-  loadCronManager(
+  loadBlacklist(
     page = this.currentPage,
     size = this.pageSize,
     searchTerm = this.currentSearchTerm,
@@ -210,24 +226,53 @@ export class BlacklistManagement {
   }
 
   onSortChange(sort: Sort) {
-    this.loadCronManager(1, this.pageSize, this.currentSearchTerm, sort);
+    this.loadBlacklist(1, this.pageSize, this.currentSearchTerm, sort);
   }
 
   onPageChange(page: number) {
-    this.loadCronManager(page, this.pageSize, this.currentSearchTerm, this.currentSort);
+    this.loadBlacklist(page, this.pageSize, this.currentSearchTerm, this.currentSort);
   }
 
   onPageSizeChange(size: number) {
-    this.loadCronManager(1, size, this.currentSearchTerm, this.currentSort);
+    this.loadBlacklist(1, size, this.currentSearchTerm, this.currentSort);
   }
 
   onSearch(term: string) {
-    this.loadCronManager(1, this.pageSize, term, this.currentSort);
+    this.loadBlacklist(1, this.pageSize, term, this.currentSort);
   }
 
- 
+
+  open() {
+    this.drawerDetails = null
+    this.blacklistForm.reset()
+
+    this.drawerConfig = {
+      ...this.drawerConfig,
+      title: "Add DNIS"
+    }
+    const drawerEl = document.querySelector('.table-attached-drawer');
+    drawerEl?.classList.remove('closed');
+    drawerEl?.classList.add('open');
+
+    this.drawer.open();
+  }
 
 
 
+
+  saveChanges() {
+
+    console.log(this.blacklistForm.value, 'value');
+    this.blacklistForm.reset()
+    this.drawer.close()
+
+  }
+
+
+  handleDrawerClose() {
+    const drawerEl = document.querySelector('.table-attached-drawer');
+    drawerEl?.classList.remove('open');
+    drawerEl?.classList.add('closed');
+  }
 }
 
