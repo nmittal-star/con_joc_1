@@ -1,4 +1,86 @@
+<eh-drawer #drawer class="table-attached-drawer closed" [config]="drawerConfig" [contentTemplate]="nameForm"
+  [footerTemplate]="drawerFooter" (onClose)="handleDrawerClose()">
+
   <eh-table [columns]="columns" [tableTitle]="'Billing Product Components'" [config]="billingConfig" [dataSource$]="dataSources$"
         [paginationConfig]="paginationConfig" (pageChange)="onPageChange($event)"
         (sizeChange)="onPageSizeChange($event)" (search)="onSearch($event)" (sortChange)="onSortChange($event)">
     </eh-table>
+</eh-drawer>  
+  
+  
+  
+<ng-template #nameForm>
+
+  <div class="p-4">
+
+    @if (drawerDetails) {
+    <div class="flex justify-end mb-4">
+      @if (!isEditMode) {
+      <eh-button type="primary" label="Edit" (click)="setEditMode(true)"></eh-button>
+      }
+      @if (isEditMode) {
+      <eh-button type="primary" label="Cancel" (click)="setEditMode(false)"></eh-button>
+      }
+    </div>
+    }
+
+    @if (isEditMode) {
+    <div class="grid grid-cols-1 md:grid-cols-1  items-start">
+
+
+      <eh-textbox class="w-full" [formGroup]="billingForm" fControlName="name"
+        placeholder="Enter Name" label="Name" [disabled]="true">
+      </eh-textbox>
+
+      
+
+      <div [formGroup]="billingForm">
+         <eh-textarea formControlName="description"  label="Description" [rows]="1" [maxLength]="100"></eh-textarea>
+      </div>
+     
+
+      <eh-textbox class="w-full" [formGroup]="billingForm" fControlName="unit_name"
+        placeholder="Enter Unit Name" label="Unit Name" [disabled]="true">
+      </eh-textbox>
+
+    </div>
+    }
+
+
+    @if (drawerDetails && !isEditMode) {
+    <div class="space-y-3 max-w-md">
+
+  <div class="grid grid-cols-[160px_1fr] pb-2">
+    <span class="text-gray-500">Name</span>
+    <span class="font-semibold">{{ drawerDetails.name || 'Empty' }}</span>
+  </div>
+
+  <div class="grid grid-cols-[160px_1fr] pb-2">
+    <span class="text-gray-500">Description</span>
+    <span class="font-semibold">{{ drawerDetails.description || 'Empty' }}</span>
+  </div>
+
+  <div class="grid grid-cols-[160px_1fr] pb-2">
+    <span class="text-gray-500">Unit Name</span>
+    <span class="font-semibold">{{ drawerDetails.unit_name || 'Empty' }}</span>
+  </div>
+
+</div>
+    }
+
+  </div>
+
+</ng-template>
+
+
+
+<ng-template #drawerFooter>
+  <div class="flex justify-end gap-2 p-4 ">
+
+    @if (isEditMode) {
+    <eh-button label=" Update " (click)="saveChanges()">
+    </eh-button>
+    }
+
+  </div>
+</ng-template>

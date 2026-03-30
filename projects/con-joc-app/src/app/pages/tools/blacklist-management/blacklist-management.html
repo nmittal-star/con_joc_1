@@ -1,5 +1,34 @@
-  <eh-table [columns]="columns" [tableTitle]="'Blacklist Management'" [config]="blacklistConfig" [dataSource$]="dataSources$"
-        [paginationConfig]="paginationConfig" (pageChange)="onPageChange($event)"
-        (sizeChange)="onPageSizeChange($event)" (search)="onSearch($event)" (sortChange)="onSortChange($event)"
-       [extraButtons]="extraButtons" [advanceFilterConfig]="advFilterConfig"  >
-    </eh-table>
+<eh-drawer #drawer class="table-attached-drawer closed" [config]="drawerConfig" [contentTemplate]="nameForm"
+  [footerTemplate]="drawerFooter" (onClose)="handleDrawerClose()">
+
+  <eh-table [columns]="columns" [tableTitle]="'Blacklist Management'" [config]="blacklistConfig"
+    [dataSource$]="dataSources$" [paginationConfig]="paginationConfig" (pageChange)="onPageChange($event)"
+    (sizeChange)="onPageSizeChange($event)" (search)="onSearch($event)" (sortChange)="onSortChange($event)"
+    [extraButtons]="extraButtons" [advanceFilterConfig]="advFilterConfig">
+  </eh-table>
+
+</eh-drawer>
+
+<ng-template #nameForm>
+
+  <div [formGroup]="blacklistForm">
+    <eh-textarea formControlName="dnis" placeholder="Please add comma separated numbers" [label]="'DNIS'" [rows]="5"
+      [maxLength]="100">
+    </eh-textarea>
+  </div>
+  <div [formGroup]="blacklistForm">
+    <eh-textarea formControlName="description" placeholder='Enter Description' label="Description" [rows]="5"
+      [maxLength]="100">
+    </eh-textarea>
+  </div>
+</ng-template>
+
+
+
+<!-- DRAWER FOOTER -->
+<ng-template #drawerFooter>
+  <div class="drawer-footer-actions">
+    <eh-button [label]="'Save'" (click)="saveChanges()"></eh-button>
+
+  </div>
+</ng-template>

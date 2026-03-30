@@ -1,16 +1,16 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Component, ViewChild } from '@angular/core';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { Sort } from '@angular/material/sort';
-import { ButtonType, PaginationConfig, TableColumn, TableComponent, TableConfig, TableFilterConfig, UserData } from '@eh-library/common';
+import { ButtonComponent, ButtonType, DrawerComponent, DrawerConfig, PaginationConfig, TableColumn, TableComponent, TableConfig, TableFilterConfig, TextareaComponent, TextboxComponent, UserData } from '@eh-library/common';
 import { BehaviorSubject, Observable, Subject, takeUntil } from 'rxjs';
 import { BillingComponentDataService } from '../../../data-access/tools/billing-component/billing-component.api';
 
 @Component({
   selector: 'app-billing-component',
   standalone: true,
-  imports: [CommonModule, TableComponent, ReactiveFormsModule, FormsModule, MatIconModule],
+  imports: [CommonModule, TableComponent, ReactiveFormsModule, FormsModule, MatIconModule,ButtonComponent,DrawerComponent,TextboxComponent,TextareaComponent],
   templateUrl: './billing-component.html',
   styleUrl: './billing-component.scss',
 })
@@ -20,8 +20,7 @@ export class BillingComponent {
   private totalRecordsSubject = new BehaviorSubject<number>(0);
 
 
-
-
+ @ViewChild ('drawer') drawer! : DrawerComponent
 
   fullData: any[] = []
   currentPage = 1;
@@ -31,6 +30,8 @@ export class BillingComponent {
   endRecord = 10;
   currentSearchTerm = '';
   currentSort: Sort = { active: '', direction: '' };
+  drawerDetails:any={}
+  isEditMode = false;
 
   billingConfig: TableConfig = {
     showSearch: true,
@@ -43,9 +44,17 @@ export class BillingComponent {
     isCheckBox: false
   }
 
+   drawerConfig: DrawerConfig = {
+    title: '',
+    hasClose: true,
+    closeOnBackdropClick: true,
+    autoOpen: false
+  };
+
+
   readonly columns: TableColumn[] = [
     { key: 'sl', label: 'Sl.No', searchable: true },
-    { key: 'name', label: 'Name', sortable: true, searchable: true },
+    { key: 'name', label: 'Name', sortable: true, searchable: true ,clickable:true,onClick:(row)=>{this.openDrawer(row,false)}},
     { key: 'description', label: 'Description', searchable: true },
     { key: 'unit_name', label: 'Unit Name', sortable: true, searchable: true },
     
@@ -62,6 +71,13 @@ export class BillingComponent {
     },
   ];
 
+
+  billingForm = new FormGroup({
+    name: new FormControl (''),
+    description:new FormControl(''),
+    unit_name:new FormControl('')
+
+  })
 
   constructor(private billingComponentDataService: BillingComponentDataService) { }
   ngOnInit() {
@@ -192,12 +208,69 @@ export class BillingComponent {
     this.loadBillings(1, this.pageSize, term, this.currentSort);
   }
 
-  editSettings(row: any) {
+  editSettings(row: UserData) {
+      console.log('Edit:', row);
+
+    this.openDrawer(row, true);
 
   }
   
 
+  openDrawer(row: any, editMode: boolean = false) {
+    console.log("clicked", row)
 
+    this.drawerDetails = row;
+
+    this.isEditMode = editMode;
+
+    this.drawerConfig = {
+      ...this.drawerConfig,
+      title: `${row.name}`
+    };
+
+    if (this.isEditMode) {
+      this.billingForm.patchValue({
+        name: row.name,
+        description: row.description,
+        unit_name: row.unit_name,
+
+      })
+    }
+
+    const drawerEl = document.querySelector('.table-attached-drawer');
+    drawerEl?.classList.remove('closed');
+    drawerEl?.classList.add('open');
+
+    this.drawer.open();
+
+  }
+
+    handleDrawerClose() {
+    const drawerEl = document.querySelector('.table-attached-drawer');
+    drawerEl?.classList.remove('open');
+    drawerEl?.classList.add('closed');
+  }
+
+  setEditMode(value: boolean) {
+    this.isEditMode = value;
+
+    if (value) {
+
+      this.billingForm.patchValue({
+        name: this.drawerDetails.name,
+        description: this.drawerDetails.description,
+        unit_name: this.drawerDetails.unit_name,
+      });
+    } else {
+    }
+  }
+
+
+saveChanges(){
+
+console.log(this.billingForm.value,'updated')
+this.drawer.close()
+}
 
 }
 

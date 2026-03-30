@@ -1,5 +1,5 @@
 export interface CronManager {
-    id:number;
+    sl:number;
     name:string;
     scheduled_time:string;
     description:string;
