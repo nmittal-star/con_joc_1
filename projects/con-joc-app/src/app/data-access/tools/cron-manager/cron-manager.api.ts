@@ -13,4 +13,16 @@ export class CronManagerDataService {
     getCronManager(): Observable<any> {
         return this.http.get(this.apiUrl);
     }
+
+    updateCronManager(id:number,data:any):Observable<any>{
+        return this.http.patch(`${this.apiUrl}/${id}`,data)
+    }
+
+    createCronManager(data:any):Observable<any>{
+        return this.http.post(this.apiUrl,data)
+    }
+    
+    deleteCronManager(id:number,):Observable<any>{
+        return this.http.delete(`${this.apiUrl}/${id}`)
+    }
 }
