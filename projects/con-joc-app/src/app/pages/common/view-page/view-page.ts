@@ -1,5 +1,6 @@
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { logFieldsArray, logAvailableItems } from '../../../shared/logs-config';
 import { CommonModule } from '@angular/common';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { FormBuilder, FormGroup, FormControl, ReactiveFormsModule, FormsModule } from '@angular/forms';
@@ -18,37 +19,9 @@ import { TextboxComponent, SelectComponent, TextareaComponent, ButtonComponent }
   styleUrl: './view-page.scss',
 })
 export class ViewPage implements OnInit {
+  @Input() heading: string = 'View Page';
   form: FormGroup;
-  fields = [
-    {
-      name: 'type',
-      labels: 'Type',
-      type: 'select',
-      options: [
-        { key: 'Option 1', value: 'option1' },
-        { key: 'Option 2', value: 'option2' }
-      ]
-    },
-    {
-      name: 'internal',
-      labels: 'Internal',
-      type: 'select',
-      options: [
-        { key: 'Yes', value: 'yes' },
-        { key: 'No', value: 'no' }
-      ]
-    },
-    {
-      name: 'note',
-      labels: 'Note',
-      type: 'textarea'
-    },
-    {
-      name: 'tickets',
-      labels: 'Tickets',
-      type: 'number'
-    }
-  ];
+  fields = logFieldsArray;
 
   constructor(private fb: FormBuilder) {
     this.form = this.fb.group({
@@ -60,9 +33,7 @@ export class ViewPage implements OnInit {
   }
 
   // Dual listbox state
-  availableItems: string[] = [
-    'Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5'
-  ];
+  availableItems: string[] = [...logAvailableItems];
   selectedItems: string[] = [];
 
   selectedAvailable: string[] = [];
@@ -104,6 +75,15 @@ export class ViewPage implements OnInit {
         event.currentIndex
       );
     }
+  }
+   // Select all available items
+  selectAllAvailable() {
+    this.selectedAvailable = [...this.availableItems];
+  }
+
+  // Select all selected items
+  selectAllSelected() {
+    this.selectedSelected = [...this.selectedItems];
   }
 
   dropSelected(event: CdkDragDrop<string[]>) {
