@@ -1,5 +1,110 @@
-  <eh-table [columns]="columns" [tableTitle]="'Cron Manager'" [config]="cronmanagerConfig" [dataSource$]="dataSources$"
+
+
+
+    <eh-drawer #drawer class="table-attached-drawer closed" [config]="drawerConfig" [contentTemplate]="nameForm"
+  [footerTemplate]="drawerFooter" (onClose)="handleDrawerClose()">
+
+    <eh-table [columns]="columns" [tableTitle]="'Cron Manager'" [config]="cronmanagerConfig" [dataSource$]="dataSources$"
         [paginationConfig]="paginationConfig" (pageChange)="onPageChange($event)"
         (sizeChange)="onPageSizeChange($event)" (search)="onSearch($event)" (sortChange)="onSortChange($event)"
        [extraButtons]="extraButtons" >
     </eh-table>
+
+</eh-drawer>
+
+<ng-template #nameForm>
+
+  <div class="p-4">
+
+    @if (drawerDetails) {
+    <div class="flex justify-end mb-4">
+      @if (!isEditMode) {
+      <eh-button type="primary" label="Edit" (click)="setEditMode(true)"></eh-button>
+      }
+      @if (isEditMode) {
+      <eh-button type="primary" label="Cancel" (click)="setEditMode(false)"></eh-button>
+      }
+    </div>
+    }
+
+    @if (isEditMode) {
+    <div class="grid grid-cols-1 md:grid-cols-1  items-start">
+
+      <eh-textbox class="w-full" [formGroup]="cronForm" fControlName="name"
+        placeholder="Enter Name" label="Name">
+      </eh-textbox>
+
+      <eh-select class="w-full" [formGroup]="cronForm" [config]="selectConfig" fControlName="status">
+      </eh-select>
+
+      <eh-select class="w-full" [formGroup]="cronForm" [config]="runonceConfig" fControlName="runonce">
+      </eh-select>
+
+      <eh-textbox class="w-full" [formGroup]="cronForm" fControlName="command"
+        placeholder="Enter Command" label="Command">
+      </eh-textbox>
+
+      <eh-textbox class="w-full" [formGroup]="cronForm" fControlName="scheduled_time"
+        placeholder="Enter Scheduled Time" label="Scheduled Time">
+      </eh-textbox>
+
+      <eh-textbox class="w-full" [formGroup]="cronForm" fControlName="schedule_days"
+        placeholder="Enter Schedule Days" label="Schedule Days">
+      </eh-textbox>
+
+      <div [formGroup]="cronForm">
+         <eh-textarea formControlName="description"  label="Description" [rows]="1" [maxLength]="100"></eh-textarea>
+      </div>
+
+ 
+    </div>
+    }
+
+
+    @if (drawerDetails && !isEditMode) {
+    <div class="space-y-3 max-w-md">
+      <div class="flex pb-2">
+        <span class="text-gray-500 w-40 block">Name</span>
+        <span class="font-semibold flex-grow">{{ drawerDetails.name|| 'Empty' }}</span>
+      </div>
+
+      <div class="flex pb-2">
+        <span class="text-gray-500 w-40 block">Scheduled Time</span>
+        <span class="font-semibold flex-grow">{{ drawerDetails.scheduled_time || 'Empty' }}</span>
+      </div>
+
+      <div class="flex pb-2">
+        <span class="text-gray-500 w-40 block">Description</span>
+        <span class="font-semibold flex-grow">{{ drawerDetails.description || 'Empty' }}</span>
+      </div>
+
+      <div class="flex pb-2">
+        <span class="text-gray-500 w-40 block">Last Run At</span>
+        <span class="font-semibold flex-grow">{{ drawerDetails.lastrun || 'Empty' }}</span>
+      </div>
+
+      <div class="flex pb-2">
+        <span class="text-gray-500 w-40 block">Status</span>
+        <span class="font-semibold flex-grow">{{ drawerDetails.status || 'Empty' }}</span>
+      </div>
+
+      
+    </div>
+    }
+
+  </div>
+
+</ng-template>
+
+
+
+<ng-template #drawerFooter>
+  <div class="flex justify-end gap-2 p-4 border-t">
+
+    @if (isEditMode) {
+    <eh-button label="{{ drawerDetails ? 'Update' : 'Save' }}" (click)="saveChanges()">
+    </eh-button>
+    }
+
+  </div>
+</ng-template>

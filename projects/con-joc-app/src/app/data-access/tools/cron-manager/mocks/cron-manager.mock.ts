@@ -2,7 +2,7 @@ import { CronManager } from "../cron.manager.interface"
 
 export const cronmanager:CronManager[]=[
   {
-    "id": 1,
+    "sl": 1,
     "name": "Lead Drips",
     "scheduled_time": "NaN:NaN|NaN:NaN",
     "description": "Lead drips nightly run",
@@ -10,7 +10,7 @@ export const cronmanager:CronManager[]=[
     "status": "ACTIVE"
   },
   {
-    "id": 2,
+    "sl": 2,
     "name": "FTP Reports Push",
     "scheduled_time": "NaN:NaN",
     "description": "FTP Reports push",
@@ -18,7 +18,7 @@ export const cronmanager:CronManager[]=[
     "status": "ACTIVE"
   },
   {
-    "id": 3,
+    "sl": 3,
     "name": "FTP Recording Push",
     "scheduled_time": "NaN:NaN",
     "description": "FTP Recording Push",
