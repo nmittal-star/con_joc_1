@@ -6,7 +6,7 @@
 	padding: 2rem 2.5rem 1.5rem 2.5rem;
 	margin-bottom: 2rem;
 	border: 1px solid #e0e7ef;
-	max-width: 950px;
+	max-width: 75%;
 	margin-left: 0;
 	margin-right: 0;
 }
@@ -56,9 +56,8 @@
 .general-setting-form {
 	display: grid !important;
 	grid-template-columns: 1fr 1fr !important;
-	gap: 1.5rem !important;
 	margin: 0 !important;
-	max-width: 900px !important;
+	max-width: 100% !important;
 	justify-items: start !important;
 	text-align: left !important;
 }
@@ -67,7 +66,6 @@
 	.general-setting-form {
 		grid-template-columns: 1fr !important;
 		max-width: 100% !important;
-		gap: 1rem !important;
 		padding: 0 1rem !important;
 	}
 	.settings-card {
@@ -83,7 +81,6 @@
 @media (max-width: 600px) {
 	.general-setting-form {
 		grid-template-columns: 1fr !important;
-		gap: 0.7rem !important;
 		padding: 0 0.2rem !important;
 	}
 	.settings-card {
