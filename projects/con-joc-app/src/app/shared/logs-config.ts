@@ -32,3 +32,26 @@ export const logFieldsArray = [
 export const logAvailableItems = [
 	'Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5'
 ];
+
+export const highlightData = [
+	{ name: 'name', label: 'Name', type: 'text' },
+	{
+		name: 'active',
+		label: 'Active',
+		type: 'select',
+		options: [
+			{ key: 'Active', value: 'yes' },
+			{ key: 'Inactive', value: 'no' }
+		]
+	},
+	{
+		name: 'text',
+		label: 'Text',
+		type: 'textarea'
+	},
+	{
+		name: 'link',
+		label: 'Link',
+		type: 'text'
+	}
+]

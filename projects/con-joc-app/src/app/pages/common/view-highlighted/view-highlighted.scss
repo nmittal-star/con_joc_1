@@ -1,0 +1,111 @@
+.tiptap-toolbar {
+  .tb-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2rem;
+    height: 2rem;
+    padding: 0 0.4rem;
+    border-radius: 0.375rem;
+    border: 1px solid transparent;
+    background: transparent;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #475569;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+
+    &:hover {
+      background: #e2e8f0;
+      color: #1e293b;
+    }
+
+    &.active {
+      background: #dbeafe;
+      color: #1d4ed8;
+      border-color: #bfdbfe;
+    }
+  }
+
+  .tb-divider {
+    width: 1px;
+    height: 1.5rem;
+    background: #cbd5e1;
+    margin: 0 0.25rem;
+  }
+}
+
+.general-setting-form {
+  ::ng-deep .mat-mdc-text-field-wrapper,
+  ::ng-deep .mdc-text-field,
+  ::ng-deep .mdc-text-field--filled {
+    background-color: #f8fafc !important;
+    border-radius: 0.5rem !important;
+    overflow: hidden !important;
+  }
+
+  ::ng-deep .mat-mdc-form-field-flex,
+  ::ng-deep .mat-mdc-form-field-infix,
+  ::ng-deep .mat-mdc-form-field-focus-overlay,
+  ::ng-deep input,
+  ::ng-deep textarea,
+  ::ng-deep .mat-mdc-select-trigger,
+  ::ng-deep .mat-mdc-select-value {
+    background-color: transparent !important;
+  }
+
+  ::ng-deep .mat-mdc-form-field-subscript-wrapper {
+    display: none !important;
+    height: 0 !important;
+  }
+
+  ::ng-deep .mat-mdc-form-field {
+    margin-bottom: 0 !important;
+  }
+}
+
+.tiptap-container {
+  ::ng-deep .tiptap-editor {
+    min-height: 200px;
+    padding: 0.75rem 1rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.5rem;
+    outline: none;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: #1e293b;
+    background-color: #f8fafc;
+
+    &:focus {
+      border-color: #94a3b8;
+      box-shadow: 0 0 0 3px rgba(148, 163, 184, 0.2);
+    }
+
+    h1 { font-size: 1.5rem; font-weight: 700; margin: 0.5rem 0; }
+    h2 { font-size: 1.25rem; font-weight: 600; margin: 0.4rem 0; }
+    h3 { font-size: 1.1rem; font-weight: 600; margin: 0.3rem 0; }
+
+    ul { list-style: disc; padding-left: 1.5rem; }
+    ol { list-style: decimal; padding-left: 1.5rem; }
+
+    a {
+      color: #2563eb;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+
+    mark {
+      background: #fef08a;
+      border-radius: 2px;
+      padding: 0 2px;
+    }
+
+    p.is-editor-empty:first-child::before {
+      color: #94a3b8;
+      content: attr(data-placeholder);
+      float: left;
+      height: 0;
+      pointer-events: none;
+    }
+  }
+}

@@ -391,9 +391,27 @@ export const routes: Routes = [
     },
     {
         path: 'view-page/:id',
-        loadComponent: () => import('./pages/common/view-page/view-page').then(m => m.ViewPage),
-        data: { breadcrumb: 'View Page' }
+        data: {
+            breadcrumb: 'View Page',
+            tabs: [
+                { title: 'View Page', path: 'view-page' },
+                { title: 'View Highlighted', path: 'view-highlighted' },
+            ]
+        },
+        children: [
+            {
+                path: 'view-page',
+                loadComponent: () => import('./pages/common/view-page/view-page').then(m => m.ViewPage),
+            },
+            {
+                path: 'view-highlighted',
+                loadComponent: () => import('./pages/common/view-highlighted/view-highlighted').then(m => m.ViewHighlighted),
+                data: { breadcrumb:'' }
+            },
+            { path: '', redirectTo: 'view-page', pathMatch: 'full' }
+        ]
     },
+            
             {
                 path: 'billing-tax-report',
                 loadComponent: () =>
