@@ -66,7 +66,7 @@ export const routes: Routes = [
                     import('./pages/omni/did-orders/did-orders').then(m => m.DidOrders),
                 data: { breadcrumb: 'DID Orders' }
             },
-             {
+            {
                 path: 'view-did-orders/:id',
                 loadComponent: () => import('./pages/omni/did-orders/view-didorders/view-didorders').then(m => m.ViewDidorders),
                 data: { breadcrumb: 'View Omni DID Orders' }
@@ -79,19 +79,19 @@ export const routes: Routes = [
             },
 
             {
-  path: 'statecall-settings',
-  loadComponent: () =>
-    import('./pages/omni/statecall-times/statecall-settings/statecall-settings')
-      .then(m => m.StatecallSettings),
-  data: { breadcrumb: 'State Call Times Settings' }
-},
-{
-  path: 'statecall-settings/:name',
-  loadComponent: () =>
-    import('./pages/omni/statecall-times/statecall-settings/statecall-settings')
-      .then(m => m.StatecallSettings),
-  data: { breadcrumb: 'State Call Times Settings' }
-},
+                path: 'statecall-settings',
+                loadComponent: () =>
+                    import('./pages/omni/statecall-times/statecall-settings/statecall-settings')
+                        .then(m => m.StatecallSettings),
+                data: { breadcrumb: 'State Call Times Settings' }
+            },
+            {
+                path: 'statecall-settings/:name',
+                loadComponent: () =>
+                    import('./pages/omni/statecall-times/statecall-settings/statecall-settings')
+                        .then(m => m.StatecallSettings),
+                data: { breadcrumb: 'State Call Times Settings' }
+            },
 
             // Logs
 
@@ -252,6 +252,15 @@ export const routes: Routes = [
                     import('./pages/tools/email-lists/email-lists').then(m => m.EmailLists),
                 data: { breadcrumb: 'Email Lists' }
             },
+
+              {
+                path: 'email-settings',
+                loadComponent: () =>
+                    import('./pages/tools/email-lists/email-settings/email-settings').then(m => m.EmailSettings),
+                data: { breadcrumb: 'Email Settings' }
+            },
+                        
+            
             {
                 path: 'clusters-odometer',
                 loadComponent: () =>

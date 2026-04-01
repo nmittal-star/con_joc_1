@@ -1,0 +1,143 @@
+
+<div class="flex justify-between items-center text-lg font-semibold text-gray-800 ml-2">
+  <h3>Email List Settings</h3>
+
+  <eh-button
+    class="pr-2"
+    type="primary"
+    [label]="isEditmode ? ('Button.Cancel' | translate) : ('Button.Edit' | translate)"
+    (click)="toggleEditMode()">
+  </eh-button>
+</div>
+
+
+@if (!isEditmode) {
+  <div class="grid grid-cols-4 gap-x-10 gap-y-5 w-full m-4">
+
+    <div class="font-bold">Id</div>
+    <div>{{ settingsForm.getRawValue().id }}</div>
+
+    <div class="font-bold">Handle</div>
+    <div>{{ settingsForm.getRawValue().handle }}</div>
+
+    <div class="font-bold">Name</div>
+    <div>{{ settingsForm.getRawValue().name }}</div>
+
+    <div class="font-bold">Description</div>
+    <div>{{ settingsForm.getRawValue().description }}</div>
+
+  </div>
+}
+
+
+@if (isEditmode) {
+  <form class="w-full" [formGroup]="settingsForm">
+
+    <div class="flex gap-5 mb-4">
+      <div class="flex-1">
+        <eh-textbox [formGroup]="settingsForm" fControlName="id" label="ID" [disabled]="true"></eh-textbox>
+      </div>
+
+      <div class="flex-1">
+        <eh-textbox [formGroup]="settingsForm" fControlName="handle" label="Handle" [disabled]="true"></eh-textbox>
+      </div>
+    </div>
+
+    <div class="flex gap-5">
+      <div class="flex-1">
+        <eh-textbox [formGroup]="settingsForm" fControlName="name" label="Name"></eh-textbox>
+      </div>
+
+      <div class="flex-1">
+        <eh-textarea formControlName="description" label="Description" [rows]="1"></eh-textarea>
+      </div>
+    </div>
+
+  </form>
+}
+
+
+@if (isEditmode) {
+  <div class="flex justify-end gap-3 my-5">
+    <eh-button type="primary" label="Save Changes" (click)="saveChanges()"></eh-button>
+  </div>
+}
+
+<mat-divider></mat-divider>
+
+
+<eh-table
+  class="p-2"
+  [tableTitle]="'Emails in this list'"
+  [columns]="emailColumns"
+  [config]="emailConfig"
+  [dataSource$]="emailDataSource$"
+  [extraButtons]="extraButtons">
+</eh-table>
+
+
+
+<ng-template #namesTemplate>
+
+  <div class="w-full">
+
+
+    <div class="flex justify-end mb-4">
+      <eh-button
+        label="Add Email Address"
+        icon="add"
+        (click)="addRow()">
+      </eh-button>
+    </div>
+
+    
+    <form [formGroup]="form">
+
+      <div formArrayName="emails" class="space-y-4">
+
+        <div
+          class="flex gap-4 items-start"
+          *ngFor="let group of emailGroups; let i = index"
+          [formGroupName]="i"
+        >
+
+          
+          <div class="flex-1">
+            <eh-textbox
+              [formGroup]="group"
+              fControlName="name"
+              placeholder="Enter Name"
+              label="Name">
+            </eh-textbox>
+          </div>
+
+         
+          <div class="flex-1">
+            <eh-textbox
+              [formGroup]="group"
+              fControlName="email"
+              placeholder="Enter Email Address"
+              label="Email Address">
+            </eh-textbox>
+          </div>
+
+          
+          <button
+            mat-icon-button
+            color="warn"
+            type="button"
+            (click)="removeRow(i)"
+            class="mt-6"
+          >
+            <mat-icon>remove</mat-icon>
+          </button>
+
+        </div>
+
+      </div>
+
+    </form>
+
+  </div>
+
+</ng-template>
