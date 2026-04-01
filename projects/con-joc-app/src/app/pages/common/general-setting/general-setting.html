@@ -7,12 +7,10 @@
           <eh-select
             [formGroup]="form"
             [config]="recordRemoteSessionConfig"
-            fControlName="recordRemoteSession"
           ></eh-select>
           <eh-select
             [formGroup]="form"
             [config]="loginUrlConfig"
-            fControlName="loginUrl"
           ></eh-select>
         </div>
       </div>
@@ -42,7 +40,6 @@
                     <eh-select
                       [formGroup]="form"
                       [config]="asFieldConfig(field)"
-                      [fControlName]="field.name"
                       class="w-full"
                     ></eh-select>
                   }
@@ -50,7 +47,6 @@
                     <eh-textarea
                       [formGroup]="form"
                       [config]="asFieldConfig(field)"
-                      [fControlName]="field.name"
                       [label]="field.labels"
                       [rows]="1"
                       class="w-full"
@@ -60,7 +56,6 @@
                     <eh-checkbox
                       [formGroup]="form"
                       [config]="asFieldConfig(field)"
-                      [fControlName]="field.name"
                       class="w-full"
                     ></eh-checkbox>
                   }
@@ -68,7 +63,6 @@
                     <eh-radio-button
                       [formGroup]="form"
                       [config]="asFieldConfig(field)"
-                      [fControlName]="field.name"
                       class="w-full"
                     ></eh-radio-button>
                   }
@@ -99,7 +93,6 @@
       <div class="border-b border-slate-100 mb-4"></div>
       <eh-textarea
         [formGroup]="form"
-        fControlName="accountNotes"
         label=""
         placeholder="Enter any notes about this account..."
       ></eh-textarea>
