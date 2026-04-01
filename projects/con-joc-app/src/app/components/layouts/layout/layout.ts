@@ -30,7 +30,7 @@ import { SubHeader, SubHeaderConfig } from '../sub-header/sub-header';
 export class Layout {
 
   tabsConfigFromChild: TabsConfig | null = null;
-  subHeaderConfig: SubHeaderConfig = { breadcrumb: true, showtabs: false };
+  subHeaderConfig: SubHeaderConfig = { breadcrumb: true, showtabs: false, tabs: [] };
   breadcrumbs: Breadcrumb[] = [];
 
   private readonly destroy$ = new Subject<void>();

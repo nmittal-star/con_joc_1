@@ -1,30 +1,68 @@
 <div class="sub-header-bar">
   <div class="breadcrumbs">
-    @if (config?.breadcrumb) {
+    @if (config.breadcrumb) {
       <eh-breadcrumbs [items]="breadcrumbs"></eh-breadcrumbs>
     }
   </div>
 
-  <div class="tab-container">
-    <nav
-      mat-tab-nav-bar
-      [tabPanel]="tabPanel"
-      [class.single-tab]="config?.tabs?.length === 1"
-      color="primary"
-      >
-      @for (tab of config.tabs; track tab) {
-        <a
-          mat-tab-link
-          [routerLink]="tab.path"
-          [relativeTo]="config.parentRoute"
-          (click)="activeTab = tab.path ?? ''"
-          [active]="activeTab === tab.path"
-          [disabled]="config?.tabs?.length === 1"
-          >
-          {{ tab.title | translate }}
-        </a>
-      }
-    </nav>
+  <div class="tab-wrapper">
+    @if (config.tabs && config.tabs.length >= 5) {
+      <!-- Scroll layout for 5+ tabs -->
+      <button class="scroll-arrow scroll-arrow--left mb-1" (click)="scrollLeft()" aria-label="Scroll tabs left">
+        <mat-icon>chevron_left</mat-icon>
+      </button>
+
+      <div class="tab-container" #tabScroller>
+        <nav
+          mat-tab-nav-bar
+          [tabPanel]="tabPanel"
+          [class.single-tab]="config.tabs!.length === 1"
+          color="primary">
+          @for (tab of config.tabs; track tab.path) {
+            <a
+              mat-tab-link
+              [routerLink]="tab.path"
+              [relativeTo]="config.parentRoute"
+              (click)="activeTab = tab.path ?? ''"
+              [active]="activeTab === tab.path"
+              [disabled]="config.tabs!.length === 1">
+              @if (tab.icon) {
+                <mat-icon class="tab-icon">{{ tab.icon }}</mat-icon>
+              }
+              {{ tab.title | translate }}
+            </a>
+          }
+        </nav>
+      </div>
+
+      <button class="scroll-arrow scroll-arrow--right mb-1" (click)="scrollRight()" aria-label="Scroll tabs right">
+        <mat-icon>chevron_right</mat-icon>
+      </button>
+    } @else {
+      <!-- Simple layout for fewer than 5 tabs -->
+      <div class="tab-container tab-container--compact" #tabScroller>
+        <nav
+          mat-tab-nav-bar
+          [tabPanel]="tabPanel"
+          [class.single-tab]="config.tabs!.length === 1"
+          color="primary">
+          @for (tab of config.tabs; track tab.path) {
+            <a
+              mat-tab-link
+              [routerLink]="tab.path"
+              [relativeTo]="config.parentRoute"
+              (click)="activeTab = tab.path ?? ''"
+              [active]="activeTab === tab.path"
+              [disabled]="config.tabs!.length === 1">
+              @if (tab.icon) {
+                <mat-icon class="tab-icon">{{ tab.icon }}</mat-icon>
+              }
+              {{ tab.title | translate }}
+            </a>
+          }
+        </nav>
+      </div>
+    }
     <mat-tab-nav-panel #tabPanel></mat-tab-nav-panel>
   </div>
 </div>

@@ -4,4 +4,58 @@
 @tailwind utilities;
 
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background-color: #f8fafc; }
+
+app-view-page eh-textbox .mat-mdc-text-field-wrapper,
+app-view-page eh-select .mat-mdc-text-field-wrapper,
+app-view-page eh-textarea .mat-mdc-text-field-wrapper,
+app-view-page eh-textbox .mdc-text-field,
+app-view-page eh-select .mdc-text-field,
+app-view-page eh-textarea .mdc-text-field,
+app-view-page eh-textbox .mat-mdc-text-field-wrapper,
+app-view-page eh-select .mat-mdc-text-field-wrapper,
+app-view-page eh-textarea .mat-mdc-text-field-wrapper {
+	background-color: #f8fafc !important;
+	border-radius: 0.5rem !important;
+	overflow: hidden !important;
+}
+
+app-view-page eh-textbox .mat-mdc-form-field-flex,
+app-view-page eh-select .mat-mdc-form-field-flex,
+app-view-page eh-textarea .mat-mdc-form-field-flex,
+app-view-page eh-textbox .mat-mdc-form-field-infix,
+app-view-page eh-select .mat-mdc-form-field-infix,
+app-view-page eh-textarea .mat-mdc-form-field-infix,
+app-view-page eh-textbox .mat-mdc-form-field-focus-overlay,
+app-view-page eh-select .mat-mdc-form-field-focus-overlay,
+app-view-page eh-textarea .mat-mdc-form-field-focus-overlay,
+app-view-page eh-textbox input,
+app-view-page eh-textarea textarea,
+app-view-page eh-select .mat-mdc-select-trigger,
+app-view-page eh-select .mat-mdc-select-value {
+	background-color: transparent !important;
+}
+app-view-highlighted eh-textarea .mdc-text-field,
+app-view-highlighted eh-textbox .mat-mdc-text-field-wrapper,
+app-view-highlighted eh-select .mat-mdc-text-field-wrapper,
+app-view-highlighted eh-textarea .mat-mdc-text-field-wrapper {
+	background-color: #f8fafc !important;
+	border-radius: 0.5rem !important;
+	overflow: hidden !important;
+}
+
+app-view-highlighted eh-textbox .mat-mdc-form-field-flex,
+app-view-highlighted eh-select .mat-mdc-form-field-flex,
+app-view-highlighted eh-textarea .mat-mdc-form-field-flex,
+app-view-highlighted eh-textbox .mat-mdc-form-field-infix,
+app-view-highlighted eh-select .mat-mdc-form-field-infix,
+app-view-highlighted eh-textarea .mat-mdc-form-field-infix,
+app-view-highlighted eh-textbox .mat-mdc-form-field-focus-overlay,
+app-view-highlighted eh-select .mat-mdc-form-field-focus-overlay,
+app-view-highlighted eh-textarea .mat-mdc-form-field-focus-overlay,
+app-view-highlighted eh-textbox input,
+app-view-highlighted eh-textarea textarea,
+app-view-highlighted eh-select .mat-mdc-select-trigger,
+app-view-highlighted eh-select .mat-mdc-select-value {
+	background-color: transparent !important;
+}

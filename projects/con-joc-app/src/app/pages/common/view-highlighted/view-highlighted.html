@@ -1,0 +1,123 @@
+<h2 class="text-3xl font-bold mb-4 ml-0 text-left">{{ heading }}</h2>
+
+<!-- Card 1: Form Fields -->
+@if (form) {
+  <div class="max-w-7xl mx-auto mb-6">
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-[0_12px_30px_rgba(15,23,42,0.08)] px-3 py-1">
+      <h3 class="text-xs font-semibold mt-2 mb-4">Guidelines</h3>
+      <div class="border-b border-slate-100 mb-4"></div>
+      <!-- FORM GRID -->
+      <div class="w-full mb-4">
+        <form [formGroup]="form" class="general-setting-form grid grid-cols-2 gap-x-0 gap-y-0 w-full text-left mb-4">
+          @for (field of fields; track field) {
+            <div class="flex flex-col gap-0 w-full">
+              <div class="w-full">
+                @if (field.type === 'select') {
+                  <eh-select [formGroup]="form" [config]="field" [fControlName]="field.name" class="w-full"></eh-select>
+                }
+                @if (field.type === 'textarea') {
+                  <eh-textarea [formGroup]="form" [config]="field" [fControlName]="field.name" [label]="field.label" [rows]="1" class="w-full"></eh-textarea>
+                }
+                @if (field.type !== 'select' && field.type !== 'textarea') {
+                  <eh-textbox [formGroup]="form" [config]="field" [fControlName]="field.name" class="w-full"></eh-textbox>
+                }
+              </div>
+            </div>
+          }
+        </form>
+      </div>
+    </div>
+  </div>
+}
+
+<!-- Card 2: Rich Text Editor -->
+<div class="max-w-7xl mx-auto mb-6">
+  <div class="bg-white rounded-2xl border border-slate-200 shadow-[0_12px_30px_rgba(15,23,42,0.08)] px-3 py-3">
+    <h3 class="text-xs font-semibold mt-2 mb-4">Content</h3>
+    <div class="border-b border-slate-100 mb-3"></div>
+
+    <!-- Toolbar -->
+    <div class="tiptap-toolbar flex flex-wrap items-center gap-1 p-2 mb-2 bg-slate-50 rounded-lg border border-slate-200">
+
+      <!-- Text style -->
+      <button type="button" class="tb-btn" [class.active]="isActive('bold')" (click)="editor.chain().focus().toggleBold().run()" title="Bold">
+        <b>B</b>
+      </button>
+      <button type="button" class="tb-btn" [class.active]="isActive('italic')" (click)="editor.chain().focus().toggleItalic().run()" title="Italic">
+        <i>I</i>
+      </button>
+      <button type="button" class="tb-btn" [class.active]="isActive('underline')" (click)="editor.chain().focus().toggleUnderline().run()" title="Underline">
+        <u>U</u>
+      </button>
+      <button type="button" class="tb-btn" [class.active]="isActive('strike')" (click)="editor.chain().focus().toggleStrike().run()" title="Strikethrough">
+        <s>S</s>
+      </button>
+
+      <div class="tb-divider"></div>
+
+      <!-- Headings -->
+      <button type="button" class="tb-btn" [class.active]="isActive('heading', {level: 1})" (click)="editor.chain().focus().toggleHeading({level: 1}).run()" title="Heading 1">
+        H1
+      </button>
+      <button type="button" class="tb-btn" [class.active]="isActive('heading', {level: 2})" (click)="editor.chain().focus().toggleHeading({level: 2}).run()" title="Heading 2">
+        H2
+      </button>
+      <button type="button" class="tb-btn" [class.active]="isActive('heading', {level: 3})" (click)="editor.chain().focus().toggleHeading({level: 3}).run()" title="Heading 3">
+        H3
+      </button>
+
+      <div class="tb-divider"></div>
+
+      <!-- Alignment -->
+      <button type="button" class="tb-btn" [class.active]="isActive({textAlign: 'left'})" (click)="editor.chain().focus().setTextAlign('left').run()" title="Align Left">
+        &#8676;
+      </button>
+      <button type="button" class="tb-btn" [class.active]="isActive({textAlign: 'center'})" (click)="editor.chain().focus().setTextAlign('center').run()" title="Align Center">
+        &#8596;
+      </button>
+      <button type="button" class="tb-btn" [class.active]="isActive({textAlign: 'right'})" (click)="editor.chain().focus().setTextAlign('right').run()" title="Align Right">
+        &#8677;
+      </button>
+
+      <div class="tb-divider"></div>
+
+      <!-- Lists -->
+      <button type="button" class="tb-btn" [class.active]="isActive('bulletList')" (click)="editor.chain().focus().toggleBulletList().run()" title="Bullet List">
+        &#8226;&#8212;
+      </button>
+      <button type="button" class="tb-btn" [class.active]="isActive('orderedList')" (click)="editor.chain().focus().toggleOrderedList().run()" title="Ordered List">
+        1&#8212;
+      </button>
+
+      <div class="tb-divider"></div>
+
+      <!-- Highlight & Link -->
+      <button type="button" class="tb-btn" [class.active]="isActive('highlight')" (click)="editor.chain().focus().toggleHighlight().run()" title="Highlight">
+        &#9632;
+      </button>
+      <button type="button" class="tb-btn" [class.active]="isActive('link')" (click)="setLink()" title="Link">
+        &#128279;
+      </button>
+      <button type="button" class="tb-btn" (click)="editor.chain().focus().unsetLink().run()" title="Remove Link">
+        &#128280;
+      </button>
+
+      <div class="tb-divider"></div>
+
+      <!-- Image & Video -->
+      <button type="button" class="tb-btn" (click)="imageFileInput.click()" title="Upload Image from Device">🖼 Upload</button>
+      <button type="button" class="tb-btn" (click)="insertImageByUrl()" title="Insert Image by URL">🖼 URL</button>
+      <input #imageFileInput type="file" accept="image/*" class="hidden" (change)="onImageFileSelected($event)" />
+      <button type="button" class="tb-btn" (click)="insertYoutube()" title="Insert YouTube">▶</button>
+
+      <div class="tb-divider"></div>
+
+      <!-- Undo / Redo -->
+      <button type="button" class="tb-btn" (click)="editor.chain().focus().undo().run()" title="Undo">&#8592;</button>
+      <button type="button" class="tb-btn" (click)="editor.chain().focus().redo().run()" title="Redo">&#8594;</button>
+    </div>
+
+    <!-- Editor area -->
+    <div #editorContainer class="tiptap-container"></div>
+  </div>
+</div>

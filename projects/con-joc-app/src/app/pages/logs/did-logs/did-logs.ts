@@ -6,6 +6,7 @@ import { Sort } from '@angular/material/sort';
 import { ButtonType, PaginationConfig, TableColumn, TableComponent, TableConfig, TableFilterConfig, UserData } from '@eh-library/common';
 import { BehaviorSubject, Observable, Subject, takeUntil } from 'rxjs';
 import { DIDLogsDataService } from '../../../data-access/logs/did-logs/did-logs.api';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-did-logs',
@@ -77,8 +78,8 @@ export class DidLogs {
 
   readonly columns: TableColumn[] = [
       { key: 'sl', label: 'Sl.No', sortable: false },
-      { key: 'id', label: 'ID', searchable: true },
-      { key: 'account', label: 'Account', sortable: true, searchable: true },
+      { key: 'id', label: 'ID', searchable: true, clickable: true, onClick: (row) => { this.onClickView(row) } },
+      { key: 'account', label: 'Account', sortable: true, searchable: true,clickable: true, onClick: (row) => { this.onClickSettings(row) }  },
       { key: 'did', label: 'DID', sortable: true, searchable: true },
       { key: 'type', label: 'Type', sortable: true, searchable: true },
       { key: 'action', label: 'Action', sortable: true, searchable: true },
@@ -91,7 +92,7 @@ export class DidLogs {
     ];
   
   
-      constructor(private didLogsDataService:DIDLogsDataService){}
+      constructor(private didLogsDataService:DIDLogsDataService,private router: Router){}
       ngOnInit(){
         this.loadReleaseLogs()
     
@@ -207,6 +208,22 @@ export class DidLogs {
       onSortChange(sort: Sort) {
       this.loadReleaseLogs(1, this.pageSize, this.currentSearchTerm, sort);
     }
+    onClickSettings(row:any){
+
+    localStorage.setItem(
+    'selectedReleaseLogId',
+    JSON.stringify(row)
+  );
+
+      this.router.navigate(['/general-setting', row.id, 'general']);
+  }
+  onClickView(row:any){
+    localStorage.setItem(
+      'selectedReleaseLog',
+      JSON.stringify(row)
+    );
+    this.router.navigate(['/generic-table', row.id]);
+  }
   
     onPageChange(page: number) {
       this.loadReleaseLogs(page, this.pageSize, this.currentSearchTerm, this.currentSort);

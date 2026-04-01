@@ -6,6 +6,7 @@ import { Sort } from '@angular/material/sort';
 import { ButtonType, PaginationConfig, TableColumn, TableComponent, TableConfig, TableFilterConfig, UserData } from '@eh-library/common';
 import { BehaviorSubject, Observable, Subject, takeUntil } from 'rxjs';
 import { SystemStatusLogsDataService } from '../../../data-access/logs/system-status-logs/system-status-logs.api';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-system-status-logs',
@@ -52,7 +53,7 @@ export class SystemStatusLogs{
 
     readonly columns: TableColumn[] = [
     { key: 'sl', label: 'Sl.No', sortable: false },
-    { key: 'id', label: 'ID', searchable: true },
+    { key: 'id', label: 'ID', searchable: true ,clickable:true,onClick:(row)=>{this.onClickView(row)} },
     { key: 'type', label: 'Type', sortable: true, searchable: true },
     { key: 'platform', label: 'Platform', sortable: true, searchable: true },
     { key: 'group', label: 'Group', sortable: true, searchable: true },
@@ -78,7 +79,7 @@ export class SystemStatusLogs{
   ];
 
 
-    constructor(private systemStatusLogsDataService:SystemStatusLogsDataService){}
+    constructor(private systemStatusLogsDataService:SystemStatusLogsDataService, private router: Router){}
     ngOnInit(){
       this.loadSystemStatusLogs()
   
@@ -194,6 +195,14 @@ export class SystemStatusLogs{
     onSortChange(sort: Sort) {
     this.loadSystemStatusLogs(1, this.pageSize, this.currentSearchTerm, sort);
   }
+  onClickView(row:any){
+      this.router.navigate(['/view-page', row.id, 'view-page'], {
+        state: {
+          heading: 'View System Status Log'
+        }
+      });
+  }
+
 
   onPageChange(page: number) {
     this.loadSystemStatusLogs(page, this.pageSize, this.currentSearchTerm, this.currentSort);

@@ -1,0 +1,12 @@
+<eh-table
+	[columns]="columns"
+	[tableTitle]="title"
+	[config]="config"
+	[dataSource$]="dataSources$"
+	[paginationConfig]="paginationConfig"
+	[extraButtons]="extraButtons"
+	(search)="onSearch($event)"
+	(pageChange)="onPageChange($event)"
+	(sizeChange)="onPageSizeChange($event)"
+	(sortChange)="onSortChange($event)">
+</eh-table>

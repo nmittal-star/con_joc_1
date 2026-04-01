@@ -1,9 +1,12 @@
-<eh-header [menuItems]="menuItems" [headerLogo]="headerLogo"  [profileSettings]="profileMenuItems"
-  [languageSettings]="languagesDropdownItems" (profileItemClick)="logout()" 
-  ></eh-header>
+
+<div class="sticky top-0 z-50 bg-white shadow">
+  <eh-header [menuItems]="menuItems" [headerLogo]="headerLogo"  [profileSettings]="profileMenuItems"
+    [languageSettings]="languagesDropdownItems" (profileItemClick)="logout()">
+  </eh-header>
   <app-sub-header [config]="subHeaderConfig" [breadcrumbs]="breadcrumbs"
-  (tabChange)="tabsConfigFromChild!.selectedIndex = $event">
-</app-sub-header>
+    (tabChange)="tabsConfigFromChild!.selectedIndex = $event">
+  </app-sub-header>
+</div>
 
   <div class="layout-content">
   <router-outlet></router-outlet>

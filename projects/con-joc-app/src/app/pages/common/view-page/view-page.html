@@ -1,0 +1,181 @@
+
+
+<h2 class="text-3xl font-bold mb-4 ml-0 text-left">{{ heading }}</h2>
+
+
+<!-- Card 1: Form Fields -->
+@if (form) {
+  <div class="max-w-7xl mx-auto mb-6">
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-[0_12px_30px_rgba(15,23,42,0.08)] px-3 py-1">
+        <h3 class="text-xs font-semibold mb-2 mt-2 mb-4">General Settings</h3>
+        <div class="border-b border-slate-100 mb-4"></div>
+      <!-- FORM GRID -->
+      <div class="w-full mb-4">
+        <form [formGroup]="form" class="general-setting-form grid grid-cols-2 gap-x-0 gap-y-0 w-full text-left mb-4">
+          <!-- DYNAMIC FORM FIELDS -->
+          @for (field of fields; track field) {
+            <div class="flex flex-col gap-0 w-full">
+              <div class="w-full">
+                @if (field.type === 'select') {
+                  <eh-select
+                    [formGroup]="form"
+                    [config]="field"
+                    [fControlName]="field.name"
+                    class="w-full"
+                  ></eh-select>
+                }
+                @if (field.type === 'textarea') {
+                  <eh-textarea
+                    [formGroup]="form"
+                    [config]="field"
+                    [fControlName]="field.name"
+                    [label]="field.label"
+                    [rows]="1"
+                    class="w-full"
+                  ></eh-textarea>
+                }
+                @if (field.type !== 'select' && field.type !== 'textarea') {
+                  <eh-textbox
+                    [formGroup]="form"
+                    [config]="field"
+                    [fControlName]="field.name"
+                    class="w-full"
+                  ></eh-textbox>
+                }
+              </div>
+            </div>
+          }
+        </form>
+      </div>
+    </div>
+  </div>
+}
+
+    <!-- Card 2: Dual Listboxes -->
+    <div class="max-w-7xl mx-auto">
+        <!-- DUAL LISTBOX -->
+        <div class="dual-listbox-section">
+    <div class="dual-listbox-section">
+      <div class="flex flex-col md:flex-row gap-6 items-start justify-center">
+        <!-- LEFT -->
+         <div class="bg-white rounded-2xl border border-slate-200 shadow-[0_14px_34px_rgba(15,23,42,0.10)] p-8 w-[620px] max-w-full">
+          <div class="dual-listbox-list flex-1 items-start">
+          <div class="dual-listbox-title text-left font-semibold mb-2 flex items-center gap-2">
+            <span class="material-icons text-primary">list</span>
+            Clients within this Release Log
+            <span class="ml-2 text-xs text-gray-500">
+
+              ({{ availableItems.length }})</span>
+          </div>
+          <div class="border-b border-slate-200 mb-3"></div>
+          <div
+            cdkDropList
+            #availableList="cdkDropList"
+            [cdkDropListData]="availableItems"
+            [cdkDropListConnectedTo]="[selectedList]"
+            (cdkDropListDropped)="dropAvailable($event)"
+            class="dual-listbox-select w-full text-base min-h-[260px] bg-white border border-gray-300 rounded shadow-sm focus:ring-2 focus:ring-primary flex flex-col"
+            style="width: 500px; max-width: 100%; min-height: 260px;"
+          >
+            <div class="sticky top-0 z-10 bg-white border-b flex items-center gap-2 px-2 py-1">
+              <input
+                type="checkbox"
+                class="accent-primary"
+                [checked]="selectedAvailable.length === availableItems.length && availableItems.length > 0"
+                (click)="selectAllAvailable()"
+                aria-label="Select all available"
+              />
+              <button type="button" class="text-md px-2 py-1 rounded bg-primary/10 text-primary hover:bg-primary/20 transition" (click)="selectAllAvailable()">
+                Select All
+              </button>
+            </div>
+            @for (item of availableItems; track item; let index = $index) {
+              <div
+                cdkDrag
+                (click)="toggleSelectAvailable(item)"
+                [class.bg-gray-100]="selectedAvailable.includes(item)"
+                [class.bg-slate-50]="!selectedAvailable.includes(item) && index % 2 === 0"
+                [class.bg-white]="!selectedAvailable.includes(item) && index % 2 !== 0"
+                class="p-2 border-b cursor-pointer flex items-center select-none transition-colors duration-150"
+              >
+                <input
+                  type="checkbox"
+                  class="mr-2 accent-primary"
+                  [checked]="selectedAvailable.includes(item)"
+                  (click)="$event.stopPropagation(); toggleSelectAvailable(item)"
+                  tabindex="-1"
+                  aria-label="Select {{ item }}"
+                />
+                <span>{{ item }}</span>
+              </div>
+            }
+          </div>
+        </div>
+        <div class="flex items-center justify-start ml-2 mt-4 md:mt-0">
+                  <eh-button [disabled]="selectedAvailable.length === 0" type="primary" [label]="'>'" (click)="moveToSelected()" class="mt-4">
+          <span class="material-icons">chevron_right</span>
+        </eh-button>
+        </div>
+         </div>
+        
+        <!-- RIGHT -->
+          <div class="bg-white rounded-2xl border border-slate-200 shadow-[0_14px_34px_rgba(15,23,42,0.10)] p-8 w-[520px] max-w-full">
+        <div class="dual-listbox-list flex-1 items-start">
+          <div class="dual-listbox-title text-left font-semibold mb-2 flex items-center gap-2">
+            <span class="material-icons text-primary">list_alt</span>
+            Clients NOT within this Release Log
+            <span class="ml-2 text-xs text-gray-500">({{ selectedItems.length }})</span>
+          </div>
+          <div class="border-b border-slate-200 mb-3"></div>
+          <div
+            cdkDropList
+            #selectedList="cdkDropList"
+            [cdkDropListData]="selectedItems"
+            [cdkDropListConnectedTo]="[availableList]"
+            (cdkDropListDropped)="dropSelected($event)"
+            class="dual-listbox-select w-full text-base min-h-[260px] bg-white border border-gray-300 rounded shadow-sm focus:ring-2 focus:ring-primary flex flex-col"
+            style="width: 500px; max-width: 100%; min-height: 260px;"
+          >
+            <div class="sticky top-0 z-10 bg-white border-b flex items-center gap-2 px-2 py-1">
+              <input
+                type="checkbox"
+                class="accent-primary"
+                [checked]="selectedSelected.length === selectedItems.length && selectedItems.length > 0"
+                (click)="selectAllSelected()"
+                aria-label="Select all selected"
+              />
+              <button type="button" class="text-md px-2 py-1 rounded bg-primary/10 text-primary hover:bg-primary/20 transition" (click)="selectAllSelected()">
+                Select All
+              </button>
+            </div>
+            @for (item of selectedItems; track item; let index = $index) {
+              <div
+                cdkDrag
+                (click)="toggleSelectSelected(item)"
+                [class.bg-gray-100]="selectedSelected.includes(item)"
+                [class.bg-slate-50]="!selectedSelected.includes(item) && index % 2 === 0"
+                [class.bg-white]="!selectedSelected.includes(item) && index % 2 !== 0"
+                class="p-2 border-b cursor-pointer flex items-center select-none transition-colors duration-150"
+              >
+                <input
+                  type="checkbox"
+                  class="mr-2 accent-primary"
+                  [checked]="selectedSelected.includes(item)"
+                  (click)="$event.stopPropagation(); toggleSelectSelected(item)"
+                  tabindex="-1"
+                  aria-label="Select {{ item }}"
+                />
+                <span>{{ item }}</span>
+              </div>
+            }
+          </div>
+        </div>
+        <div class="flex items-center justify-end mt-4 md:mt-0">
+          <eh-button [disabled]="selectedSelected.length === 0" type="primary" [label]="'<'" (click)="moveToAvailable()" class="mt-4">
+          <span class="material-icons">chevron_left</span>
+        </eh-button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

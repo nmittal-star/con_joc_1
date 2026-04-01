@@ -1,4 +1,24 @@
+    
 import { Routes } from '@angular/router';
+
+const generalSettingTabs = [
+    { title: 'General', path: 'general', icon: 'settings' },
+    { title: 'User', path: 'user', icon: 'person' },
+    { title: 'Trunks', path: 'trunks', icon: 'device_hub' },
+    { title: 'Billing', path: 'billing', icon: 'receipt' },
+    { title: 'Zuora Billing', path: 'zuora-billing', icon: 'payment' },
+    { title: 'Transactions', path: 'transactions', icon: 'compare_arrows' },
+    { title: 'Invoices', path: 'invoices', icon: 'description' },
+    { title: 'Services', path: 'services', icon: 'miscellaneous_services' },
+    { title: 'Contacts', path: 'contacts', icon: 'contacts' },
+    { title: 'Pricing', path: 'pricing', icon: 'attach_money' },
+    { title: 'Attachments', path: 'attachments', icon: 'attach_file' },
+    { title: 'Additional Object Limitations', path: 'aol', icon: 'rule' },
+    { title: 'Tools', path: 'tools', icon: 'handyman' },
+    { title: 'White Label', path: 'white-label', icon: 'palette' },
+    { title: 'Miscellaneous', path: 'miscellaneous', icon: 'apps' },
+    { title: 'User Compliance Logs', path: 'compliance-logs', icon: 'gavel' },
+];
 
 export const routes: Routes = [
     {
@@ -392,6 +412,125 @@ export const routes: Routes = [
                     import('./pages/tools/billing-invoice/billing-invoice').then(m => m.BillingInvoice),
                 data: { breadcrumb: 'Billing Invoice Verification Report' }
             },
+            {
+                path: 'general-setting/:id',
+                data: {
+                    breadcrumb: 'General Setting',
+                    showtabs: true,
+                    tabs: generalSettingTabs,
+                },
+                children: [
+                    {
+                        path: 'general',
+                        loadComponent: () => import('./pages/common/general-setting/general-setting').then(m => m.GeneralSetting),
+                        data: { breadcrumb: 'General' }
+                    },
+                    {
+                        path: 'user',
+                        loadComponent: () => import('./pages/common/general-setting/general-setting').then(m => m.GeneralSetting),
+                        data: { breadcrumb: 'User', mode: 'table' }
+                    },
+                    {
+                        path: 'trunks',
+                        loadComponent: () => import('./pages/common/general-setting/general-setting-tab').then(m => m.GeneralSettingTab),
+                        data: { breadcrumb: 'Trunks', sectionTitle: 'Trunks' }
+                    },
+                    {
+                        path: 'billing',
+                        loadComponent: () => import('./pages/common/general-setting/general-setting-tab').then(m => m.GeneralSettingTab),
+                        data: { breadcrumb: 'Billing', sectionTitle: 'Billing' }
+                    },
+                    {
+                        path: 'zuora-billing',
+                        loadComponent: () => import('./pages/common/general-setting/general-setting-tab').then(m => m.GeneralSettingTab),
+                        data: { breadcrumb: 'Zuora Billing', sectionTitle: 'Zuora Billing' }
+                    },
+                    {
+                        path: 'transactions',
+                        loadComponent: () => import('./pages/common/general-setting/general-setting-tab').then(m => m.GeneralSettingTab),
+                        data: { breadcrumb: 'Transactions', sectionTitle: 'Transactions' }
+                    },
+                    {
+                        path: 'invoices',
+                        loadComponent: () => import('./pages/common/general-setting/general-setting-tab').then(m => m.GeneralSettingTab),
+                        data: { breadcrumb: 'Invoices', sectionTitle: 'Invoices' }
+                    },
+                    {
+                        path: 'services',
+                        loadComponent: () => import('./pages/common/general-setting/general-setting-tab').then(m => m.GeneralSettingTab),
+                        data: { breadcrumb: 'Services', sectionTitle: 'Services' }
+                    },
+                    {
+                        path: 'contacts',
+                        loadComponent: () => import('./pages/common/general-setting/general-setting-tab').then(m => m.GeneralSettingTab),
+                        data: { breadcrumb: 'Contacts', sectionTitle: 'Contacts' }
+                    },
+                    {
+                        path: 'pricing',
+                        loadComponent: () => import('./pages/common/general-setting/general-setting-tab').then(m => m.GeneralSettingTab),
+                        data: { breadcrumb: 'Pricing', sectionTitle: 'Pricing' }
+                    },
+                    {
+                        path: 'attachments',
+                        loadComponent: () => import('./pages/common/general-setting/general-setting-tab').then(m => m.GeneralSettingTab),
+                        data: { breadcrumb: 'Attachments', sectionTitle: 'Attachments' }
+                    },
+                    {
+                        path: 'aol',
+                        loadComponent: () => import('./pages/common/general-setting/general-setting-tab').then(m => m.GeneralSettingTab),
+                        data: { breadcrumb: 'Additional Object Limitations', sectionTitle: 'Additional Object Limitations' }
+                    },
+                    {
+                        path: 'tools',
+                        loadComponent: () => import('./pages/common/general-setting/general-setting-tab').then(m => m.GeneralSettingTab),
+                        data: { breadcrumb: 'Tools', sectionTitle: 'Tools' }
+                    },
+                    {
+                        path: 'white-label',
+                        loadComponent: () => import('./pages/common/general-setting/general-setting-tab').then(m => m.GeneralSettingTab),
+                        data: { breadcrumb: 'White Label', sectionTitle: 'White Label' }
+                    },
+                    {
+                        path: 'miscellaneous',
+                        loadComponent: () => import('./pages/common/general-setting/general-setting-tab').then(m => m.GeneralSettingTab),
+                        data: { breadcrumb: 'Miscellaneous', sectionTitle: 'Miscellaneous' }
+                    },
+                    {
+                        path: 'compliance-logs',
+                        loadComponent: () => import('./pages/common/general-setting/general-setting-tab').then(m => m.GeneralSettingTab),
+                        data: { breadcrumb: 'User Compliance Logs', sectionTitle: 'User Compliance Logs' }
+                    },
+                    { path: '', redirectTo: 'general', pathMatch: 'full' }
+                ]
+            },
+    {
+        path: 'generic-table/:id',
+        loadComponent: () => import('./pages/common/generic-table/generic-table-page').then(m => m.GenericTablePage),
+        data: { breadcrumb: 'Generic Table' }
+    },
+    {
+        path: 'view-page/:id',
+        data: {
+            breadcrumb: 'View Page',
+            tabs: [
+                { title: 'View Page', path: 'view-page' },
+                { title: 'View Highlighted', path: 'view-highlighted' },
+            ]
+        },
+        children: [
+            {
+                path: 'view-page',
+                loadComponent: () => import('./pages/common/view-page/view-page').then(m => m.ViewPage),
+            },
+            {
+                path: 'view-highlighted',
+                loadComponent: () => import('./pages/common/view-highlighted/view-highlighted').then(m => m.ViewHighlighted),
+                data: { breadcrumb:'' }
+            },
+            { path: '', redirectTo: 'view-page', pathMatch: 'full' }
+        ]
+    },
+            
             {
                 path: 'billing-tax-report',
                 loadComponent: () =>
