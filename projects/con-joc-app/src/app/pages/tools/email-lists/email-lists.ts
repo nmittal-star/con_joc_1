@@ -1,16 +1,18 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Component, TemplateRef, ViewChild } from '@angular/core';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { Sort } from '@angular/material/sort';
-import { ButtonType, PaginationConfig, TableColumn, TableComponent, TableConfig, TableFilterConfig, UserData } from '@eh-library/common';
+import { ButtonType, DialogService, PaginationConfig, TableColumn, TableComponent, TableConfig, TableFilterConfig, TextareaComponent, TextboxComponent, UserData } from '@eh-library/common';
 import { BehaviorSubject, Observable, Subject, takeUntil } from 'rxjs';
 import { EmailListsDataService } from '../../../data-access/tools/email-lists/email-lists.api';
+import { Dialog } from '@angular/cdk/dialog';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-email-lists',
   standalone: true,
-  imports: [CommonModule, TableComponent, ReactiveFormsModule, FormsModule, MatIconModule],
+  imports: [CommonModule, TableComponent, ReactiveFormsModule, FormsModule, MatIconModule,TextboxComponent,TextareaComponent],
   templateUrl: './email-lists.html',
   styleUrl: './email-lists.scss',
 })
@@ -19,12 +21,14 @@ export class EmailLists {
   readonly dataSources$: Observable<UserData[]> = this.dataSubject.asObservable()
   private totalRecordsSubject = new BehaviorSubject<number>(0);
 
+  @ViewChild('namesTemplate',{static:true}) namesTemplate!: TemplateRef<any>;
+
   extraButtons = [
     {
       label: 'Add List',
       type: 'primary' as ButtonType,
       icon: 'add',
-      // click: () => this.open()
+      click: () => this.open()
     }
   ]
 
@@ -38,6 +42,7 @@ export class EmailLists {
   endRecord = 10;
   currentSearchTerm = '';
   currentSort: Sort = { active: '', direction: '' };
+  dialogRef: any;
 
   listConfig: TableConfig = {
     showSearch: true,
@@ -50,10 +55,18 @@ export class EmailLists {
     isCheckBox: false
   }
 
+   emailForm = new FormGroup({
+  
+      description: new FormControl(''),
+      name: new FormControl(''),
+    })
+  
+
   readonly columns: TableColumn[] = [
+    {key: 'sl', label: 'Sl.No', searchable: true},
     { key: 'id', label: 'ID', searchable: true },
     { key: 'handle', label: 'Handle', sortable: true, searchable: true },
-    { key: 'name', label: 'Name', sortable: true, searchable: true },
+    { key: 'name', label: 'Name', sortable: true, searchable: true,clickable:true,onClick:(row)=>{this.editEmailLists(row)}  },
     { key: 'description', label: 'Description', searchable: true },
 
     {
@@ -63,13 +76,13 @@ export class EmailLists {
       sortable: false,
       actions: [
 
-        { icon: 'edit', tooltip: 'Settings', callback: (row) => this.editSettings(row) },
+        { icon: 'edit', tooltip: 'Settings', callback: (row) => this.editEmailLists(row) },
       ],
     },
   ];
 
 
-  constructor(private emaillistsDataService: EmailListsDataService) { }
+  constructor(private emaillistsDataService: EmailListsDataService,private dialogService:DialogService,private router: Router) { }
   ngOnInit() {
     this.loadEmailLists()
 
@@ -198,10 +211,60 @@ export class EmailLists {
     this.loadEmailLists(1, this.pageSize, term, this.currentSort);
   }
 
-  editSettings(row: any) {
+
+
+
+    open(): void {
+    this.dialogRef = this.dialogService.open({
+      title: 'Add New Email List',
+      dialogContent: this.namesTemplate,
+      actionButtons: [
+        { label: 'Save', type: 'primary', disabled: true, onClick: () => this.onConfirmClick() },
+      ],
+      width: '500px',
+      panelClass: 'custom-dialog-panel'
+    });
+  }
+
+  onConfirmClick(): void {
+    console.log(this.emailForm.value, 'value');
+    this.emailForm.reset()
+    this.dialogRef.close()
 
   }
 
+
+    editEmailLists(row: any) {
+    
+    const selectedId = String(row.id).trim();
+
+    this.emaillistsDataService.getEmailLists()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res: any) => {
+          const response = res?.items || res?.data || res || [];
+
+          const selectedEmailList = response.find((d: any) =>
+            String(d.id).trim().toLowerCase() === selectedId.toLowerCase()
+          );
+
+          if (selectedEmailList) {
+            console.log("FOUND:", selectedEmailList);
+
+            
+            localStorage.setItem('selectedEmailList', JSON.stringify(selectedEmailList));
+            this.router.navigate(
+              ['/email-settings', ],
+              // ['/email-settings', selectedEmailList.id, 'general-settings'],
+              // { state: { outboundDataSettings: selectedEmailList } }
+            );
+          } else {
+            console.error('Dialplan not found for', selectedId);
+          }
+        },
+        error: (err) => console.error(err)
+      });
+  }
 
 
 }
