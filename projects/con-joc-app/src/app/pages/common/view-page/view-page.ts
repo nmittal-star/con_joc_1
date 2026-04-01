@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { FormBuilder, FormGroup, FormControl, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { TextboxComponent, SelectComponent, TextareaComponent, ButtonComponent } from '@eh-library/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-view-page',
@@ -23,7 +24,7 @@ export class ViewPage implements OnInit {
   form: FormGroup;
   fields = logFieldsArray;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private router: Router) {
     this.form = this.fb.group({
       type: [''],
       internal: [''],
@@ -39,7 +40,12 @@ export class ViewPage implements OnInit {
   selectedAvailable: string[] = [];
   selectedSelected: string[] = [];
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    const navigationHeading = this.router.getCurrentNavigation()?.extras.state?.['heading'] ?? history.state?.['heading'];
+    if (typeof navigationHeading === 'string' && navigationHeading.trim()) {
+      this.heading = navigationHeading;
+    }
+  }
 
   moveToSelected() {
     this.selectedItems = this.selectedItems.concat(this.selectedAvailable);

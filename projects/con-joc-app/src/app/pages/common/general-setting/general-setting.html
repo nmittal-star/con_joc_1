@@ -1,86 +1,108 @@
-<h1 class="heading-band h1">General Setting</h1>
-@if (form) {
-  <div class="settings-card">
-    <form [formGroup]="form" class="general-setting-form">
-      @for (field of fields; track field.name) {
-        @if (field.type === 'text' || field.type === 'password' || field.type === 'email' || field.type === 'number') {
-          <div class="field-row">
-            <span class="field-label">{{ field.labels }}</span>
-            <div class="field-input">
-              <eh-textbox
-                [formGroup]="form"
-                [config]="field"
-                fControlName="{{field.name}}"
-                label=""
-              ></eh-textbox>
-            </div>
-          </div>
-        }
-        @if (field.type === 'checkbox') {
-          <div class="field-row">
-            <span class="field-label">{{ field.labels }}</span>
-            <div class="field-input">
-              <eh-checkbox
-                [formGroup]="form"
-                [config]="field"
-                fControlName="{{field.name}}"
-                label=""
-              ></eh-checkbox>
-            </div>
-          </div>
-        }
-        @if (field.type === 'select') {
-          <div class="field-row">
-            <span class="field-label">{{ field.labels }}</span>
-            <div class="field-input">
-              <eh-select
-                [formGroup]="form"
-                [config]="field"
-                fControlName="{{field.name}}"
-                label=""
-              ></eh-select>
-            </div>
-          </div>
-        }
-        @if (field.type === 'radio') {
-          <div class="field-row">
-            <span class="field-label">{{ field.labels }}</span>
-            <div class="field-input">
-              <eh-radio-button
-                [formGroup]="form"
-                [config]="field"
-                fControlName="{{field.name}}"
-                label=""
-              ></eh-radio-button>
-            </div>
-          </div>
-        }
-        @if (field.type === 'textarea') {
-          <div class="field-row">
-            <span class="field-label">{{ field.labels }}</span>
-            <div class="field-input">
-              <eh-textarea
-                [formGroup]="form"
-                [config]="field"
-                fControlName="{{field.name}}"
-                label=""
-              ></eh-textarea>
-            </div>
-          </div>
-        }
-      }
-    </form>
+@if (mode === 'table') {
+  <!-- Dropdown controls panel above the table -->
+  @if (form) {
+    <div class="max-w-7xl mx-auto mb-4">
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-[0_12px_30px_rgba(15,23,42,0.08)] px-4 py-3">
+        <div class="flex gap-4 items-end flex-wrap">
+          <eh-select
+            [formGroup]="form"
+            [config]="recordRemoteSessionConfig"
+            fControlName="recordRemoteSession"
+          ></eh-select>
+          <eh-select
+            [formGroup]="form"
+            [config]="loginUrlConfig"
+            fControlName="loginUrl"
+          ></eh-select>
+        </div>
+      </div>
+    </div>
+  }
+  <div class="mb-6">
+    <app-generic-table
+      [title]="heading"
+      [columns]="userColumns"
+      [rows]="tableRows"
+      [config]="tableConfig">
+    </app-generic-table>
   </div>
-
-  <!-- Account Notes Card -->
-  <div class="account-notes-card">
-    <h2 class="heading-band h2">Account Notes</h2>
-    <eh-textarea
-      [formGroup]="form"
-      fControlName="accountNotes"
-      label=""
-      placeholder="Enter any notes about this account..."
-    ></eh-textarea>
-  </div>
+} @else {
+  @if (form) {
+    <h2 class="text-3xl font-bold mb-4 ml-0 text-left">{{ heading }}</h2>
+    <div class="max-w-7xl mx-auto mb-6">
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-[0_12px_30px_rgba(15,23,42,0.08)] px-3 py-1">
+        <h3 class="text-xs font-semibold mt-2 mb-4">General Settings</h3>
+        <div class="border-b border-slate-100 mb-4"></div>
+        <div class="w-full mb-4">
+          <form [formGroup]="form" class="general-setting-form grid grid-cols-2 gap-x-0 gap-y-0 w-full text-left mb-4">
+            @for (field of fields; track field.name) {
+              <div class="flex flex-col gap-0 w-full">
+                <div class="w-full">
+                  @if (field.type === 'select') {
+                    <eh-select
+                      [formGroup]="form"
+                      [config]="asFieldConfig(field)"
+                      [fControlName]="field.name"
+                      class="w-full"
+                    ></eh-select>
+                  }
+                  @if (field.type === 'textarea') {
+                    <eh-textarea
+                      [formGroup]="form"
+                      [config]="asFieldConfig(field)"
+                      [fControlName]="field.name"
+                      [label]="field.labels"
+                      [rows]="1"
+                      class="w-full"
+                    ></eh-textarea>
+                  }
+                  @if (field.type === 'checkbox') {
+                    <eh-checkbox
+                      [formGroup]="form"
+                      [config]="asFieldConfig(field)"
+                      [fControlName]="field.name"
+                      class="w-full"
+                    ></eh-checkbox>
+                  }
+                  @if (field.type === 'radio') {
+                    <eh-radio-button
+                      [formGroup]="form"
+                      [config]="asFieldConfig(field)"
+                      [fControlName]="field.name"
+                      class="w-full"
+                    ></eh-radio-button>
+                  }
+                  @if (field.type !== 'select' && field.type !== 'textarea' && field.type !== 'checkbox' && field.type !== 'radio') {
+                    <eh-textbox
+                      [formGroup]="form"
+                      [config]="asFieldConfig(field)"
+                      [fControlName]="field.name"
+                      [label]="field.labels"
+                      class="w-full"
+                    ></eh-textbox>
+                  }
+                </div>
+              </div>
+            }
+          </form>
+        </div>
+      </div>
+    </div>
+  }
 }
 
+<!-- Account Notes Card — shown in both form and table mode -->
+@if (form) {
+  <div class="max-w-7xl mx-auto mb-6">
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-[0_12px_30px_rgba(15,23,42,0.08)] px-3 py-3">
+      <h3 class="text-xs font-semibold mt-2 mb-2">Account Notes</h3>
+      <div class="border-b border-slate-100 mb-4"></div>
+      <eh-textarea
+        [formGroup]="form"
+        fControlName="accountNotes"
+        label=""
+        placeholder="Enter any notes about this account..."
+      ></eh-textarea>
+    </div>
+  </div>
+}

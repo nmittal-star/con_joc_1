@@ -162,7 +162,7 @@ export class Accounts implements OnInit, OnDestroy {
 
 
   goToGeneralSetting(row: any) {
-    this.router.navigate(['/general-setting', row.id]);
+    this.router.navigate(['/general-setting', row.id, 'general']);
   }
 
   fieldsArray = accountFieldsArray;
@@ -295,7 +295,7 @@ export class Accounts implements OnInit, OnDestroy {
   }
 
   editSettings(row: any): void {
-    console.log('Edit settings for row:', row);
+    this.openGeneralSetting(row);
   }
 
   createDialer(row: any): void {
