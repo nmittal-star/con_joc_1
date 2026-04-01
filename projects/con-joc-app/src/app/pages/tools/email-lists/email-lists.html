@@ -1,5 +1,22 @@
-  <eh-table [columns]="columns" [tableTitle]="'Email Lists'" [config]="listConfig" [dataSource$]="dataSources$"
-        [paginationConfig]="paginationConfig" (pageChange)="onPageChange($event)"
-        (sizeChange)="onPageSizeChange($event)" (search)="onSearch($event)" (sortChange)="onSortChange($event)"
-       [extraButtons]="extraButtons" >
-    </eh-table>
+<eh-table [columns]="columns" [tableTitle]="'Email Lists'" [config]="listConfig" [dataSource$]="dataSources$"
+  [paginationConfig]="paginationConfig" (pageChange)="onPageChange($event)" (sizeChange)="onPageSizeChange($event)"
+  (search)="onSearch($event)" (sortChange)="onSortChange($event)" [extraButtons]="extraButtons">
+</eh-table>
+
+
+
+
+<div>
+  <ng-template #namesTemplate>
+    <div>
+
+
+      <eh-textbox [formGroup]="emailForm" fControlName="name" placeholder="Enter Name" label="Name">
+      </eh-textbox>
+
+      <div [formGroup]="emailForm">
+        <eh-textarea formControlName="description" label="Description" [rows]="1" [maxLength]="100"></eh-textarea>
+      </div>
+    </div>
+  </ng-template>
+</div>
