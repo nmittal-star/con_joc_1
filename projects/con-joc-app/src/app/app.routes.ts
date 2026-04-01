@@ -432,8 +432,8 @@ export const routes: Routes = [
                     },
                     {
                         path: 'trunks',
-                        loadComponent: () => import('./pages/common/general-setting/general-setting-tab').then(m => m.GeneralSettingTab),
-                        data: { breadcrumb: 'Trunks', sectionTitle: 'Trunks' }
+                        loadComponent: () => import('./pages/common/general-setting/general-setting').then(m => m.GeneralSetting),
+                        data: { breadcrumb: 'Trunks', mode: 'table' }
                     },
                     {
                         path: 'billing',
@@ -462,8 +462,8 @@ export const routes: Routes = [
                     },
                     {
                         path: 'contacts',
-                        loadComponent: () => import('./pages/common/general-setting/general-setting-tab').then(m => m.GeneralSettingTab),
-                        data: { breadcrumb: 'Contacts', sectionTitle: 'Contacts' }
+                        loadComponent: () => import('./pages/common/general-setting/general-setting').then(m => m.GeneralSetting),
+                        data: { breadcrumb: 'Contacts', mode: 'table' }
                     },
                     {
                         path: 'pricing',

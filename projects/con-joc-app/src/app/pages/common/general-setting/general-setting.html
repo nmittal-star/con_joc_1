@@ -1,7 +1,7 @@
 @if (mode === 'table') {
-  <!-- Dropdown controls panel above the table -->
-  @if (form) {
-    <div class="max-w-7xl mx-auto mb-4">
+  <!-- Dropdown controls panel above the table (Users)--> 
+  @if (form && showUserTableControls) {
+    <div class="max-w-7xl mx-auto mb-6">
       <div class="bg-white rounded-2xl border border-slate-200 shadow-[0_12px_30px_rgba(15,23,42,0.08)] px-4 py-3">
         <div class="flex gap-4 items-end flex-wrap">
           <eh-select
@@ -16,20 +16,43 @@
       </div>
     </div>
   }
-  <div class="mb-6">
-    <app-generic-table
-      [title]="heading"
-      [columns]="userColumns"
-      [rows]="tableRows"
-      [config]="tableConfig">
-    </app-generic-table>
-  </div>
+  <!-- Table -->
+  <app-generic-table
+    [title]="heading"
+    [columns]="activeColumns"
+    [rows]="tableRows"
+    [config]="activeTableConfig"
+    [extraButtons]="activeExtraButtons">
+  </app-generic-table>
+
+  <!-- Transaction retry info callout — trunks only -->
+  @if (tableVariant === 'trunks') {
+    <div class="trunk-callout">
+      <mat-icon class="trunk-callout-icon">info_outline</mat-icon>
+      <div class="trunk-callout-body">
+        <span class="trunk-callout-label">Transaction Retry</span>
+        <p>Indicates how many times an automatic minutes refill transaction was attempted. Reset to 0 via the settings panel, or resets automatically after a 24-hour period.</p>
+      </div>
+    </div>
+  }
+
+  <!-- Notify info callout — contacts only -->
+  @if (tableVariant === 'contacts') {
+    <div class="trunk-callout">
+      <mat-icon class="trunk-callout-icon">info_outline</mat-icon>
+      <div class="trunk-callout-body">
+        <span class="trunk-callout-label">Notify</span>
+        <p>Users will be emailed notifications (invoices, receipts, etc) if the "Notify" option is selected.</p>
+      </div>
+    </div>
+  }
+  <!-- general-setting-form -->
 } @else {
   @if (form) {
-    <h2 class="text-3xl font-bold mb-4 ml-0 text-left">{{ heading }}</h2>
+    <h2 class="text-2xl font-bold mb-5 ml-0 text-left tracking-tight text-slate-800">{{ heading }}</h2>
     <div class="max-w-7xl mx-auto mb-6">
-      <div class="bg-white rounded-2xl border border-slate-200 shadow-[0_12px_30px_rgba(15,23,42,0.08)] px-3 py-1">
-        <h3 class="text-xs font-semibold mt-2 mb-4">General Settings</h3>
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-[0_12px_30px_rgba(15,23,42,0.08)] px-4 py-4">
+        <h3 class="text-xs font-semibold uppercase tracking-widest text-slate-400 mt-1 mb-4 pl-0.5">General Settings</h3>
         <div class="border-b border-slate-100 mb-4"></div>
         <div class="w-full mb-4">
           <form [formGroup]="form" class="general-setting-form grid grid-cols-2 gap-x-0 gap-y-0 w-full text-left mb-4">
@@ -40,6 +63,7 @@
                     <eh-select
                       [formGroup]="form"
                       [config]="asFieldConfig(field)"
+                      [fControlName]="field.name"
                       class="w-full"
                     ></eh-select>
                   }
@@ -47,6 +71,7 @@
                     <eh-textarea
                       [formGroup]="form"
                       [config]="asFieldConfig(field)"
+                      [fControlName]="field.name"
                       [label]="field.labels"
                       [rows]="1"
                       class="w-full"
@@ -56,6 +81,7 @@
                     <eh-checkbox
                       [formGroup]="form"
                       [config]="asFieldConfig(field)"
+                      [fControlName]="field.name"
                       class="w-full"
                     ></eh-checkbox>
                   }
@@ -63,6 +89,7 @@
                     <eh-radio-button
                       [formGroup]="form"
                       [config]="asFieldConfig(field)"
+                      [fControlName]="field.name"
                       class="w-full"
                     ></eh-radio-button>
                   }
@@ -87,15 +114,79 @@
 
 <!-- Account Notes Card — shown in both form and table mode -->
 @if (form) {
-  <div class="max-w-7xl mx-auto mb-6">
-    <div class="bg-white rounded-2xl border border-slate-200 shadow-[0_12px_30px_rgba(15,23,42,0.08)] px-3 py-3">
-      <h3 class="text-xs font-semibold mt-2 mb-2">Account Notes</h3>
-      <div class="border-b border-slate-100 mb-4"></div>
+  <div class="max-w-7xl mx-auto mb-6" [class.mt-6]="mode === 'table'">
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-[0_12px_30px_rgba(15,23,42,0.08)] px-4 py-4">
+      <h3 class="text-2xl font-bold mb-5 ml-0 text-left tracking-tight text-slate-800">Account Notes</h3>
+      <div class="border-b border-slate-100 mt-4"></div>
       <eh-textarea
         [formGroup]="form"
+        fControlName="accountNotes"
         label=""
         placeholder="Enter any notes about this account..."
       ></eh-textarea>
     </div>
   </div>
 }
+ <!-- fields that have to be inside the dialog box when clicked on mrm funds button -->
+<ng-template #mrmFundsTemplate>
+  <div class="grid gap-4" [formGroup]="mrmFundsForm">
+    <eh-textbox
+      [formGroup]="mrmFundsForm"
+      fControlName="percentage"
+      label="MRM Funds %"
+      placeholder="Enter MRM Funds percentage">
+    </eh-textbox>
+    <eh-textarea
+      [formGroup]="mrmFundsForm"
+      label="Notes"
+      [rows]="2"
+      placeholder="Add any notes for this percentage update">
+    </eh-textarea>
+  </div>
+</ng-template>
+ <!-- fields that have to be inside the dialog box when clicked on sip trunk -->
+<ng-template #sipTrunkTemplate>
+  <div class="grid gap-4" [formGroup]="sipTrunkForm">
+    <eh-textbox
+      [formGroup]="sipTrunkForm"
+      fControlName="trunkName"
+      label="Trunk Name"
+      placeholder="Enter trunk name">
+    </eh-textbox>
+    <eh-textbox
+      [formGroup]="sipTrunkForm"
+      fControlName="gateway"
+      label="Gateway"
+      placeholder="Enter SIP gateway">
+    </eh-textbox>
+    <eh-textbox
+      [formGroup]="sipTrunkForm"
+      fControlName="port"
+      label="Port"
+      placeholder="Enter SIP port">
+    </eh-textbox>
+  </div>
+</ng-template>
+ <!-- fields that have to be inside the dialog box when clicked on settings -->
+<ng-template #editTrunkSettingsTemplate>
+  <div class="grid gap-4" [formGroup]="editTrunkSettingsForm">
+    <eh-textbox
+      [formGroup]="editTrunkSettingsForm"
+      fControlName="status"
+      label="Status"
+      placeholder="Enter status">
+    </eh-textbox>
+    <eh-textbox
+      [formGroup]="editTrunkSettingsForm"
+      fControlName="dialPlan"
+      label="Dial Plan"
+      placeholder="Enter dial plan">
+    </eh-textbox>
+    <eh-textbox
+      [formGroup]="editTrunkSettingsForm"
+      fControlName="payType"
+      label="Pay Type"
+      placeholder="Enter pay type">
+    </eh-textbox>
+  </div>
+</ng-template>
