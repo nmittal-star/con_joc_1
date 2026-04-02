@@ -20,6 +20,7 @@
                   <eh-select
                     [formGroup]="form"
                     [config]="field"
+                    [fControlName]="field.name"
                     class="w-full"
                   ></eh-select>
                 }
@@ -27,6 +28,7 @@
                   <eh-textarea
                     [formGroup]="form"
                     [config]="field"
+                    [fControlName]="field.name"
                     [label]="field.label"
                     [rows]="1"
                     class="w-full"
@@ -36,7 +38,7 @@
                   <eh-textbox
                     [formGroup]="form"
                     [config]="field"
-                    [fControlName]="field.name" 
+                    [fControlName]="field.name"
                     class="w-full"
                   ></eh-textbox>
                 }
