@@ -1,5 +1,137 @@
-  <eh-table [columns]="columns" [tableTitle]="'OAuth Clients'" [config]="oauthclientConfig" [dataSource$]="dataSources$"
+ <eh-drawer #drawer class="table-attached-drawer closed" [contentTemplate]="nameForm" [config]="drawerConfig"
+  [footerTemplate]="drawerFooter" (onClose)="handleDrawerClose()">
+ 
+ <eh-table [columns]="columns" [tableTitle]="'OAuth Clients'" [config]="oauthclientConfig" [dataSource$]="dataSources$"
         [paginationConfig]="paginationConfig" (pageChange)="onPageChange($event)"
         (sizeChange)="onPageSizeChange($event)" (search)="onSearch($event)" (sortChange)="onSortChange($event)"
        [extraButtons]="extraButtons"  >
     </eh-table>
+
+    </eh-drawer>
+
+
+
+    <!-- DRAWER CONTENT TEMPLATE -->
+<ng-template #nameForm>
+
+  
+
+   @if (drawerDetails) {
+    <div class="flex justify-end mb-4">
+      @if (!isEditMode) {
+      <eh-button type="primary" label="Edit" (click)="setEditMode(true)"></eh-button>
+      }
+      @if (isEditMode) {
+      <eh-button type="primary" label="Cancel" (click)="setEditMode(false)"></eh-button>
+      }
+    </div>
+    }
+
+
+  @if (isEditMode) {
+
+  <form [formGroup]="userForm">
+   <div class="grid grid-cols-1 md:grid-cols-1  items-start">
+    <eh-textbox [formGroup]="userForm" fControlName="id" label="Client ID" placeholder="Enter Client ID">
+          </eh-textbox>
+          <eh-textbox [formGroup]="userForm" fControlName="name" label="Name" placeholder="Enter Name">
+          </eh-textbox>
+
+           <eh-textbox [formGroup]="userForm" fControlName="client_secret" label="Client Secret"
+            placeholder="Enter Client Secret ">
+          </eh-textbox>
+
+          <div formArrayName="redirect_uris" class="redirect-urls-section">
+            
+
+            @for (group of redirectUriGroups; track $index) {
+              <div class="redirect-url-row">
+                <div class="redirect-url-field">
+                  <eh-textbox
+                  label="Redirect URLs"
+                    class="redirect-url-textbox"
+                    [formGroup]="group"
+                    fControlName="url"
+                    placeholder="Enter Redirect URL"
+                  ></eh-textbox>
+                </div>
+                
+
+                @if ($index === 0) {
+                  <eh-button
+                    class="redirect-row-button add-button py-6"
+                    (click)="addRedirectUri()"
+                    aria-label="Add redirect URL" icon="add"></eh-button>
+                } @else {
+
+                  <eh-button
+                    class="redirect-row-button remove-button py-6 "
+                    (click)="removeRedirectUri($index)"
+                    aria-label="Remove redirect URL" icon="remove"></eh-button>
+                }
+              </div>
+            }
+          </div>
+
+    </div>
+    </form>
+  }
+
+
+
+
+
+
+  @if (drawerDetails && !isEditMode) {
+
+     <div class="space-y-3 max-w-md">
+
+  <div class="grid grid-cols-[160px_1fr] pb-2">
+    <span class="text-gray-500">Name</span>
+    <span class="font-semibold">{{ drawerDetails.name || 'Empty' }}</span>
+  </div>
+
+  <div class="grid grid-cols-[160px_1fr] pb-2">
+    <span class="text-gray-500">ID</span>
+    <span class="font-semibold">{{ drawerDetails.id || 'Empty' }}</span>
+  </div>
+
+  <div class="grid grid-cols-[160px_1fr] pb-2">
+    <span class="text-gray-500">Client Secret</span>
+    <span class="font-semibold">{{ drawerDetails.client_secret || 'Empty' }}</span>
+  </div>
+   <div class="grid grid-cols-[160px_1fr] pb-2">
+    <span class="text-gray-500">Redirect URIs</span>
+    <div class="font-semibold">
+      @if (getDisplayRedirectUris(drawerDetails.redirect_uris).length) {
+        <div class="space-y-1">
+          @for (redirectUri of getDisplayRedirectUris(drawerDetails.redirect_uris); track $index) {
+            <div>{{ redirectUri }}</div>
+          }
+        </div>
+      } @else {
+        <span>Empty</span>
+      }
+    </div>
+  </div>
+
+</div>
+
+  }
+
+
+</ng-template>
+
+
+
+<!-- DRAWER FOOTER -->
+<ng-template #drawerFooter>
+  <div class="flex justify-end gap-2 p-4 ">
+
+    @if (isEditMode) {
+    <eh-button label="{{drawerDetails ? 'Update' : 'Save'}}" (click)="saveChanges()">
+    </eh-button>
+    }
+
+  </div>
+</ng-template>
