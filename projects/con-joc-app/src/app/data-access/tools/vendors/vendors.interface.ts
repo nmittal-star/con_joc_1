@@ -3,6 +3,6 @@ export interface Vendors {
     id:number;
     name:string;
     distribution_percentage:number;
-    priority:number;
+    priority:string;
     status:string
 }
