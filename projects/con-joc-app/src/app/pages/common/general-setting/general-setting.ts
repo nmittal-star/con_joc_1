@@ -5,8 +5,8 @@ import { AccountsDataService } from '../../../data-access/omni/accounts/accounts
 import { TrunksDataService } from '../../../data-access/omni/trunks/trunks.api';
 import { ContactsDataService } from '../../../data-access/omni/contacts/contacts.api';
 import { UsersDataService } from '../../../data-access/omni/users/users.api';
-import { accountFieldsArray } from '../../../shared/field-config';
-import { ButtonType, CheckboxComponent, DialogService, DrawerComponent, FieldConfig, PaginationConfig, RadioButtonComponent, SelectComponent, SnackbarConfig, TableColumn, TableComponent, TableConfig, TableFilterConfig, TextareaComponent, TextboxComponent, UserData } from '@eh-library/common';
+import { accountFieldsArray, miscellaneousDefaultValues, miscellaneousFieldsArray } from '../../../shared/field-config';
+import { ButtonComponent, ButtonType, CheckboxComponent, DialogService, DrawerComponent, DrawerConfig, FieldConfig, PaginationConfig, RadioButtonComponent, SelectComponent, SnackbarConfig, TableColumn, TableComponent, TableConfig, TableFilterConfig, TextareaComponent, TextboxComponent, UserData } from '@eh-library/common';
 import { GenericTable } from '../generic-table/generic-table';
 import { MatIconModule } from '@angular/material/icon';
 
@@ -19,6 +19,8 @@ import { MatIconModule } from '@angular/material/icon';
     SelectComponent,
     RadioButtonComponent,
     TextareaComponent,
+    DrawerComponent,
+    ButtonComponent,
     GenericTable,
     MatIconModule,
   ],
@@ -30,6 +32,7 @@ export class GeneralSetting implements OnInit, OnChanges {
   @ViewChild('mrmFundsTemplate', { static: true }) mrmFundsTemplate!: TemplateRef<unknown>;
   @ViewChild('sipTrunkTemplate', { static: true }) sipTrunkTemplate!: TemplateRef<unknown>;
   @ViewChild('editTrunkSettingsTemplate', { static: true }) editTrunkSettingsTemplate!: TemplateRef<unknown>;
+  @ViewChild('contactDrawer') contactDrawer!: DrawerComponent;
 
   private readonly tableVariantByRoute: Record<string, 'user' | 'trunks' | 'contacts'> = {
     user: 'user',
@@ -135,7 +138,7 @@ export class GeneralSetting implements OnInit, OnChanges {
       type: 'action',
       sortable: false,
       actions: [
-        { icon: 'edit', tooltip: 'Edit Contact', callback: () => undefined },
+        { icon: 'edit', tooltip: 'Edit Contact', callback: (row: any) => this.openContactDrawer(row) },
       ],
     },
   ];
@@ -151,7 +154,7 @@ export class GeneralSetting implements OnInit, OnChanges {
       label: 'Add Contact',
       type: 'primary' as ButtonType,
       icon: 'person_add',
-      click: () => undefined,
+      click: () => this.openContactDrawer(null),
     },
     {
       label: 'Search',
@@ -160,6 +163,55 @@ export class GeneralSetting implements OnInit, OnChanges {
       click: () => undefined,
     },
   ];
+
+  contactDrawerConfig: DrawerConfig = {
+    title: 'Add Contact',
+    hasClose: true,
+    closeOnBackdropClick: true,
+    autoOpen: false,
+  };
+
+  readonly notifyConfig: FieldConfig = {
+    name: 'notify',
+    label: 'Notify',
+    placeholder: 'Select Notify',
+    hasSearch: false,
+    options: [
+      { key: 'Yes', value: 'yes' },
+      { key: 'No', value: 'no' },
+    ],
+  };
+
+  openContactDrawer(row: any): void {
+    this.contactDrawerConfig = {
+      ...this.contactDrawerConfig,
+      title: row ? `Edit Contact — ${row.firstName ?? ''} ${row.lastName ?? ''}`.trim() : 'Add Contact',
+    };
+    if (row) {
+      this.contactForm.patchValue(row);
+    } else {
+      this.contactForm.reset({ notify: 'no' });
+    }
+    const el = document.querySelector('.contact-drawer');
+    el?.classList.remove('closed');
+    el?.classList.add('open');
+    this.contactDrawer.open();
+  }
+
+  handleContactDrawerClose(): void {
+    const el = document.querySelector('.contact-drawer');
+    el?.classList.remove('open');
+    el?.classList.add('closed');
+  }
+
+  closeContactDrawer(): void {
+    this.contactDrawer.close();
+  }
+
+  saveContact(): void {
+    console.log('Contact form value:', this.contactForm.value);
+    this.closeContactDrawer();
+  }
 
   readonly trunkExtraButtons = [
     {
@@ -217,6 +269,32 @@ export class GeneralSetting implements OnInit, OnChanges {
     status: ['Active'],
     dialPlan: ['US Standard'],
     payType: ['Prepaid'],
+  });
+
+  readonly contactForm = this.fb.group({
+    firstName: [''],
+    middleName: [''],
+    lastName: [''],
+    email: [''],
+    secondEmail: [''],
+    title: [''],
+    department: [''],
+    officePhone: [''],
+    faxPhone: [''],
+    mobilePhone: [''],
+    homePhone: [''],
+    officePhoneExt: [''],
+    faxPhoneExt: [''],
+    mobilePhoneExt: [''],
+    homePhoneExt: [''],
+    address: [''],
+    secondAddress: [''],
+    city: [''],
+    state: [''],
+    areaCode: [''],
+    country: [''],
+    notify: ['no'],
+    comment: [''],
   });
 
   get activeColumns(): TableColumn[] {
@@ -278,6 +356,12 @@ export class GeneralSetting implements OnInit, OnChanges {
     }
 
     if (!this.fields || this.fields.length === 0) {
+      const formVariant = this.route.snapshot.data['formVariant'];
+      if (formVariant === 'miscellaneous') {
+        this.fields = miscellaneousFieldsArray;
+        this.initForm(miscellaneousDefaultValues);
+        return;
+      }
       this.fields = accountFieldsArray;
     }
     const id = this.route.snapshot.paramMap.get('id') ?? this.route.parent?.snapshot.paramMap.get('id');

@@ -1,61 +1,85 @@
 @if (mode === 'table') {
-  <!-- Dropdown controls panel above the table (Users)--> 
-  @if (form && showUserTableControls) {
-    <div class="max-w-7xl mx-auto mb-6">
-      <div class="bg-white rounded-2xl border border-slate-200 shadow-[0_12px_30px_rgba(15,23,42,0.08)] px-4 py-3">
-        <div class="flex gap-4 items-end flex-wrap">
-          <eh-select
-            [formGroup]="form"
-            [config]="recordRemoteSessionConfig"
-            fControlName="recordRemoteSession"
-          ></eh-select>
-          <eh-select
-            [formGroup]="form"
-            [config]="loginUrlConfig"
-            fControlName="loginUrl"
-          ></eh-select>
+
+  <!-- Contact Drawer wraps contacts table -->
+  @if (tableVariant === 'contacts') {
+    <eh-drawer #contactDrawer class="contact-drawer closed"
+      [contentTemplate]="contactFormTemplate"
+      [config]="contactDrawerConfig"
+      [footerTemplate]="contactFooterTemplate"
+      (onClose)="handleContactDrawerClose()">
+
+      <!-- Dropdown controls panel above the table (Users)-->
+      @if (form && showUserTableControls) {
+        <div class="max-w-7xl mx-auto mb-6">
+          <div class="bg-white rounded-2xl border border-slate-200 shadow-[0_12px_30px_rgba(15,23,42,0.08)] px-4 py-3">
+            <div class="flex gap-4 items-end flex-wrap">
+              <eh-select [formGroup]="form" [config]="recordRemoteSessionConfig"></eh-select>
+              <eh-select [formGroup]="form" [config]="loginUrlConfig"></eh-select>
+            </div>
+          </div>
+        </div>
+      }
+      <div class="table-with-drawer-container">
+        <app-generic-table
+          [title]="heading"
+          [columns]="activeColumns"
+          [rows]="tableRows"
+          [config]="activeTableConfig"
+          [extraButtons]="activeExtraButtons">
+        </app-generic-table>
+        <!-- Notify info callout -->
+        <div class="trunk-callout">
+          <mat-icon class="trunk-callout-icon">info_outline</mat-icon>
+          <div class="trunk-callout-body">
+            <span class="trunk-callout-label">Notify</span>
+            <p>Users will be emailed notifications (invoices, receipts, etc) if the "Notify" option is selected.</p>
+          </div>
         </div>
       </div>
-    </div>
-  }
-  <!-- Table -->
-  <app-generic-table
-    [title]="heading"
-    [columns]="activeColumns"
-    [rows]="tableRows"
-    [config]="activeTableConfig"
-    [extraButtons]="activeExtraButtons">
-  </app-generic-table>
-
-  <!-- Transaction retry info callout — trunks only -->
-  @if (tableVariant === 'trunks') {
-    <div class="trunk-callout">
-      <mat-icon class="trunk-callout-icon">info_outline</mat-icon>
-      <div class="trunk-callout-body">
-        <span class="trunk-callout-label">Transaction Retry</span>
-        <p>Indicates how many times an automatic minutes refill transaction was attempted. Reset to 0 via the settings panel, or resets automatically after a 24-hour period.</p>
-      </div>
-    </div>
+    </eh-drawer>
   }
 
-  <!-- Notify info callout — contacts only -->
-  @if (tableVariant === 'contacts') {
-    <div class="trunk-callout">
-      <mat-icon class="trunk-callout-icon">info_outline</mat-icon>
-      <div class="trunk-callout-body">
-        <span class="trunk-callout-label">Notify</span>
-        <p>Users will be emailed notifications (invoices, receipts, etc) if the "Notify" option is selected.</p>
+  <!-- Non-contacts tables (no drawer needed) -->
+  @if (tableVariant !== 'contacts') {
+    <!-- Dropdown controls panel above the table (Users)-->
+    @if (form && showUserTableControls) {
+      <div class="max-w-7xl mx-auto mb-6">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-[0_12px_30px_rgba(15,23,42,0.08)] px-4 py-3">
+          <div class="flex gap-4 items-end flex-wrap">
+            <eh-select [formGroup]="form" [config]="recordRemoteSessionConfig"></eh-select>
+            <eh-select [formGroup]="form" [config]="loginUrlConfig"></eh-select>
+          </div>
+        </div>
       </div>
-    </div>
+    }
+    <!-- Table -->
+    <app-generic-table
+      [title]="heading"
+      [columns]="activeColumns"
+      [rows]="tableRows"
+      [config]="activeTableConfig"
+      [extraButtons]="activeExtraButtons">
+    </app-generic-table>
+
+    <!-- Transaction retry info callout — trunks only -->
+    @if (tableVariant === 'trunks') {
+      <div class="trunk-callout">
+        <mat-icon class="trunk-callout-icon">info_outline</mat-icon>
+        <div class="trunk-callout-body">
+          <span class="trunk-callout-label">Transaction Retry</span>
+          <p>Indicates how many times an automatic minutes refill transaction was attempted. Reset to 0 via the settings panel, or resets automatically after a 24-hour period.</p>
+        </div>
+      </div>
+    }
   }
+
   <!-- general-setting-form -->
 } @else {
   @if (form) {
     <h2 class="text-2xl font-bold mb-5 ml-0 text-left tracking-tight text-slate-800">{{ heading }}</h2>
     <div class="max-w-7xl mx-auto mb-6">
       <div class="bg-white rounded-2xl border border-slate-200 shadow-[0_12px_30px_rgba(15,23,42,0.08)] px-4 py-4">
-        <h3 class="text-xs font-semibold uppercase tracking-widest text-slate-400 mt-1 mb-4 pl-0.5">General Settings</h3>
-        <div class="border-b border-slate-100 mb-4"></div>
+        <h3 class="text-base font-semibold text-slate-900 mt-1 mb-3 pl-0.5 pb-3 border-b border-slate-200">General Settings</h3>
         <div class="w-full mb-4">
           <form [formGroup]="form" class="general-setting-form grid grid-cols-2 gap-x-0 gap-y-0 w-full text-left mb-4">
             @for (field of fields; track field.name) {
@@ -65,7 +89,6 @@
                     <eh-select
                       [formGroup]="form"
                       [config]="asFieldConfig(field)"
-                      [fControlName]="field.name"
                       class="w-full"
                     ></eh-select>
                   }
@@ -73,7 +96,6 @@
                     <eh-textarea
                       [formGroup]="form"
                       [config]="asFieldConfig(field)"
-                      [fControlName]="field.name"
                       [label]="field.labels"
                       [rows]="1"
                       class="w-full"
@@ -83,7 +105,6 @@
                     <eh-checkbox
                       [formGroup]="form"
                       [config]="asFieldConfig(field)"
-                      [fControlName]="field.name"
                       class="w-full"
                     ></eh-checkbox>
                   }
@@ -91,7 +112,6 @@
                     <eh-radio-button
                       [formGroup]="form"
                       [config]="asFieldConfig(field)"
-                      [fControlName]="field.name"
                       class="w-full"
                     ></eh-radio-button>
                   }
@@ -190,5 +210,84 @@
       label="Pay Type"
       placeholder="Enter pay type">
     </eh-textbox>
+  </div>
+</ng-template>
+
+<!-- CONTACT DRAWER FORM TEMPLATE -->
+<ng-template #contactFormTemplate>
+  <form class="drawer-form" [formGroup]="contactForm">
+
+    <div class="drawer-section-title">Name</div>
+    <div class="row">
+      <div class="field"><eh-textbox [formGroup]="contactForm" fControlName="firstName" label="First Name" placeholder="First Name"></eh-textbox></div>
+      <div class="field"><eh-textbox [formGroup]="contactForm" fControlName="middleName" label="Middle Name" placeholder="Middle Name"></eh-textbox></div>
+    </div>
+    <div class="row">
+      <div class="field"><eh-textbox [formGroup]="contactForm" fControlName="lastName" label="Last Name" placeholder="Last Name"></eh-textbox></div>
+    </div>
+
+    <div class="drawer-section-title">Email</div>
+    <div class="row">
+      <div class="field"><eh-textbox [formGroup]="contactForm" fControlName="email" label="Email" placeholder="Email"></eh-textbox></div>
+      <div class="field"><eh-textbox [formGroup]="contactForm" fControlName="secondEmail" label="Second Email" placeholder="Second Email"></eh-textbox></div>
+    </div>
+
+    <div class="drawer-section-title">Details</div>
+    <div class="row">
+      <div class="field"><eh-textbox [formGroup]="contactForm" fControlName="title" label="Title" placeholder="Title"></eh-textbox></div>
+      <div class="field"><eh-textbox [formGroup]="contactForm" fControlName="department" label="Department" placeholder="Department"></eh-textbox></div>
+    </div>
+
+    <div class="drawer-section-title">Phone</div>
+    <div class="row">
+      <div class="field"><eh-textbox [formGroup]="contactForm" fControlName="officePhone" label="Office Phone" placeholder="Office Phone"></eh-textbox></div>
+      <div class="field"><eh-textbox [formGroup]="contactForm" fControlName="faxPhone" label="Fax Phone" placeholder="Fax Phone"></eh-textbox></div>
+    </div>
+    <div class="row">
+      <div class="field"><eh-textbox [formGroup]="contactForm" fControlName="mobilePhone" label="Mobile Phone" placeholder="Mobile Phone"></eh-textbox></div>
+      <div class="field"><eh-textbox [formGroup]="contactForm" fControlName="homePhone" label="Home Phone" placeholder="Home Phone"></eh-textbox></div>
+    </div>
+
+    <div class="drawer-section-title">Phone Extensions</div>
+    <div class="row">
+      <div class="field"><eh-textbox [formGroup]="contactForm" fControlName="officePhoneExt" label="Office Phone Ext" placeholder="Office Phone Extension"></eh-textbox></div>
+      <div class="field"><eh-textbox [formGroup]="contactForm" fControlName="faxPhoneExt" label="Fax Phone Ext" placeholder="Fax Phone Extension"></eh-textbox></div>
+    </div>
+    <div class="row">
+      <div class="field"><eh-textbox [formGroup]="contactForm" fControlName="mobilePhoneExt" label="Mobile Phone Ext" placeholder="Mobile Phone Extension"></eh-textbox></div>
+      <div class="field"><eh-textbox [formGroup]="contactForm" fControlName="homePhoneExt" label="Home Phone Ext" placeholder="Home Phone Extension"></eh-textbox></div>
+    </div>
+
+    <div class="drawer-section-title">Address</div>
+    <div class="row">
+      <div class="field"><eh-textbox [formGroup]="contactForm" fControlName="address" label="Address" placeholder="Address"></eh-textbox></div>
+      <div class="field"><eh-textbox [formGroup]="contactForm" fControlName="secondAddress" label="Second Address" placeholder="Second Address"></eh-textbox></div>
+    </div>
+    <div class="row">
+      <div class="field"><eh-textbox [formGroup]="contactForm" fControlName="city" label="City" placeholder="City"></eh-textbox></div>
+      <div class="field"><eh-textbox [formGroup]="contactForm" fControlName="state" label="State" placeholder="State"></eh-textbox></div>
+    </div>
+    <div class="row">
+      <div class="field"><eh-textbox [formGroup]="contactForm" fControlName="areaCode" label="Area Code / Zip" placeholder="Zip"></eh-textbox></div>
+      <div class="field"><eh-textbox [formGroup]="contactForm" fControlName="country" label="Country" placeholder="Country"></eh-textbox></div>
+    </div>
+
+    <div class="drawer-section-title">Other</div>
+    <div class="row">
+      <div class="field">
+        <eh-select [formGroup]="contactForm" [config]="notifyConfig"></eh-select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="field"><eh-textarea [formGroup]="contactForm" label="Comment" [rows]="3" placeholder="Comment"></eh-textarea></div>
+    </div>
+
+  </form>
+</ng-template>
+
+<!-- CONTACT DRAWER FOOTER -->
+<ng-template #contactFooterTemplate>
+  <div class="drawer-footer-actions">
+    <eh-button type="primary" label="Save Contact" (click)="saveContact()"></eh-button>
   </div>
 </ng-template>

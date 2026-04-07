@@ -492,8 +492,8 @@ export const routes: Routes = [
                     },
                     {
                         path: 'miscellaneous',
-                        loadComponent: () => import('./pages/common/general-setting/general-setting-tab').then(m => m.GeneralSettingTab),
-                        data: { breadcrumb: 'Miscellaneous', sectionTitle: 'Miscellaneous' }
+                        loadComponent: () => import('./pages/common/general-setting/general-setting').then(m => m.GeneralSetting),
+                        data: { breadcrumb: 'Miscellaneous', mode: 'form', formVariant: 'miscellaneous' }
                     },
                     {
                         path: 'compliance-logs',
