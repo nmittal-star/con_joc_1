@@ -1,16 +1,16 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Component, ViewChild, inject } from '@angular/core';
+import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { Sort } from '@angular/material/sort';
-import { ButtonType, PaginationConfig, TableColumn, TableComponent, TableConfig, TableFilterConfig, UserData } from '@eh-library/common';
+import { ButtonComponent, ButtonType, DrawerComponent, DrawerConfig, PaginationConfig, SelectComponent, TableColumn, TableComponent, TableConfig, TableFilterConfig, TextboxComponent, UserData } from '@eh-library/common';
 import { BehaviorSubject, Observable, Subject, takeUntil } from 'rxjs';
 import { OAuthClientDataService } from '../../../data-access/tools/oauth-clients/oauth-clients.api';
 
 @Component({
   selector: 'app-oauth-client',
   standalone: true,
-  imports: [CommonModule, TableComponent, ReactiveFormsModule, FormsModule, MatIconModule],
+  imports: [CommonModule, TableComponent, ReactiveFormsModule, FormsModule, MatIconModule,DrawerComponent,ButtonComponent,TextboxComponent],
   templateUrl: './oauth-client.html',
   styleUrl: './oauth-client.scss',
 })
@@ -18,13 +18,16 @@ export class OauthClient {
   private dataSubject = new BehaviorSubject<UserData[]>([]);
   readonly dataSources$: Observable<UserData[]> = this.dataSubject.asObservable()
   private totalRecordsSubject = new BehaviorSubject<number>(0);
+  private fb = inject(FormBuilder);
+
+  @ViewChild ('drawer') drawer! : DrawerComponent
 
   extraButtons = [
     {
       label: 'Add New OAuth Client',
       type: 'primary' as ButtonType,
       icon: 'add',
-      // click: () => this.open()
+      click: () => this.open()
     }
   ]
 
@@ -38,6 +41,11 @@ export class OauthClient {
   endRecord = 10;
   currentSearchTerm = '';
   currentSort: Sort = { active: '', direction: '' };
+  drawerDetails: any = {};
+  isEditMode = false;
+  isCreateMode=false 
+
+
 
   oauthclientConfig: TableConfig = {
     showSearch: true,
@@ -50,16 +58,34 @@ export class OauthClient {
     isCheckBox: false
   }
 
+   drawerConfig: DrawerConfig = {
+    title: '',
+    hasClose: true,
+    closeOnBackdropClick: true,
+    autoOpen: false
+  };
 
   readonly columns: TableColumn[] = [
     { key: 'sl', label: 'Sl.No', searchable: true },
-    { key: 'name', label: 'Name', searchable: true },
+    { key: 'name', label: 'Name', searchable: true ,clickable:true,onClick:(row)=>this.openDrawer(row,false)},
     { key: 'id', label: 'ID', sortable: true, searchable: true },
     { key: 'client_secret', label: 'Client Secret', sortable: true, searchable: true },
     { key: 'redirect_uris', label: 'Redirect URIs', searchable: true },
+    {
+      key: 'actions',
+      label: 'Actions',
+      type: 'action',
+      sortable: false,
+      actions: [
+
+        { icon: 'edit', tooltip: 'edit', callback: (row) => this.editClients(row) },
+        { icon: 'delete', tooltip: 'Delete', callback: (row) => this.deleteClients(row) }
+      ],
+    },
 
 
   ];
+  
 
 
   constructor(private oauthClientDataService: OAuthClientDataService) { }
@@ -67,6 +93,22 @@ export class OauthClient {
     this.loadOAuthClient()
 
   }
+
+  userForm = new FormGroup({
+    id: new FormControl(''),
+    name: new FormControl(''),
+    client_secret: new FormControl(''),
+    redirect_uris: this.fb.array([])
+  })
+
+  get redirectUris(): FormArray {
+    return this.userForm.get('redirect_uris') as FormArray;
+  }
+
+  get redirectUriGroups(): FormGroup[] {
+    return this.redirectUris.controls as FormGroup[];
+  }
+
 
   private destroy$ = new Subject<void>()
 
@@ -191,9 +233,157 @@ export class OauthClient {
     this.loadOAuthClient(1, this.pageSize, term, this.currentSort);
   }
 
+
+   open() {
+    this.isCreateMode = true;
+    this.isEditMode = true;
+    this.drawerDetails = null;
+    this.userForm.reset();
+    this.setRedirectUris();
+
+
+    this.drawerConfig = {
+      ...this.drawerConfig,
+      title: 'Add OAuth Client'
+    };
+
+    
+    const drawerEl = document.querySelector('.table-attached-drawer');
+    drawerEl?.classList.remove('closed');
+    drawerEl?.classList.add('open');
+
+    this.drawer.open();
+  }
+
+   openDrawer(row: any, editMode: boolean = false) {
+    console.log(" clicked:", row);
+
+    this.drawerDetails = row
+    this.isCreateMode = false
+
+    this.isEditMode = editMode;
+
+    this.drawerConfig = {
+      ...this.drawerConfig,
+      title: `User Credentials/${row.name}`
+    };
+
+    if (this.isEditMode) {
+      this.userForm.patchValue({
+        id: row.id,
+        name: row.name,
+        client_secret: row.client_secret,
+
+      });
+      this.setRedirectUris(this.normalizeRedirectUris(row.redirect_uris));
+    }
+
+    const drawerEl = document.querySelector('.table-attached-drawer');
+    drawerEl?.classList.remove('closed');
+    drawerEl?.classList.add('open');
+
+    this.drawer.open();
+  }
+
+  handleDrawerClose() {
+    const drawerEl = document.querySelector('.table-attached-drawer');
+    drawerEl?.classList.remove('open');
+    drawerEl?.classList.add('closed');
+  }
+
+
+  onEditMode(value: boolean) {
+    this.isEditMode = value;
+  }
+
+
+  closeDrawer() {
+    this.drawer.close()
+  }
+  onEditModeChange(value: boolean) {
+    this.isEditMode = value;
+  }
+
+  setEditMode(value: boolean) {
+    this.isEditMode = value;
+
+    if (value) {
+
+      this.userForm.patchValue({
+        id: this.drawerDetails.id,
+        name: this.drawerDetails.name,
+        client_secret: this.drawerDetails.client_secret,
+      });
+      this.setRedirectUris(this.normalizeRedirectUris(this.drawerDetails.redirect_uris));
+    } else {
+    }
+  }
+
+  saveChanges() {
+    const updatedFormValue = {
+      ...this.userForm.getRawValue(),
+      redirect_uris: this.normalizeRedirectUris(this.redirectUris.getRawValue())
+    };
+
+    console.log(updatedFormValue, 'updated')
+    this.drawer.close() 
+
+  }
+
+  addRedirectUri(value = '') {
+    this.redirectUris.push(
+      this.fb.group({
+        url: [value]
+      })
+    );
+  }
+
+  removeRedirectUri(index: number) {
+    if (this.redirectUris.length > 1) {
+      this.redirectUris.removeAt(index);
+      return;
+    }
+
+    this.redirectUris.at(0)?.patchValue({ url: '' });
+  }
+
+  getDisplayRedirectUris(redirectUris: string[] | string | null | undefined): string[] {
+    return this.normalizeRedirectUris(redirectUris);
+  }
+
+  private setRedirectUris(redirectUris: string[] = ['']) {
+    this.redirectUris.clear();
+
+    const values = redirectUris.length ? redirectUris : [''];
+    values.forEach((redirectUri) => this.addRedirectUri(redirectUri));
+  }
+
+  private normalizeRedirectUris(redirectUris: Array<{ url: string } | string> | string | null | undefined): string[] {
+    if (Array.isArray(redirectUris)) {
+      return redirectUris
+        .map((uri) => typeof uri === 'string' ? uri : uri?.url)
+        .map((uri) => uri?.trim())
+        .filter((uri): uri is string => !!uri);
+    }
+
+    if (typeof redirectUris === 'string') {
+      return redirectUris
+        .split(/\r?\n|,/)
+        .map((uri) => uri.trim())
+        .filter(Boolean);
+    }
+
+    return [];
+  }
+
+editClients(row: any) {
+  this.openDrawer(row, true)
+
+}
+deleteClients(row: any) {
+
+  
+}
  
-
-
-
 }
 
