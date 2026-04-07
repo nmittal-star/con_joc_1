@@ -1,5 +1,133 @@
+<eh-drawer #drawer class="table-attached-drawer closed" [config]="drawerConfig" [contentTemplate]="nameForm"
+  [footerTemplate]="drawerFooter" (onClose)="handleDrawerClose()">
+
   <eh-table [columns]="columns" [tableTitle]="'Provider Rates'" [config]="rateConfig" [dataSource$]="dataSources$"
-        [paginationConfig]="paginationConfig" (pageChange)="onPageChange($event)"
-        (sizeChange)="onPageSizeChange($event)" (search)="onSearch($event)" (sortChange)="onSortChange($event)"
-       [extraButtons]="extraButtons" >
-    </eh-table>
+    [paginationConfig]="paginationConfig" (pageChange)="onPageChange($event)" (sizeChange)="onPageSizeChange($event)"
+    (search)="onSearch($event)" (sortChange)="onSortChange($event)" [extraButtons]="extraButtons">
+  </eh-table>
+
+
+
+</eh-drawer>
+
+
+
+<ng-template #nameForm>
+
+  <div class="p-4">
+
+    @if (drawerDetails) {
+    <div class="flex justify-end mb-4">
+      @if (!isEditMode) {
+      <eh-button type="primary" label="Edit" (click)="setEditMode(true)"></eh-button>
+      }
+      @if (isEditMode) {
+      <eh-button type="primary" label="Cancel" (click)="setEditMode(false)"></eh-button>
+      }
+    </div>
+    }
+
+    @if (isEditMode) {
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-start">
+      @if (isCreateMode) {
+
+      <eh-select class="w-full" [formGroup]="createRateForm" [config]="selectConfig" fControlName="type">
+      </eh-select>
+
+      <eh-textbox class="w-full" [formGroup]="createRateForm" fControlName="name" label="Name" placeholder="Enter Name">
+      </eh-textbox>
+
+      <eh-textbox class="w-full" [formGroup]="createRateForm" fControlName="rate_out" label="Rate Out (Cents)"
+        placeholder="Enter Rate Out (Cents)">
+      </eh-textbox>
+
+      <eh-textbox class="w-full" [formGroup]="createRateForm" fControlName="rate_in" label="Rate In (Cents)"
+        placeholder="Enter Rate In (Cents)">
+      </eh-textbox>
+
+      <eh-textbox class="w-full" [formGroup]="createRateForm" fControlName="rate_toll_free_out"
+        label="Rate Toll-free Out (Cents)" placeholder="Enter Rate Toll-free Out (Cents)">
+      </eh-textbox>
+
+      <eh-textbox class="w-full" [formGroup]="createRateForm" fControlName="rate_toll_free_in"
+        label="Rate Toll-free In (Cents)" placeholder="Enter Rate Toll-free In (Cents)">
+      </eh-textbox>
+
+      <eh-textbox class="w-full" [formGroup]="createRateForm" fControlName="rate_short_code_out"
+        label="Rate Short-code Out (Cents)" placeholder="Enter Rate Short-code Out (Cents)">
+      </eh-textbox>
+      <eh-textbox class="w-full" [formGroup]="createRateForm" fControlName="rate_short_code_in"
+        label="Rate Short-code In (Cents)" placeholder="Enter Rate Short-code In (Cents)">
+      </eh-textbox>
+      } @else {
+      <eh-textbox class="w-full" [formGroup]="editRateForm" fControlName="type" label="Type" placeholder="Enter Type"
+       [disabled]="true">
+      </eh-textbox>
+
+      <eh-select class="w-full" [formGroup]="editRateForm" [config]="selectRoleConfig" fControlName="role_type">
+      </eh-select>
+
+      <eh-textbox class="w-full" [formGroup]="editRateForm" fControlName="name" label="Name" placeholder="Enter Name">
+      </eh-textbox>
+
+      <eh-textbox class="w-full" [formGroup]="editRateForm" fControlName="unit_cost_name" label="Unit Cost Name (Cents)"
+        placeholder="Enter Unit Cost Name (Cents)">
+      </eh-textbox>
+
+      <eh-textbox class="w-full" [formGroup]="editRateForm" fControlName="unit_cost_cents" label="Unit Cost (Cents)"
+        placeholder="Enter Unit Cost (Cents)">
+      </eh-textbox>
+
+
+      }
+    </div>
+    }
+
+
+    @if (drawerDetails && !isEditMode) {
+    <div class="space-y-3 max-w-md">
+      <div class="flex pb-2">
+        <span class="text-gray-500 w-40 block">Type</span>
+        <span class="font-semibold flex-grow">{{ drawerDetails.type || 'Empty' }}</span>
+      </div>
+
+      <div class="flex pb-2">
+        <span class="text-gray-500 w-40 block">Role Type</span>
+        <span class="font-semibold flex-grow">{{ drawerDetails.role_type || 'Empty' }}</span>
+      </div>
+
+      <div class="flex pb-2">
+        <span class="text-gray-500 w-40 block">Name</span>
+        <span class="font-semibold flex-grow">{{ drawerDetails.name || 'Empty' }}</span>
+      </div>
+
+      <div class="flex pb-2">
+        <span class="text-gray-500 w-40 block">Unit Cost Name</span>
+        <span class="font-semibold flex-grow">{{ drawerDetails.unit_cost_name || 'Empty' }}</span>
+      </div>
+
+      <div class="flex pb-2">
+        <span class="text-gray-500 w-40 block">Unit Cost</span>
+        <span class="font-semibold flex-grow">{{ drawerDetails.unit_cost_cents || 'Empty' }}</span>
+      </div>
+
+
+    </div>
+    }
+
+  </div>
+
+</ng-template>
+
+
+
+<ng-template #drawerFooter>
+  <div class="flex justify-end gap-2 p-4 border-t">
+
+    @if (isEditMode) {
+    <eh-button label="{{ drawerDetails ? 'Update' : 'Save' }}" (click)="saveChanges()">
+    </eh-button>
+    }
+
+  </div>
+</ng-template>
