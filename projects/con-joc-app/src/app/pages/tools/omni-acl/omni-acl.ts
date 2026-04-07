@@ -1,16 +1,16 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Component, TemplateRef, ViewChild, viewChild } from '@angular/core';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { Sort } from '@angular/material/sort';
-import { ButtonType, PaginationConfig, TableColumn, TableComponent, TableConfig, TableFilterConfig, UserData } from '@eh-library/common';
+import { ButtonComponent, ButtonType, DialogService, DrawerComponent, DrawerConfig, PaginationConfig, TableColumn, TableComponent, TableConfig, TableFilterConfig, TextboxComponent, UserData } from '@eh-library/common';
 import { BehaviorSubject, Observable, Subject, takeUntil } from 'rxjs';
 import { OmniaclDataService } from '../../../data-access/tools/omni-acl/omni-acl.api';
 
 @Component({
   selector: 'app-omni-acl',
   standalone: true,
-  imports: [CommonModule, TableComponent, ReactiveFormsModule, FormsModule, MatIconModule],
+  imports: [CommonModule, TableComponent, ReactiveFormsModule, FormsModule, MatIconModule,ButtonComponent,DrawerComponent,TextboxComponent],
   templateUrl: './omni-acl.html',
   styleUrl: './omni-acl.scss',
 })
@@ -19,22 +19,33 @@ export class OmniAcl {
   readonly dataSources$: Observable<UserData[]> = this.dataSubject.asObservable()
   private totalRecordsSubject = new BehaviorSubject<number>(0);
 
+  @ViewChild('drawer') drawer!: DrawerComponent
+  @ViewChild('namesTemplate') namesTemplate!: TemplateRef<any>;
+
   extraButtons = [
     {
       label: 'Add ACL Rule',
       type: 'primary' as ButtonType,
       icon: 'add',
-      // click: () => this.open()
+      click: () => this.open()
     },
     {
       label: 'Check Missing ACL Paths',
       type: 'primary' as ButtonType,
       icon: 'settings',
-      // click: () => this.open()
+      click: () => this.openDialog()
     },
     
     
   ]
+
+  clientForm = new FormGroup({
+    name: new FormControl(''),
+    section_name: new FormControl(''),
+    parent: new FormControl(''),
+    require_acl: new FormControl(false),
+    status: new FormControl(true),
+  })
 
 
 
@@ -46,6 +57,10 @@ export class OmniAcl {
   endRecord = 10;
   currentSearchTerm = '';
   currentSort: Sort = { active: '', direction: '' };
+  drawerDetails: any = {}
+  isEditMode = false;
+  isCreateMode = false;
+  dialogRef:any
 
   aclConfig: TableConfig = {
     showSearch: true,
@@ -58,9 +73,16 @@ export class OmniAcl {
     isCheckBox: false
   }
 
+   drawerConfig: DrawerConfig = {
+    title: '',
+    hasClose: true,
+    closeOnBackdropClick: true,
+    autoOpen: false
+  };
+
   readonly columns: TableColumn[] = [
     { key: 'sl', label: 'Sl.No', searchable: true },
-    { key: 'name', label: 'Name', sortable: true, searchable: true },
+    { key: 'name', label: 'Name', sortable: true, searchable: true ,clickable:true,onClick:(row)=>this.openDrawer(row,false)},
     { key: 'section_name', label: 'Section Name', sortable: true, searchable: true },
     { key: 'parent', label: 'Parent', searchable: true },
     { key: 'require_acl', label: 'Require ACL', sortable: true, searchable: true },
@@ -80,7 +102,7 @@ export class OmniAcl {
   ];
 
 
-  constructor(private omniaclDataService: OmniaclDataService) { }
+  constructor(private omniaclDataService: OmniaclDataService, private dialogService: DialogService) { }
   ngOnInit() {
     this.loadACL()
 
@@ -210,12 +232,118 @@ export class OmniAcl {
   }
 
   editSettings(row: any) {
+    this.openDrawer(row,true)
 
   }
   deleteSettings(row: any) {
 
   }
 
+open() {  
+  this.isCreateMode = true;
+  this.isEditMode = true;
+  this.drawerDetails = null;
+  this.clientForm.reset()
+
+  this.drawerConfig = {
+    ...this.drawerConfig,
+    title: 'Add ACL'
+  };
+
+  
+  const drawerEl = document.querySelector('.table-attached-drawer');
+  drawerEl?.classList.remove('closed');
+  drawerEl?.classList.add('open');
+
+  this.drawer.open();
+}
+
+openDrawer(row: any, editMode: boolean = false) {
+  this.drawerDetails = row;
+  this.isCreateMode = false;
+  this.isEditMode = editMode;
+
+  this.drawerConfig = {
+    ...this.drawerConfig,
+    title:  `Edit ACL - ${row.name}` 
+  };
+
+  if(this.isEditMode){
+   this.clientForm.patchValue({
+    name: row.name,
+    section_name: row.section_name,
+    parent: row.parent,
+    require_acl: row.require_acl,
+    status: row.status
+   })
+  }
+  
+  const drawerEl = document.querySelector('.table-attached-drawer');
+  drawerEl?.classList.remove('closed');
+  drawerEl?.classList.add('open');
+  this.drawer.open();
+}
+
+  handleDrawerClose() {
+    const drawerEl = document.querySelector('.table-attached-drawer');
+    drawerEl?.classList.remove('open');
+    drawerEl?.classList.add('closed');
+  }
+
+   onEditMode(value: boolean) {
+    this.isEditMode = value;
+  }
+
+  closeDrawer() {
+    this.drawer.close()
+  }
+  onEditModeChange(value: boolean) {
+    this.isEditMode = value;
+  }
+
+  setEditMode(value: boolean) {
+    this.isEditMode = value;
+
+    if(value){
+      // patch form values if needed
+      this.clientForm.patchValue({
+        name: this.drawerDetails.name,
+        section_name: this.drawerDetails.section_name,
+        parent: this.drawerDetails.parent,
+        require_acl: this.drawerDetails.require_acl,
+        status: this.drawerDetails.status
+      });
+    } else {
+      // reset form if needed
+    }
+  }
+
+  saveChanges() {
+    if(this.isCreateMode){
+      // call create API
+    } else {
+      // call update API
+    } 
+  }
+
+  openDialog() {
+    this.dialogRef = this.dialogService.open({
+      title: 'Missing ACL Paths',
+      dialogContent: this.namesTemplate,
+      actionButtons: [
+        { label: 'Close', type: 'primary', disabled: false, onClick: () => this.onConfirmClick() },
+      ],
+      width: '500px',
+      panelClass: 'custom-dialog-panel'
+    });
+
+  }
 
 
+  onConfirmClick(): void {
+    // this.clientForm.reset()
+    this.dialogRef.close()
+    
+
+  }
 }
