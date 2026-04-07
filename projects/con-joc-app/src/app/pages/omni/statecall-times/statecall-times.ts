@@ -3,7 +3,7 @@ import { Component, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { Sort } from '@angular/material/sort';
-import { ButtonComponent, ButtonType, DrawerComponent, DrawerConfig, FieldConfig, PaginationConfig, SelectComponent, TableColumn, TableComponent, TableConfig, TableFilterConfig, TextboxComponent, TimepickerComponent, TimepickerConfig, UserData } from '@eh-library/common';
+import { ButtonType, PaginationConfig, TableColumn, TableComponent, TableConfig, TableFilterConfig, TimepickerConfig, UserData } from '@eh-library/common';
 import { BehaviorSubject, Observable, Subject, takeUntil } from 'rxjs';
 import { StatecallDataService } from '../../../data-access/omni/statecall-times/statecall-times.api';
 import { Router } from '@angular/router';
@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-statecall-times',
   standalone: true,
-  imports: [CommonModule, TableComponent, ReactiveFormsModule, FormsModule, MatIconModule, ButtonComponent, TimepickerComponent, SelectComponent, TextboxComponent, DrawerComponent],
+  imports: [CommonModule, TableComponent, ReactiveFormsModule, FormsModule, MatIconModule],
   templateUrl: './statecall-times.html',
   styleUrl: './statecall-times.scss',
 })

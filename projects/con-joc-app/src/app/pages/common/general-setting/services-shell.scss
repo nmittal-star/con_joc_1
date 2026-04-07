@@ -1,0 +1,50 @@
+.services-shell {
+  display: grid;
+  gap: 1.5rem;
+  padding: 1.5rem;
+}
+
+.services-shell__header {
+  border: 1px solid #dbe4f0;
+  border-radius: 1.25rem;
+  background: linear-gradient(135deg, #ffffff 0%, #f5f8ff 100%);
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.08);
+  padding: 1.5rem;
+}
+
+.services-shell__eyebrow {
+  margin: 0 0 0.4rem;
+  color: #4f46e5;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.services-shell__title {
+  margin: 0;
+  color: #0f172a;
+  font-size: 1.85rem;
+  font-weight: 700;
+}
+
+.services-shell__copy {
+  margin: 0.65rem 0 0;
+  color: #475569;
+  font-size: 0.98rem;
+  max-width: 48rem;
+}
+
+.services-shell__content {
+  min-width: 0;
+}
+
+@media (max-width: 768px) {
+  .services-shell {
+    padding: 1rem;
+  }
+
+  .services-shell__header {
+    padding: 1.2rem;
+  }
+}

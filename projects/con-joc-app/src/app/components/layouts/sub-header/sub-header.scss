@@ -72,12 +72,21 @@
             vertical-align: middle;
             margin-right: 5px;
             line-height: 1;
+
+            &.tab-icon--dropdown {
+                margin-right: 0;
+                margin-left: 4px;
+            }
         }
 
         ::ng-deep .mat-mdc-tab-nav-bar.single-tab .mat-mdc-tab-link {
             font-size: 1.25rem;
             font-weight: 700 !important;
             justify-content: flex-start;
+        }
+
+        ::ng-deep .mdc-tab {
+            min-width: fit-content;
         }
     }
 }

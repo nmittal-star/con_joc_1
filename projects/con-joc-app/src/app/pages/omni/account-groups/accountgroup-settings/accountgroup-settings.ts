@@ -1,5 +1,5 @@
 import { Component, TemplateRef, ViewChild } from '@angular/core';
-import { ButtonComponent, ButtonType, CheckboxComponent, DialogService, ExportService, FieldConfig, PaginationConfig, SelectComponent, TableColumn, TableComponent, TableConfig, TextboxComponent, UserData } from '@eh-library/common';
+import { ButtonComponent, ButtonType, DialogService, ExportService, FieldConfig, PaginationConfig, SelectComponent, TableColumn, TableComponent, TableConfig, TextboxComponent, UserData } from '@eh-library/common';
 import { BehaviorSubject, Observable, Subject, takeUntil } from 'rxjs';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -14,7 +14,7 @@ import { AccountGroupsDataService } from '../../../../data-access/omni/account-g
 @Component({
   selector: 'app-accountgroup-settings',
   standalone: true,
-  imports: [CommonModule, TableComponent, ReactiveFormsModule, FormsModule, MatIconModule, MatButtonModule, TextboxComponent, ButtonComponent, SelectComponent, MatDividerModule, TranslateModule, CheckboxComponent],
+  imports: [CommonModule, TableComponent, ReactiveFormsModule, FormsModule, MatIconModule, MatButtonModule, TextboxComponent, ButtonComponent, SelectComponent, MatDividerModule, TranslateModule],
   templateUrl: './accountgroup-settings.html',
   styleUrl: './accountgroup-settings.scss',
 })

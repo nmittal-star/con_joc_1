@@ -9,7 +9,19 @@ const generalSettingTabs = [
     { title: 'Zuora Billing', path: 'zuora-billing', icon: 'payment' },
     { title: 'Transactions', path: 'transactions', icon: 'compare_arrows' },
     { title: 'Invoices', path: 'invoices', icon: 'description' },
-    { title: 'Services', path: 'services', icon: 'miscellaneous_services' },
+    {
+        title: 'Services',
+        path: 'services',
+        icon: 'miscellaneous_services',
+        children: [
+            { title: 'Campaign Registry', path: 'campaign-registry' },
+            { title: 'Intelligent Virtual Agent', path: 'intelligent-virtual-agent' },
+            { title: 'Agent AI', path: 'agent-ai' },
+            { title: 'CC AI Stats', path: 'cc-ai-stats' },
+            { title: 'Compliance', path: 'compliance' },
+            { title: 'SFDC Adaptor', path: 'sfdc-adaptor' },
+        ],
+    },
     { title: 'Contacts', path: 'contacts', icon: 'contacts' },
     { title: 'Pricing', path: 'pricing', icon: 'attach_money' },
     { title: 'Attachments', path: 'attachments', icon: 'attach_file' },
@@ -457,8 +469,68 @@ export const routes: Routes = [
                     },
                     {
                         path: 'services',
-                        loadComponent: () => import('./pages/common/general-setting/general-setting-tab').then(m => m.GeneralSettingTab),
-                        data: { breadcrumb: 'Services', sectionTitle: 'Services' }
+                        loadComponent: () => import('./pages/common/general-setting/services-shell').then(m => m.ServicesShell),
+                        data: {
+                            breadcrumb: 'Services',
+                            sectionTitle: 'Services',
+                        },
+                        children: [
+                            {
+                                path: 'campaign-registry',
+                                loadComponent: () => import('./pages/common/general-setting/service-page').then(m => m.ServicePage),
+                                data: {
+                                    breadcrumb: 'Campaign Registry',
+                                    sectionTitle: 'Campaign Registry',
+                                    sectionDescription: 'Manage Campaign Registry configuration and onboarding details for this account.',
+                                }
+                            },
+                            {
+                                path: 'intelligent-virtual-agent',
+                                loadComponent: () => import('./pages/common/general-setting/service-page').then(m => m.ServicePage),
+                                data: {
+                                    breadcrumb: 'Intelligent Virtual Agent',
+                                    sectionTitle: 'Intelligent Virtual Agent',
+                                    sectionDescription: 'Configure Intelligent Virtual Agent behavior, routing, and account-specific options.',
+                                }
+                            },
+                            {
+                                path: 'agent-ai',
+                                loadComponent: () => import('./pages/common/general-setting/service-page').then(m => m.ServicePage),
+                                data: {
+                                    breadcrumb: 'Agent AI',
+                                    sectionTitle: 'Agent AI',
+                                    sectionDescription: 'Set up Agent AI features, rollout settings, and service-specific controls.',
+                                }
+                            },
+                            {
+                                path: 'cc-ai-stats',
+                                loadComponent: () => import('./pages/common/general-setting/service-page').then(m => m.ServicePage),
+                                data: {
+                                    breadcrumb: 'CC AI Stats',
+                                    sectionTitle: 'CC AI Stats',
+                                    sectionDescription: 'Review and maintain CC AI Stats page settings for this account.',
+                                }
+                            },
+                            {
+                                path: 'compliance',
+                                loadComponent: () => import('./pages/common/general-setting/service-page').then(m => m.ServicePage),
+                                data: {
+                                    breadcrumb: 'Compliance',
+                                    sectionTitle: 'Compliance',
+                                    sectionDescription: 'Manage compliance-related settings and account controls for this service.',
+                                }
+                            },
+                            {
+                                path: 'sfdc-adaptor',
+                                loadComponent: () => import('./pages/common/general-setting/service-page').then(m => m.ServicePage),
+                                data: {
+                                    breadcrumb: 'SFDC Adaptor',
+                                    sectionTitle: 'SFDC Adaptor',
+                                    sectionDescription: 'Configure SFDC Adaptor settings and account-specific integration options.',
+                                }
+                            },
+                            { path: '', redirectTo: 'campaign-registry', pathMatch: 'full' }
+                        ]
                     },
                     {
                         path: 'contacts',

@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { Sort } from '@angular/material/sort';
-import { ButtonType, PaginationConfig, TableColumn, TableComponent, TableConfig, TableFilterConfig, UserData, DropAreaComponent, DropAreaConfig, TextboxComponent, SelectComponent, TextareaComponent, FieldConfig } from '@eh-library/common';
+import { ButtonType, PaginationConfig, TableColumn, TableComponent, TableConfig, TableFilterConfig, UserData, DropAreaConfig, FieldConfig } from '@eh-library/common';
 import { BehaviorSubject, Observable, Subject, takeUntil } from 'rxjs';
 import { RepCheckCsvFileDataService } from '../../../data-access/tools/repcheck-csvfile/repcheck-csvfile.api';
 import { MatDividerModule } from '@angular/material/divider';
@@ -12,7 +12,7 @@ import { MatDividerModule } from '@angular/material/divider';
 @Component({
   selector: 'app-repcheck-csvfile',
   standalone: true,
-  imports: [CommonModule, MatDividerModule, TableComponent, ReactiveFormsModule, FormsModule, MatIconModule, DropAreaComponent, TextboxComponent, TextareaComponent, SelectComponent],
+  imports: [CommonModule, MatDividerModule, TableComponent, ReactiveFormsModule, FormsModule, MatIconModule],
   templateUrl: './repcheck-csvfile.html',
   styleUrl: './repcheck-csvfile.scss',
 })

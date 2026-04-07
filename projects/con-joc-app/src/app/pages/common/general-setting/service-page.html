@@ -1,0 +1,103 @@
+<section class="service-page-layout">
+  <div class="max-w-7xl mx-auto w-full flex items-center justify-between gap-4">
+    <h2 class="text-2xl font-bold text-slate-900 m-0">{{ sectionTitle() }}</h2>
+    @if (isCompliancePage()) {
+      <eh-button type="primary" label="Create Brand" (click)="openComplianceForm()"></eh-button>
+    }
+  </div>
+
+  @if (isIVAPage()) {
+    <div class="max-w-7xl mx-auto w-full mt-6">
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-[0_12px_30px_rgba(15,23,42,0.08)] px-4 py-4">
+        <div class="flex items-end gap-4">
+          <div class="w-64">
+            <eh-select [formGroup]="ivaForm" [config]="managedServiceConfig"></eh-select>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+
+  @if (isCompliancePage()) {
+    <div class="max-w-7xl mx-auto w-full mt-6">
+      <app-generic-table
+        title=""
+        [columns]="brandColumns"
+        [rows]="brandRows"
+        [config]="brandTableConfig">
+      </app-generic-table>
+    </div>
+  }
+
+  <div class="max-w-7xl mx-auto w-full mt-6">
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-[0_12px_30px_rgba(15,23,42,0.08)] px-4 py-4">
+      <h3 class="text-2xl font-bold mb-5 ml-0 text-left tracking-tight text-slate-800">Account Notes</h3>
+      <div class="border-b border-slate-100 mt-4"></div>
+      <eh-textarea
+        [formGroup]="accountNotesForm"
+        fControlName="accountNotes"
+        label=""
+        placeholder="Enter any notes about this account..."
+      ></eh-textarea>
+    </div>
+  </div>
+</section>
+
+<ng-template #complianceDrawerTemplate>
+  <form class="drawer-form" [formGroup]="complianceForm" (ngSubmit)="submitComplianceForm()">
+    <div class="drawer-section-title">Organization</div>
+    <div class="row">
+      <div class="field"><eh-textbox [formGroup]="complianceForm" fControlName="displayName" label="Display Name"></eh-textbox></div>
+      <div class="field"><eh-textbox [formGroup]="complianceForm" fControlName="companyName" label="Company Name"></eh-textbox></div>
+    </div>
+    <div class="row">
+      <div class="field"><eh-textbox [formGroup]="complianceForm" fControlName="ein" label="EIN"></eh-textbox></div>
+      <div class="field"><eh-textbox [formGroup]="complianceForm" fControlName="website" label="Website"></eh-textbox></div>
+    </div>
+
+    <div class="drawer-section-title">Contact</div>
+    <div class="row">
+      <div class="field"><eh-textbox [formGroup]="complianceForm" fControlName="phone" label="Phone" placeholder="Enter phone number" [isPhone]="true"></eh-textbox></div>
+      <div class="field"><eh-textbox [formGroup]="complianceForm" fControlName="email" label="Email" type="email"></eh-textbox></div>
+    </div>
+
+    <div class="drawer-section-title">Address</div>
+    <div class="row">
+      <div class="field"><eh-textbox [formGroup]="complianceForm" fControlName="street" label="Street"></eh-textbox></div>
+    </div>
+    <div class="row">
+      <div class="field"><eh-textbox [formGroup]="complianceForm" fControlName="city" label="City" placeholder="Enter a valid city"></eh-textbox></div>
+      <div class="field"><eh-select [formGroup]="complianceForm" [config]="stateConfig"></eh-select></div>
+    </div>
+    <div class="row">
+      <div class="field"><eh-textbox [formGroup]="complianceForm" fControlName="zipCode" label="Zip Code" placeholder="Enter a valid zip code"></eh-textbox></div>
+      <div class="field"><eh-select [formGroup]="complianceForm" [config]="countryConfig"></eh-select></div>
+    </div>
+
+    <div class="drawer-section-title">Account Details</div>
+    <div class="row">
+      <div class="field"><eh-select [formGroup]="complianceForm" [config]="relationshipConfig"></eh-select></div>
+      <div class="field"><eh-select [formGroup]="complianceForm" [config]="verticalConfig"></eh-select></div>
+    </div>
+    <div class="row">
+      <div class="field"><eh-textbox [formGroup]="complianceForm" fControlName="verificationStatus" label="Verification Status" [disabled]="true"></eh-textbox></div>
+    </div>
+  </form>
+</ng-template>
+
+<ng-template #complianceDrawerFooterTemplate>
+  <div class="drawer-footer-actions">
+    <eh-button type="secondary" label="Cancel" (click)="closeComplianceForm()"></eh-button>
+    <eh-button type="primary" label="Save" (click)="submitComplianceForm()"></eh-button>
+  </div>
+</ng-template>
+
+<eh-drawer
+  #complianceDrawer
+  class="service-brand-drawer closed"
+  [contentTemplate]="complianceDrawerTemplate"
+  [config]="complianceDrawerConfig"
+  [footerTemplate]="complianceDrawerFooterTemplate"
+  (onClose)="handleComplianceDrawerClose()">
+</eh-drawer>
