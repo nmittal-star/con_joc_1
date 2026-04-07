@@ -1,16 +1,16 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Component, TemplateRef, ViewChild } from '@angular/core';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { Sort } from '@angular/material/sort';
-import { ButtonType, PaginationConfig, TableColumn, TableComponent, TableConfig, TableFilterConfig, UserData } from '@eh-library/common';
+import { ButtonType, DialogService, FieldConfig, PaginationConfig, SelectComponent, TableColumn, TableComponent, TableConfig, TableFilterConfig, TextboxComponent, UserData } from '@eh-library/common';
 import { BehaviorSubject, Observable, Subject, takeUntil } from 'rxjs';
 import { VendorsDataService } from '../../../data-access/tools/vendors/vendors.api';
 
 @Component({
   selector: 'app-vendors',
   standalone: true,
-  imports: [CommonModule, TableComponent, ReactiveFormsModule, FormsModule, MatIconModule],
+  imports: [CommonModule, TableComponent, ReactiveFormsModule, FormsModule, MatIconModule,SelectComponent,TextboxComponent],
   templateUrl: './vendors.html',
   styleUrl: './vendors.scss',
 })
@@ -19,7 +19,7 @@ export class Vendors {
   readonly dataSources$: Observable<UserData[]> = this.dataSubject.asObservable()
   private totalRecordsSubject = new BehaviorSubject<number>(0);
 
- 
+@ViewChild('namesTemplate') namesTemplate!: TemplateRef<any>;
 
 
 
@@ -31,6 +31,8 @@ export class Vendors {
   endRecord = 10;
   currentSearchTerm = '';
   currentSort: Sort = { active: '', direction: '' };
+  dialogRef: any;
+  selectedRow: any = null;
 
   vendorsConfig: TableConfig = {
     showSearch: true,
@@ -43,6 +45,26 @@ export class Vendors {
     isCheckBox: false
   }
 
+  selectConfig: FieldConfig = {
+    name: 'priority',
+    label: 'Priority',
+    placeholder: 'Select Priority',
+    hasSearch: false,
+    options: [
+      { key: '1', value: '1' },
+      { key: '2', value: '2' },
+      { key: '3', value: '3' },
+      { key: '4', value: '4' },
+      { key: '5', value: '5' },
+
+    ]
+  };
+
+  vendorForm = new FormGroup({
+    name: new FormControl(''),
+    priority: new FormControl(''), 
+  })
+  
   readonly columns: TableColumn[] = [
     { key: 'sl', label: 'Sl.No', searchable: true },
     { key: 'id', label: 'ID', searchable: true },
@@ -65,7 +87,7 @@ export class Vendors {
   ];
 
 
-  constructor(private vendorsDataService: VendorsDataService) { }
+  constructor(private vendorsDataService: VendorsDataService,private dialogService:DialogService) { }
   ngOnInit() {
     this.loadVendors()
 
@@ -195,7 +217,44 @@ export class Vendors {
   }
 
   editSettings(row: any) {
+    this.selectedRow = row;
+    this.vendorForm.patchValue({
+      name: row.name ?? '',
+      priority: row.priority ?? '',
+    });
 
+    this.dialogRef = this.dialogService.open({
+      title: "Edit Priority",
+      dialogContent: this.namesTemplate,
+      actionButtons: [
+        {
+          label: 'Save',
+          type: 'primary',
+          onClick: () => this.saveVendor()
+        }
+      ],
+      width: '500px',
+      panelClass: 'custom-dialog-panel'
+    });
+  }
+
+  saveVendor() {
+    if (!this.selectedRow) return;
+    const payload = {
+      priority: this.vendorForm.get('priority')?.value ?? ''
+    };
+
+    this.vendorsDataService.updateVendor(this.selectedRow.id, payload)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.dialogRef?.close();
+          this.vendorForm.reset();
+          this.selectedRow = null;
+          this.loadVendors();
+        },
+        error: (err) => console.error('Failed to update vendor:', err)
+      });
   }
   
 
