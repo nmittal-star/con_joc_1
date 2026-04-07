@@ -1,16 +1,16 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { Sort } from '@angular/material/sort';
-import { ButtonType, PaginationConfig, TableColumn, TableComponent, TableConfig, TableFilterConfig, UserData } from '@eh-library/common';
+import { ButtonComponent, ButtonType, DrawerComponent, DrawerConfig, PaginationConfig, SelectComponent, TableColumn, TableComponent, TableConfig, TableFilterConfig, TextboxComponent, UserData } from '@eh-library/common';
 import { BehaviorSubject, Observable, Subject, takeUntil } from 'rxjs';
 import { StateTrackerDataService } from '../../../data-access/tools/state-tracker/state-tracker.api';
 
 @Component({
   selector: 'app-state-tracker',
   standalone: true,
-  imports: [CommonModule, TableComponent, ReactiveFormsModule, FormsModule, MatIconModule],
+  imports: [CommonModule, TableComponent, ReactiveFormsModule, FormsModule, MatIconModule,DrawerComponent,SelectComponent,TextboxComponent,ButtonComponent],
   templateUrl: './state-tracker.html',
   styleUrl: './state-tracker.scss',
 })
@@ -19,12 +19,14 @@ export class StateTracker {
   readonly dataSources$: Observable<UserData[]> = this.dataSubject.asObservable()
   private totalRecordsSubject = new BehaviorSubject<number>(0);
 
+  @ViewChild('drawer') drawer!: DrawerComponent
+
   extraButtons = [
     {
       label: 'Add New Global Rule',
       type: 'primary' as ButtonType,
       icon: 'add',
-      // click: () => this.open()
+      click: () => this.open()
     }
   ]
 
@@ -38,6 +40,9 @@ export class StateTracker {
   endRecord = 10;
   currentSearchTerm = '';
   currentSort: Sort = { active: '', direction: '' };
+  drawerDetails: any = {}
+  isEditMode = false;
+  isCreateMode = false;
 
   statetrackerConfig: TableConfig = {
     showSearch: true,
@@ -50,9 +55,16 @@ export class StateTracker {
     isCheckBox: false
   }
 
+  drawerConfig:DrawerConfig = {
+    title: '',
+    hasClose: true,
+    closeOnBackdropClick: true,
+    autoOpen: false
+  }
+
   readonly columns: TableColumn[] = [
     { key: 'sl', label: 'Sl.No', searchable: true },
-    { key: 'state', label: 'State', sortable: true, searchable: true },
+    { key: 'state', label: 'State', sortable: true, searchable: true ,clickable:true,onClick:(row)=>{this.openDrawer(row,false)}},
     { key: 'status', label: 'Status', sortable: true, searchable: true },
 
     {
@@ -206,5 +218,46 @@ export class StateTracker {
   }
 
 
+  openDrawer(row:any,isEditMode:boolean=false){
+    this.drawerDetails = row;
+    this.isCreateMode=false
+    this.isEditMode=isEditMode;
+    this.drawer.open();
+  }
+
+  open(){
+    this.isCreateMode=true;
+    this.isEditMode=true;
+    this.drawerDetails=null;
+    this.drawer.open();
+    this.drawerConfig = {
+      ...this.drawerConfig,
+      title: 'Add New State'
+    }     
+
+    const drawerEl = document.querySelector('.table-attached-drawer');
+    drawerEl?.classList.remove('closed');
+    drawerEl?.classList.add('open');
+  }
+
+   handleDrawerClose() {
+    const drawerEl = document.querySelector('.table-attached-drawer');
+    drawerEl?.classList.remove('open');
+    drawerEl?.classList.add('closed');
+  }
+
+  saveChanges() {
+  }
+
+   setEditMode(value: boolean) {
+    this.isEditMode = value;
+
+    if (value) {
+
+     
+     
+    } else {
+    }
+  }
 
 }
