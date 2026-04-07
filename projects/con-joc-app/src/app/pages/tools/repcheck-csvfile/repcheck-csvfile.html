@@ -1,6 +1,10 @@
-<!-- <div class="container">
 
-    <h3 class="section-title">Upload CSV File</h3>
+ <ng-template #namesTemplate>
+    <div> 
+     
+       <div class="container">
+
+    <h3 class="section-title"> File</h3>
 
     <eh-drop-area class="drop-area" [config]="dropSingleConfig" (filesDropped)="handleDrop($event)">
     </eh-drop-area>
@@ -16,9 +20,14 @@
 
 </div>
 
-<mat-divider></mat-divider> -->
+    </div> 
+   </ng-template> 
+
+
+
+
 
 <eh-table [columns]="columns" [tableTitle]="'Reputation Check CSV'" [config]="sinchorderConfig"
     [dataSource$]="dataSources$" [paginationConfig]="paginationConfig" (pageChange)="onPageChange($event)"
-    (sizeChange)="onPageSizeChange($event)" (sortChange)="onSortChange($event)">
+    (sizeChange)="onPageSizeChange($event)" (sortChange)="onSortChange($event)" [extraButtons]="extraButtons">
 </eh-table>

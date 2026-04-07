@@ -1,5 +1,89 @@
-  <eh-table [columns]="columns" [tableTitle]="'Manage Consent Revocation Purpose'" [config]="purposeConfig" [dataSource$]="dataSources$"
+
+
+    <eh-drawer #drawer class="table-attached-drawer closed" [config]="drawerConfig" [contentTemplate]="nameForm"
+  [footerTemplate]="drawerFooter" (onClose)="handleDrawerClose()">
+
+   <eh-table [columns]="columns" [tableTitle]="'Manage Consent Revocation Purpose'" [config]="purposeConfig" [dataSource$]="dataSources$"
         [paginationConfig]="paginationConfig" (pageChange)="onPageChange($event)"
         (sizeChange)="onPageSizeChange($event)" (sortChange)="onSortChange($event)"
        [extraButtons]="extraButtons"  >
     </eh-table>
+
+
+</eh-drawer>
+
+
+
+<ng-template #nameForm>
+
+  <div class="p-4">
+
+    @if (drawerDetails) {
+    <div class="flex justify-end mb-4">
+      @if (!isEditMode) {
+      <eh-button type="primary" label="Edit" (click)="setEditMode(true)"></eh-button>
+      }
+      @if (isEditMode) {
+      <eh-button type="primary" label="Cancel" (click)="setEditMode(false)"></eh-button>
+      }
+    </div>
+    }
+
+    @if (isEditMode) {
+    <div class="grid grid-cols-1 md:grid-cols-1  items-start">
+
+      
+      <eh-textbox class="w-full" [formGroup]="purposeForm" fControlName="purpose" label="Purpose" placeholder="Enter Purpose">
+      </eh-textbox>
+        <div [formGroup]="purposeForm">
+          <eh-textarea formControlName="description" label="Description" [rows]="1" [maxLength]="100"></eh-textarea>
+        </div>
+
+
+      <eh-select class="w-full" [formGroup]="purposeForm" [config]="selectConfig" fControlName="active">
+      </eh-select>
+
+
+
+    </div>
+    }
+
+
+    @if (drawerDetails && !isEditMode) {
+    <div class="space-y-3 max-w-md">
+      <div class="flex pb-2">
+        <span class="text-gray-500 w-40 block">Purpose</span>
+        <span class="font-semibold flex-grow">{{ drawerDetails.purpose || 'Empty' }}</span>
+      </div>
+
+      <div class="flex pb-2">
+        <span class="text-gray-500 w-40 block">Description</span>
+        <span class="font-semibold flex-grow">{{ drawerDetails.description || 'Empty' }}</span>
+      </div>
+
+      <div class="flex pb-2">
+        <span class="text-gray-500 w-40 block">Active</span>
+        <span class="font-semibold flex-grow">{{ drawerDetails.active || 'Empty' }}</span>
+      </div>
+
+
+
+    </div>
+    }
+
+  </div>
+
+</ng-template>
+
+
+
+<ng-template #drawerFooter>
+  <div class="flex justify-end gap-2 p-4 border-t">
+
+    @if (isEditMode) {
+    <eh-button label="{{ drawerDetails ? 'Update' : 'Save' }}" (click)="saveChanges()">
+    </eh-button>
+    }
+
+  </div>
+</ng-template>

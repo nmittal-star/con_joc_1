@@ -1,16 +1,17 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Component, ViewChild } from '@angular/core';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { Sort } from '@angular/material/sort';
-import { ButtonType, PaginationConfig, TableColumn, TableComponent, TableConfig, TableFilterConfig, User, UserData } from '@eh-library/common';
+import { ButtonComponent, ButtonType, DrawerComponent, DrawerConfig, FieldConfig, PaginationConfig, SelectComponent, TableColumn, TableComponent, TableConfig, TableFilterConfig, TextareaComponent, TextboxComponent, User, UserData } from '@eh-library/common';
 import { BehaviorSubject, Observable, Subject, takeUntil } from 'rxjs';
 import { PurposeDataService } from '../../../data-access/tools/purpose/purpose.api';
+import { log } from 'console';
 
 @Component({
   selector: 'app-purpose',
   standalone: true,
-  imports: [CommonModule, TableComponent, ReactiveFormsModule, FormsModule, MatIconModule],
+  imports: [CommonModule, TableComponent, ReactiveFormsModule, FormsModule, MatIconModule,ButtonComponent,DrawerComponent,TextboxComponent,TextareaComponent,SelectComponent],
   templateUrl: './purpose.html',
   styleUrl: './purpose.scss',
 })
@@ -18,12 +19,15 @@ export class Purpose {
   private dataSubject = new BehaviorSubject<UserData[]>([])
   readonly dataSources$:Observable<UserData[]>=this.dataSubject.asObservable();
   private totalRecordsSubject = new BehaviorSubject<number>(0)
+
+  @ViewChild('drawer') drawer!: DrawerComponent;
+  
  extraButtons = [
     {
       label: 'Add New Purpose',
       type: 'primary' as ButtonType,
       icon: 'add',
-      // click: () => this.open()
+      click: () => this.open()
     }
   ]
 
@@ -37,6 +41,15 @@ export class Purpose {
   endRecord = 10;
   currentSearchTerm = '';
   currentSort: Sort = { active: '', direction: '' };
+  isEditMode = false
+  isCreateMode = false;
+  drawerDetails: any = {}
+  drawerConfig: DrawerConfig = {
+    title: '',
+    hasClose: true,
+    closeOnBackdropClick: true,
+    autoOpen: false
+  }
 
   purposeConfig: TableConfig = {
     showSearch: false,
@@ -49,10 +62,27 @@ export class Purpose {
     isCheckBox: false
   }
 
+   selectConfig: FieldConfig = {
+    name: 'active',
+    label: 'Active',
+    placeholder: 'Select Active ',
+    hasSearch: false,
+    options: [
+      { key: 'Yes', value: 'yes' },
+      { key: 'No', value: 'no' },
+
+    ]
+  };
+
+  purposeForm = new FormGroup({
+    purpose: new FormControl(''),
+    description: new FormControl(''),
+    active: new FormControl('yes'),
+  })  
 
   readonly columns: TableColumn[] = [
     { key: 'sl', label: 'Sl.No', searchable: true },
-    { key: 'purpose', label: 'Purpose', searchable: true },
+    { key: 'purpose', label: 'Purpose', searchable: true,clickable:true,onClick:(row)=>{this.openDrawer(row,false)} },
     { key: 'description', label: 'Description', sortable: true, searchable: true },
     { key: 'active', label: 'Active', sortable: true, searchable: true },
     { key: 'created_at', label: 'Created At', searchable: true },
@@ -188,15 +218,82 @@ export class Purpose {
     this.loadPurpose(1, size, this.currentSearchTerm, this.currentSort);
   }
 
-  
+  open() {
+    this.drawerDetails = null
+    this.isCreateMode = true;
+    this.isEditMode = true;
+    this.purposeForm.reset()    
+    this.drawerConfig = {
+      ...this.drawerConfig,
+      title: 'Add Purpose'
+    };
 
- 
+    const drawerEl = document.querySelector('.table-attached-drawer');
+    drawerEl?.classList.remove('closed');
+    drawerEl?.classList.add('open');
+
+    this.drawer.open()
+  }
+
+  openDrawer(row: any, editMode: boolean = false) {
+    this.drawerDetails = row;
+    this.isEditMode = editMode
+    this.isCreateMode = false
+
+    this.drawerConfig = {
+      ...this.drawerConfig,
+      title: `Purpose Settings - ${row.purpose}`
+    };
+
+    if (this.isEditMode) {
+      this.purposeForm.patchValue({
+        purpose: row.purpose,
+        description: row.description,
+        active: row.active,
+      })
+    }
+    const drawerEl = document.querySelector('.table-attached-drawer');
+    drawerEl?.classList.remove('closed');
+    drawerEl?.classList.add('open');
+
+    this.drawer.open()
+  }
 
   editSettings(row:any){
-
+    this.openDrawer(row, true)
   }
 
 
+  
+  handleDrawerClose() {
+    const drawerEl = document.querySelector('.table-attached-drawer');
+    drawerEl?.classList.remove('open');
+    drawerEl?.classList.add('closed');
+  }
+
+
+   setEditMode(value: boolean) {
+    this.isEditMode = value;
+
+    if (value) {
+
+      this.purposeForm.patchValue({
+        purpose: this.drawerDetails.purpose,
+        description: this.drawerDetails.description,
+        active: this.drawerDetails.active,
+      });
+    
+    } else {
+    }
+  }
+
+
+  saveChanges() {
+   console.log(this.purposeForm.value, 'value');
+   this.drawer.close()
+   
+
+  }
 }
 
 

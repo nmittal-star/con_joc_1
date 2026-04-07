@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { Sort } from '@angular/material/sort';
-import { ButtonType, PaginationConfig, TableColumn, TableComponent, TableConfig, TableFilterConfig, UserData, DropAreaConfig, FieldConfig } from '@eh-library/common';
+import { ButtonType, PaginationConfig, TableColumn, TableComponent, TableConfig, TableFilterConfig, UserData, DropAreaComponent, DropAreaConfig, TextboxComponent, SelectComponent, TextareaComponent, FieldConfig, DialogService } from '@eh-library/common';
 import { BehaviorSubject, Observable, Subject, takeUntil } from 'rxjs';
 import { RepCheckCsvFileDataService } from '../../../data-access/tools/repcheck-csvfile/repcheck-csvfile.api';
 import { MatDividerModule } from '@angular/material/divider';
@@ -17,9 +17,21 @@ import { MatDividerModule } from '@angular/material/divider';
   styleUrl: './repcheck-csvfile.scss',
 })
 export class RepcheckCsvfile {
+
+  extraButtons = [
+    {
+      label: 'Upload CSV File',
+      type: 'primary' as ButtonType,
+      icon: 'upload',
+      click: () => this.uploadCsv()
+    }
+  ];
+
   private dataSubject = new BehaviorSubject<UserData[]>([]);
   readonly dataSources$: Observable<UserData[]> = this.dataSubject.asObservable()
   private totalRecordsSubject = new BehaviorSubject<number>(0);
+
+  @ViewChild('namesTemplate') namesTemplate!: TemplateRef<any>;
 
   uploadedFile: File | null = null;
 
@@ -67,7 +79,7 @@ export class RepcheckCsvfile {
     name: 'mode',
     label: 'Mode',
     placeholder: 'Select Mode',
-    hasSearch: true,
+    hasSearch: false,
     options: [
       { key: 'Clear', value: 'Clear' },
       { key: 'Flagged', value: 'Flagged' },
@@ -85,6 +97,7 @@ export class RepcheckCsvfile {
   endRecord = 10;
   currentSearchTerm = '';
   currentSort: Sort = { active: '', direction: '' };
+  dialogRef: any;
 
   sinchorderConfig: TableConfig = {
     showSearch: false,
@@ -129,7 +142,7 @@ export class RepcheckCsvfile {
   ];
 
 
-  constructor(private repCheckCsvFileDataService: RepCheckCsvFileDataService) { }
+  constructor(private repCheckCsvFileDataService: RepCheckCsvFileDataService, private dialogService: DialogService) { }
   ngOnInit() {
     this.loadSinchOrder()
 
@@ -250,6 +263,31 @@ export class RepcheckCsvfile {
   downloadFile(row: any) {
 
   }
+
+  
+  uploadCsv() {
+
+       this.dialogRef = this.dialogService.open({
+      title: "Upload Csv File",
+      dialogContent: this.namesTemplate,
+      actionButtons: [
+        {
+          label: 'Save',
+          type: 'primary',
+          // disabled: !this.allowCodeForm.valid,
+          // onClick: () => this.onConfirmClick()
+
+           onClick: () => {
+              console.log("File to upload:", this.repCheckForm.value.file);
+      }
+        }
+      ],
+      width: '500px',
+      panelClass: 'custom-dialog-panel'
+    });
+
+  }
+
 
 }
 

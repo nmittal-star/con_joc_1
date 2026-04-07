@@ -1,5 +1,111 @@
+<eh-drawer #drawer class="table-attached-drawer closed" [contentTemplate]="nameForm" [config]="drawerConfig"
+  [footerTemplate]="drawerFooter" (onClose)="handleDrawerClose()">
   <eh-table [columns]="columns" [tableTitle]="'ACL Rules'" [config]="aclConfig" [dataSource$]="dataSources$"
-        [paginationConfig]="paginationConfig" (pageChange)="onPageChange($event)"
-        (sizeChange)="onPageSizeChange($event)" (search)="onSearch($event)" (sortChange)="onSortChange($event)"
-       [extraButtons]="extraButtons" >
-    </eh-table>
+    [paginationConfig]="paginationConfig" (pageChange)="onPageChange($event)" (sizeChange)="onPageSizeChange($event)"
+    (search)="onSearch($event)" (sortChange)="onSortChange($event)" [extraButtons]="extraButtons">
+  </eh-table>
+
+</eh-drawer>
+
+
+    <!-- DRAWER CONTENT TEMPLATE -->
+<ng-template #nameForm>
+
+  
+
+   @if (drawerDetails) {
+    <div class="flex justify-end mb-4">
+      @if (!isEditMode) {
+      <eh-button type="primary" label="Edit" (click)="setEditMode(true)"></eh-button>
+      }
+      @if (isEditMode) {
+      <eh-button type="primary" label="Cancel" (click)="setEditMode(false)"></eh-button>
+      }
+    </div>
+    }
+
+
+  @if (isEditMode) {
+
+  <form [formGroup]="clientForm">
+   <div class="grid grid-cols-1 md:grid-cols-1  items-start">
+    <eh-textbox [formGroup]="clientForm" fControlName="name" label="Name " placeholder="Enter Name">
+          </eh-textbox>
+          <eh-textbox [formGroup]="clientForm" fControlName="section_name" label="Section Name" placeholder="Enter Section Name">
+          </eh-textbox>
+
+           <eh-textbox [formGroup]="clientForm" fControlName="parent" label="Parent"
+            placeholder="Enter Parent ">
+          </eh-textbox>
+
+          <eh-textbox [formGroup]="clientForm" fControlName="require_acl" label="Require ACL"
+            placeholder="Enter Require ACL ">
+          </eh-textbox>
+          <eh-textbox [formGroup]="clientForm" fControlName="status" label="Status"
+            placeholder="Enter Status ">
+          </eh-textbox>
+
+
+    </div>
+    </form>
+  }
+
+
+
+
+
+
+  @if (drawerDetails && !isEditMode) {
+
+     <div class="space-y-3 max-w-md">
+
+  <div class="grid grid-cols-[160px_1fr] pb-2">
+    <span class="text-gray-500">Name</span>
+    <span class="font-semibold">{{ drawerDetails.name || 'Empty' }}</span>
+  </div>
+
+  <div class="grid grid-cols-[160px_1fr] pb-2">
+    <span class="text-gray-500">Section</span>
+    <span class="font-semibold">{{ drawerDetails.section_name || 'Empty' }}</span>
+  </div>
+
+  <div class="grid grid-cols-[160px_1fr] pb-2">
+    <span class="text-gray-500">Parent</span>
+    <span class="font-semibold">{{ drawerDetails.parent || 'Empty' }}</span>
+  </div>
+   <div class="grid grid-cols-[160px_1fr] pb-2">
+    <span class="text-gray-500">Require ACL</span>
+    <span class="font-semibold">{{ drawerDetails.require_acl || 'Empty' }}</span>
+  </div>
+   <div class="grid grid-cols-[160px_1fr] pb-2">
+    <span class="text-gray-500">Status</span>
+    <span class="font-semibold">{{ drawerDetails.status  || 'Empty' }}</span>
+  </div>
+   
+
+</div>
+
+  }
+
+
+</ng-template>
+
+
+
+<!-- DRAWER FOOTER -->
+<ng-template #drawerFooter>
+  <div class="flex justify-end gap-2 p-4 ">
+
+    @if (isEditMode) {
+    <eh-button label="{{drawerDetails ? 'Update' : 'Save'}}" (click)="saveChanges()">
+    </eh-button>
+    }
+
+  </div>
+</ng-template>
+
+
+<ng-template #namesTemplate>
+
+  
+</ng-template>

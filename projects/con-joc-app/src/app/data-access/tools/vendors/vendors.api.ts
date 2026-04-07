@@ -13,4 +13,8 @@ export class VendorsDataService {
     getVendors(): Observable<any> {
         return this.http.get(this.apiUrl);
     }
+
+    updateVendor(id: number | string, data: any): Observable<any> {
+        return this.http.put(`${this.apiUrl}/${id}`, data);
+    }
 }

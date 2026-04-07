@@ -2,3 +2,21 @@
         [paginationConfig]="paginationConfig" (pageChange)="onPageChange($event)"
         (sizeChange)="onPageSizeChange($event)" (search)="onSearch($event)" (sortChange)="onSortChange($event)">
     </eh-table>
+
+
+    
+ <ng-template #namesTemplate>
+    <div> 
+
+
+      <h3 class="font-bold p-2"> What priority level would you like to set</h3>
+      <eh-textbox [formGroup]="vendorForm" fControlName="name" placeholder="Enter Name" label="Name" [disabled]="true">
+      </eh-textbox>
+      <eh-select [formGroup]="vendorForm" [config]="selectConfig" fControlName="priority" >
+      </eh-select>
+
+
+
+
+    </div> 
+   </ng-template> 
