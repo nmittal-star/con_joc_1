@@ -1,16 +1,17 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Component, ViewChild } from '@angular/core';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { Sort } from '@angular/material/sort';
-import { ButtonType, PaginationConfig, TableColumn, TableComponent, TableConfig, TableFilterConfig, UserData } from '@eh-library/common';
+import { ButtonComponent, ButtonType, DrawerComponent, DrawerConfig, FieldConfig, PaginationConfig, SelectComponent, TableColumn, TableComponent, TableConfig, TableFilterConfig, TextareaComponent, TextboxComponent, UserData } from '@eh-library/common';
 import { BehaviorSubject, Observable, Subject, takeUntil } from 'rxjs';
 import { OmniFieldDataService } from '../../../data-access/tools/omni-field/omni-field.api';
+import { text } from 'stream/consumers';
 
 @Component({
   selector: 'app-omni-field',
   standalone: true,
-  imports: [CommonModule, TableComponent, ReactiveFormsModule, FormsModule, MatIconModule],
+  imports: [CommonModule, TableComponent, ReactiveFormsModule, FormsModule, MatIconModule, ButtonComponent, TextboxComponent, DrawerComponent, TextareaComponent, SelectComponent],
   templateUrl: './omni-field.html',
   styleUrl: './omni-field.scss',
 })
@@ -19,15 +20,24 @@ export class OmniField {
   readonly dataSources$: Observable<UserData[]> = this.dataSubject.asObservable()
   private totalRecordsSubject = new BehaviorSubject<number>(0);
 
+  @ViewChild('drawer') drawer!: DrawerComponent
+
+
   extraButtons = [
     {
       label: 'Add Field Description',
       type: 'primary' as ButtonType,
       icon: 'add',
-      // click: () => this.open()
+      click: () => this.open()
     }
   ]
 
+  clientForm = new FormGroup({
+    name: new FormControl(''),
+    type: new FormControl(''),
+    description: new FormControl(''),
+    route: new FormControl(''),
+  })
 
 
   fullData: any[] = []
@@ -38,6 +48,9 @@ export class OmniField {
   endRecord = 10;
   currentSearchTerm = '';
   currentSort: Sort = { active: '', direction: '' };
+  drawerDetails: any = {}
+  isEditMode = false
+  isCreateMode = false;
 
   fieldConfig: TableConfig = {
     showSearch: true,
@@ -50,9 +63,35 @@ export class OmniField {
     isCheckBox: false
   }
 
+  drawerConfig: DrawerConfig = {
+    title: '',
+    hasClose: true,
+    closeOnBackdropClick: true,
+    autoOpen: false
+
+  }
+
+  selectConfig: FieldConfig = {
+    name: 'type',
+    label: 'Object Type',
+    placeholder: 'Select Object Type',
+    hasSearch: true,
+    options: [
+      { key: 'Account', value: 'Account' },
+      { key: 'Acid', value: 'Acid' },
+      { key: 'Apps', value: 'Apps' },
+      { key: 'Adaptor', value: 'Adaptor' },
+      { key: 'campaign', value: 'campaign' },
+      { key: 'Drip', value: 'Drip' },
+      { key: 'Note', value: 'Note' },
+
+
+    ]
+  };
+
   readonly columns: TableColumn[] = [
     { key: 'sl', label: 'Sl.No', searchable: true },
-    { key: 'name', label: 'Name', sortable: true, searchable: true },
+    { key: 'name', label: 'Name', sortable: true, searchable: true, clickable: true, onClick: (row) => { this.openDrawer(row, false) } },
     { key: 'type', label: 'Types', sortable: true, searchable: true },
     { key: 'description', label: 'Description', searchable: true },
     { key: 'route', label: 'Route', sortable: true, searchable: true },
@@ -200,6 +239,7 @@ export class OmniField {
   }
 
   editSettings(row: any) {
+    this.openDrawer(row, true)
 
   }
   deleteSettings(row: any) {
@@ -207,6 +247,76 @@ export class OmniField {
   }
 
 
+  openDrawer(row: any, editMode: boolean = false) {
+    this.drawerDetails = row;
+    this.isEditMode = editMode
+    this.isCreateMode = false
+
+    this.drawerConfig = {
+      ...this.drawerConfig,
+      title: `Field Description Settings - ${row.name}`
+    };
+
+    if (this.isEditMode) {
+      this.clientForm.patchValue({
+        name: row.name,
+        type: row.type,
+        description: row.description,
+        route: row.route,
+      })
+    }
+    const drawerEl = document.querySelector('.table-attached-drawer');
+    drawerEl?.classList.remove('closed');
+    drawerEl?.classList.add('open');
+    this.drawer.open()
+
+  }
+
+  open() {
+     this.drawerDetails = null
+    this.isCreateMode = true;
+    this.isEditMode = true;
+    this.clientForm.reset()
+   
+
+    this.drawerConfig = {
+      ...this.drawerConfig,
+      title: 'Add Field Description'
+    };
+
+
+    const drawerEl = document.querySelector('.table-attached-drawer');
+    drawerEl?.classList.remove('closed');
+    drawerEl?.classList.add('open');
+
+    this.drawer.open()
+  }
+
+  handleDrawerClose() {
+    const drawerEl = document.querySelector('.table-attached-drawer');
+    drawerEl?.classList.remove('open');
+    drawerEl?.classList.add('closed');
+  }
+
+  setEditMode(value: boolean) {
+    this.isEditMode = value;
+
+    if (value) {
+      this.clientForm.patchValue({
+        name: this.drawerDetails.name,
+        type: this.drawerDetails.type,
+        description: this.drawerDetails.description,
+        route: this.drawerDetails.route,
+      })
+    }
+  }
+
+
+  saveChanges() {
+
+    console.log(this.clientForm.value, 'saved details');
+    this.drawer.close()
+  }
 
 }
 
