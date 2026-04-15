@@ -1,0 +1,226 @@
+<div class="billing-container">
+
+  @if(isdialerSettingsPage()){
+    <app-dialer-settings></app-dialer-settings>
+  }
+  @if (iszuoraSettingsPage()) {
+      <div style="padding: 40px; background: #f8fafc; min-height: 100vh;">
+        <div style="background: #ffffff; border-radius: 20px; border: 1px solid #e2e8f0; overflow: hidden;">
+
+          <!-- Header -->
+          <div style="padding: 24px 32px; display: flex; justify-content: space-between; align-items: flex-start;">
+            <div>
+              <h3 style="font-size: 20px; font-weight: 500; color: #1e293b; margin: 0 0 2px;">Recurring fees</h3>
+            </div>
+          </div>
+
+          <form [formGroup]="calcForm">
+            <table style="width: 100%; border-collapse: collapse; font-size: 13px; border-top: 1px solid #f1f5f9;">
+
+              <!-- Column Headers -->
+              <thead>
+                <tr style="border-bottom: 1px solid #f1f5f9;">
+                  <th
+                    style="padding: 10px 32px; text-align: left; font-size: 10px; font-weight: 700; color: #94a3b8; letter-spacing: 0.12em; text-transform: uppercase;">
+                    Component</th>
+                  <th
+                    style="padding: 10px 8px; text-align: center; font-size: 10px; font-weight: 700; color: #94a3b8; letter-spacing: 0.12em; text-transform: uppercase; width: 110px;">
+                    Qty</th>
+                  <th
+                    style="padding: 10px 8px; text-align: center; font-size: 10px; font-weight: 700; color: #94a3b8; letter-spacing: 0.12em; text-transform: uppercase; width: 150px;">
+                    Unit Price</th>
+                  <th
+                    style="padding: 10px 32px; text-align: right; font-size: 10px; font-weight: 700; color: #94a3b8; letter-spacing: 0.12em; text-transform: uppercase; width: 120px;">
+                    Subtotal</th>
+                </tr>
+              </thead>
+
+              <tbody formArrayName="rows">
+                @for (row of rows.controls; track $index; let i = $index) {
+                <tr [formGroupName]="i" style="border-bottom: 1px solid #f8fafc;">
+
+                  <!-- Component Name -->
+                  <td style="padding: 14px 32px;">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                      <span style="font-size: 14px; font-weight: 500; color: #334155;">{{
+                        row.get('componentName')?.value }}</span>
+                    </div>
+                  </td>
+
+                  <!-- QTY -->
+                  <td style="padding: 14px 8px; text-align: center;">
+                    <input type="number" formControlName="quantity"
+                      style="width: 76px; height: 40px; text-align: center; font-size: 14px; font-weight: 600; color: #1e293b; border: 1px solid #e2e8f0; border-radius: 8px; outline: none; background: #fff;" />
+                  </td>
+
+                  <!-- Unit Price -->
+                  <td style="padding: 14px 8px; text-align: center;">
+                    <div
+                      style="display: inline-flex; align-items: center; height: 40px; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; width: 110px; background: #fff;">
+                      <span
+                        style="padding: 0 4px 0 10px; color: #cbd5e1; font-size: 14px; font-weight: 500; user-select: none;">$</span>
+                      <input type="number" formControlName="price"
+                        style="width: 100%; padding-right: 10px; text-align: right; font-size: 14px; font-weight: 600; color: #1e293b; border: none; outline: none; background: transparent;" />
+                    </div>
+                  </td>
+
+                  <!-- Subtotal -->
+                  <td
+                    style="padding: 14px 32px; text-align: right; font-size: 14px; font-weight: 600; color: #1e293b; font-variant-numeric: tabular-nums;">
+                    {{ row.get('total')?.value | currency:'USD':'symbol':'1.2-2' }}
+                  </td>
+
+                </tr>
+                }
+              </tbody>
+
+              <!-- Grand Total -->
+              <tfoot>
+                <tr style="border-top: 1px solid #e2e8f0;">
+                  <td colspan="3" style="padding: 20px 32px 20px 0; text-align: right;">
+                    <span
+                      style="font-size: 10px; font-weight: 800; letter-spacing: 0.2em; text-transform: uppercase; color: #94a3b8;">Grand
+                      Total</span>
+                  </td>
+                  <td style="padding: 20px 32px; text-align: right;">
+                    <span
+                      style="font-size: 26px; font-weight: 700; color: #2563eb; font-variant-numeric: tabular-nums;">
+                      {{ grandTotal | currency }}
+                    </span>
+                  </td>
+                </tr>
+              </tfoot>
+
+            </table>
+          </form>
+
+          <!-- ── Setup Fees Card ── -->
+          <div style="margin: 0 32px 32px; border: 1px solid #e2e8f0; border-radius: 14px; overflow: hidden;">
+
+            <!-- Setup Fees Header -->
+            <div style="padding: 16px 24px; border-bottom: 1px solid #f1f5f9;">
+              <h3 style="font-size: 15px; font-weight: 500; color: #1e293b; margin: 0;">Setup fees</h3>
+            </div>
+
+            <form [formGroup]="setupFeesForm">
+              <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+
+                <!-- Column Headers -->
+                <thead>
+                  <tr style="border-bottom: 1px solid #f1f5f9;">
+                    <th
+                      style="padding: 10px 24px; text-align: left; font-size: 10px; font-weight: 700; color: #94a3b8; letter-spacing: 0.12em; text-transform: uppercase;">
+                      Component name</th>
+                    <th
+                      style="padding: 10px 8px; text-align: center; font-size: 10px; font-weight: 700; color: #94a3b8; letter-spacing: 0.12em; text-transform: uppercase; width: 150px;">
+                      Price</th>
+                    <th
+                      style="padding: 10px 24px; text-align: right; font-size: 10px; font-weight: 700; color: #94a3b8; letter-spacing: 0.12em; text-transform: uppercase; width: 120px;">
+                      Total</th>
+                  </tr>
+                </thead>
+
+                <tbody formArrayName="setupRows">
+
+                  <!-- Phone number setup fee -->
+                  <tr formGroupName="0" style="border-bottom: 1px solid #f8fafc;">
+                    <td style="padding: 14px 24px;">
+                      <div style="display: flex; align-items: center; gap: 10px;">
+                        <span style="font-size: 14px; font-weight: 500; color: #334155;">Phone number setup fee</span>
+                      </div>
+                    </td>
+                    <td style="padding: 14px 8px; text-align: center;">
+                      <div
+                        style="display: inline-flex; align-items: center; height: 40px; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; width: 110px; background: #fff;">
+                        <span
+                          style="padding: 0 4px 0 10px; color: #cbd5e1; font-size: 14px; font-weight: 500; user-select: none;">$</span>
+                        <input type="number" formControlName="price"
+                          style="width: 100%; padding-right: 10px; text-align: right; font-size: 14px; font-weight: 600; color: #1e293b; border: none; outline: none; background: transparent;" />
+                      </div>
+                    </td>
+                    <td
+                      style="padding: 14px 24px; text-align: right; font-size: 14px; font-weight: 600; color: #1e293b; font-variant-numeric: tabular-nums;">
+                      {{ setupFeesForm.get('setupRows.0.price')?.value | currency:'USD':'symbol':'1.2-2' }}
+                    </td>
+                  </tr>
+
+                  <!-- One time setup fee -->
+                  <tr formGroupName="1">
+                    <td style="padding: 14px 24px;">
+                      <div style="display: flex; align-items: center; gap: 10px;">
+                        <span style="font-size: 14px; font-weight: 500; color: #334155;">One time setup fee</span>
+                      </div>
+                    </td>
+                    <td style="padding: 14px 8px; text-align: center;">
+                      <div
+                        style="display: inline-flex; align-items: center; height: 40px; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; width: 110px; background: #fff;">
+                        <span
+                          style="padding: 0 4px 0 10px; color: #cbd5e1; font-size: 14px; font-weight: 500; user-select: none;">$</span>
+                        <input type="number" formControlName="price"
+                          style="width: 100%; padding-right: 10px; text-align: right; font-size: 14px; font-weight: 600; color: #1e293b; border: none; outline: none; background: transparent;" />
+                      </div>
+                    </td>
+                    <td
+                      style="padding: 14px 24px; text-align: right; font-size: 14px; font-weight: 600; color: #1e293b; font-variant-numeric: tabular-nums;">
+                      {{ setupFeesForm.get('setupRows.1.price')?.value | currency:'USD':'symbol':'1.2-2' }}
+                    </td>
+                  </tr>
+
+                </tbody>
+
+                <!-- Setup Fees Total -->
+                <tfoot>
+                  <tr style="border-top: 1px solid #e2e8f0;">
+                    <td colspan="2" style="padding: 16px 24px 16px 0; text-align: right;">
+                      <span
+                        style="font-size: 10px; font-weight: 800; letter-spacing: 0.2em; text-transform: uppercase; color: #94a3b8;">Total</span>
+                    </td>
+                    <td style="padding: 16px 24px; text-align: right;">
+                      <span
+                        style="font-size: 22px; font-weight: 700; color: #2563eb; font-variant-numeric: tabular-nums;">
+                        {{ setupFeesTotal | currency }}
+                      </span>
+                    </td>
+                  </tr>
+                </tfoot>
+
+              </table>
+            </form>
+
+          </div>
+
+          <!-- Footer Bar -->
+          <div
+            style="padding: 16px 32px; background: #f8fafc; border-top: 1px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center;">
+            <div style="font-size: 12px; color: #94a3b8; line-height: 1.6;">
+              <!-- <div>{{ totalItems }} items</div> -->
+              <div>{{ grandTotal | currency }}</div>
+            </div>
+            <div style="display: flex; gap: 10px;">
+              <!-- <button
+          type="button"
+          (click)="reset()"
+          style="padding: 8px 20px; font-size: 13px; font-weight: 500; color: #475569; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 20px; cursor: pointer;">
+          Reset
+        </button>
+        <button
+          type="button"
+          (click)="confirmQuote()"
+          style="padding: 8px 20px; font-size: 13px; font-weight: 500; color: #ffffff; background: #1e293b; border: 1px solid #1e293b; border-radius: 20px; cursor: pointer;">
+          Confirm quote ↗
+        </button> -->
+            </div>
+          </div>
+
+        </div>
+      </div>
+    } 
+@if (iszuoraSubscriptionsPage()) {
+      <app-generic-table [columns]="subscriptionColumns" [rows]="subscriptionRows" [config]="subscriptionTableConfig"
+        title="Subscription Details"></app-generic-table>
+}
+@if (iszuoraInvoicesPage()) {
+      <app-generic-table [columns]="invoicesColumns" [rows]="subscriptionRows" [config]="invoicesTableConfig"
+        title="Invoice Details"></app-generic-table>
+}
+</div>

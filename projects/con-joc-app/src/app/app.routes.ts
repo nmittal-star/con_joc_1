@@ -1,4 +1,4 @@
-    
+
 import { Routes } from '@angular/router';
 
 const generalSettingTabs = [
@@ -6,7 +6,24 @@ const generalSettingTabs = [
     { title: 'User', path: 'user', icon: 'person' },
     { title: 'Trunks', path: 'trunks', icon: 'device_hub' },
     { title: 'Billing', path: 'billing', icon: 'receipt' },
-    { title: 'Zuora Billing', path: 'zuora-billing', icon: 'payment' },
+    {
+        title: 'Zuora Billing', path: 'zuora-billing', icon: 'payment',
+        children: [
+            {
+                title: 'Dialer Settings', path: 'dialer-settings', children: [
+                    { title: 'Licenses', path: 'licenses' },
+                    { title: 'Licenses Addons', path: 'licenses-addons' },
+                    { title: 'Account Addons', path: 'account-addons' },
+                    { title: 'Inbound Numbers', path: 'inbound-numbers' },
+                    { title: 'One-Time Charge', path: 'one-time-charge' },
+                    { title: 'Minutes/Credit', path: 'minutes-credit' },
+                ],
+            },
+            { title: 'Zuora Components Settings', path: 'zuora-components-settings' },
+            { title: 'Zuora Subscriptions', path: 'zuora-subscriptions' },
+            { title: 'Invoices', path: 'invoices' },
+        ]
+    },
     { title: 'Transactions', path: 'transactions', icon: 'compare_arrows' },
     { title: 'Invoices', path: 'invoices', icon: 'description' },
     {
@@ -17,7 +34,12 @@ const generalSettingTabs = [
             { title: 'Campaign Registry', path: 'campaign-registry' },
             { title: 'Intelligent Virtual Agent', path: 'intelligent-virtual-agent' },
             { title: 'Agent AI', path: 'agent-ai' },
-            { title: 'CC AI Stats', path: 'cc-ai-stats' },
+            {
+                title: 'CC AI Stats', path: 'cc-ai-stats', children: [
+                    { title: 'Call Timing', path: 'call-timing' },
+                    { title: 'Recognition Rates', path: 'recognition-rates' },
+                ]
+            },
             { title: 'Compliance', path: 'compliance' },
             { title: 'SFDC Adaptor', path: 'sfdc-adaptor' },
         ],
@@ -31,6 +53,8 @@ const generalSettingTabs = [
     { title: 'Miscellaneous', path: 'miscellaneous', icon: 'apps' },
     { title: 'User Compliance Logs', path: 'compliance-logs', icon: 'gavel' },
 ];
+
+
 
 export const routes: Routes = [
     {
@@ -265,14 +289,14 @@ export const routes: Routes = [
                 data: { breadcrumb: 'Email Lists' }
             },
 
-              {
+            {
                 path: 'email-settings',
                 loadComponent: () =>
                     import('./pages/tools/email-lists/email-settings/email-settings').then(m => m.EmailSettings),
                 data: { breadcrumb: 'Email Settings' }
             },
-                        
-            
+
+
             {
                 path: 'clusters-odometer',
                 loadComponent: () =>
@@ -454,8 +478,102 @@ export const routes: Routes = [
                     },
                     {
                         path: 'zuora-billing',
-                        loadComponent: () => import('./pages/common/general-setting/general-setting-tab').then(m => m.GeneralSettingTab),
-                        data: { breadcrumb: 'Zuora Billing', sectionTitle: 'Zuora Billing' }
+                        loadComponent: () => import('./pages/common/general-setting/zuora-billing/zuora-shell/zuora-shell').then(m => m.ZuoraShell),
+                        data: {
+                            breadcrumb: 'Zuora Billing',
+                            sectionTitle: 'Zuora Billing',
+                            showtabs: true,
+                        },
+                        children: [
+                            {
+                                path: 'dialer-settings',
+                                loadComponent: () => import('./pages/common/general-setting/zuora-billing/dialer-settings/dialer-settings').then(m => m.DialerSettings),
+                                data: {
+                                    breadcrumb: 'Dialer Settings',
+                                    sectionTitle: 'Dialer Settings',
+                                    showtabs: true,
+                                },
+                                children:[{
+                                path: 'licenses',
+                                loadComponent: () => import('./pages/common/general-setting/zuora-billing/dialer-settings/dialer-settings').then(m => m.DialerSettings),
+                                data: {
+                                    breadcrumb: 'Licenses',
+                                    sectionTitle: 'Licenses',
+                                    showtabs: true,
+                                },
+                            },
+                        {
+                                path: 'license-addons',
+                                loadComponent: () => import('./pages/common/general-setting/zuora-billing/dialer-settings/dialer-settings').then(m => m.DialerSettings),
+                                data: {
+                                    breadcrumb: 'License Add-ons',
+                                    sectionTitle: 'License Add-ons',
+                                    showtabs: true,
+                                },
+                            },{
+                                path: 'account-addons',
+                                loadComponent: () => import('./pages/common/general-setting/zuora-billing/dialer-settings/dialer-settings').then(m => m.DialerSettings),
+                                data: {
+                                    breadcrumb: 'Account Add-ons',
+                                    sectionTitle: 'Account Add-ons',
+                                    showtabs: true,
+                                },
+                            },{
+                                path: 'inbound-numbers',
+                                loadComponent: () => import('./pages/common/general-setting/zuora-billing/dialer-settings/dialer-settings').then(m => m.DialerSettings),
+                                data: {
+                                    breadcrumb: 'Inbound Numbers',
+                                    sectionTitle: 'Inbound Numbers',
+                                    showtabs: true,
+                                },
+                            },{
+                                path: 'one-time-charge',
+                                loadComponent: () => import('./pages/common/general-setting/zuora-billing/dialer-settings/dialer-settings').then(m => m.DialerSettings),
+                                data: {
+                                    breadcrumb: 'One-time Charge',
+                                    sectionTitle: 'One-time Charge',
+                                    showtabs: true,
+                                },
+                            },{
+                                path: 'minutes-credit',
+                                loadComponent: () => import('./pages/common/general-setting/zuora-billing/dialer-settings/dialer-settings').then(m => m.DialerSettings),
+                                data: {
+                                    breadcrumb: 'Minutes Credit',
+                                    sectionTitle: 'Minutes Credit',
+                                    showtabs: true,
+                                },
+                            },
+                            { path: '', redirectTo: 'licenses', pathMatch: 'full' },
+                            ]
+                            },
+                            {
+                                path: 'zuora-components-settings',
+                                loadComponent: () => import('./pages/common/general-setting/zuora-billing/zuora-billing').then(m => m.ZuoraBilling),
+                                data: {
+                                    breadcrumb: 'Zuora Components Settings',
+                                    sectionTitle: 'Zuora Components Settings',
+                                    showtabs: true,
+                                }
+                            },
+                            {
+                                path: 'zuora-subscriptions',
+                                loadComponent: () => import('./pages/common/general-setting/zuora-billing/zuora-billing').then(m => m.ZuoraBilling),
+                                data: {
+                                    breadcrumb: 'Zuora Subscriptions',
+                                    sectionTitle: 'Zuora Subscriptions',
+                                    showtabs: true,
+                                }
+                            },
+                            {
+                                path: 'invoices',
+                                loadComponent: () => import('./pages/common/general-setting/zuora-billing/zuora-billing').then(m => m.ZuoraBilling),
+                                data: {
+                                    breadcrumb: 'Invoices',
+                                    sectionTitle: 'Invoices',
+                                    showtabs: true,
+                                }
+                            }
+                        ]
                     },
                     {
                         path: 'transactions',
@@ -481,7 +599,6 @@ export const routes: Routes = [
                                 data: {
                                     breadcrumb: 'Campaign Registry',
                                     sectionTitle: 'Campaign Registry',
-                                    sectionDescription: 'Manage Campaign Registry configuration and onboarding details for this account.',
                                 }
                             },
                             {
@@ -490,7 +607,6 @@ export const routes: Routes = [
                                 data: {
                                     breadcrumb: 'Intelligent Virtual Agent',
                                     sectionTitle: 'Intelligent Virtual Agent',
-                                    sectionDescription: 'Configure Intelligent Virtual Agent behavior, routing, and account-specific options.',
                                 }
                             },
                             {
@@ -499,7 +615,6 @@ export const routes: Routes = [
                                 data: {
                                     breadcrumb: 'Agent AI',
                                     sectionTitle: 'Agent AI',
-                                    sectionDescription: 'Set up Agent AI features, rollout settings, and service-specific controls.',
                                 }
                             },
                             {
@@ -508,7 +623,6 @@ export const routes: Routes = [
                                 data: {
                                     breadcrumb: 'CC AI Stats',
                                     sectionTitle: 'CC AI Stats',
-                                    sectionDescription: 'Review and maintain CC AI Stats page settings for this account.',
                                 }
                             },
                             {
@@ -517,7 +631,6 @@ export const routes: Routes = [
                                 data: {
                                     breadcrumb: 'Compliance',
                                     sectionTitle: 'Compliance',
-                                    sectionDescription: 'Manage compliance-related settings and account controls for this service.',
                                 }
                             },
                             {
@@ -526,7 +639,6 @@ export const routes: Routes = [
                                 data: {
                                     breadcrumb: 'SFDC Adaptor',
                                     sectionTitle: 'SFDC Adaptor',
-                                    sectionDescription: 'Configure SFDC Adaptor settings and account-specific integration options.',
                                 }
                             },
                             { path: '', redirectTo: 'campaign-registry', pathMatch: 'full' }
@@ -575,34 +687,34 @@ export const routes: Routes = [
                     { path: '', redirectTo: 'general', pathMatch: 'full' }
                 ]
             },
-    {
-        path: 'generic-table/:id',
-        loadComponent: () => import('./pages/common/generic-table/generic-table-page').then(m => m.GenericTablePage),
-        data: { breadcrumb: 'Generic Table' }
-    },
-    {
-        path: 'view-page/:id',
-        data: {
-            breadcrumb: 'View Page',
-            tabs: [
-                { title: 'View Page', path: 'view-page' },
-                { title: 'View Highlighted', path: 'view-highlighted' },
-            ]
-        },
-        children: [
             {
-                path: 'view-page',
-                loadComponent: () => import('./pages/common/view-page/view-page').then(m => m.ViewPage),
+                path: 'generic-table/:id',
+                loadComponent: () => import('./pages/common/generic-table/generic-table-page').then(m => m.GenericTablePage),
+                data: { breadcrumb: 'Generic Table' }
             },
             {
-                path: 'view-highlighted',
-                loadComponent: () => import('./pages/common/view-highlighted/view-highlighted').then(m => m.ViewHighlighted),
-                data: { breadcrumb:'' }
+                path: 'view-page/:id',
+                data: {
+                    breadcrumb: 'View Page',
+                    tabs: [
+                        { title: 'View Page', path: 'view-page' },
+                        { title: 'View Highlighted', path: 'view-highlighted' },
+                    ]
+                },
+                children: [
+                    {
+                        path: 'view-page',
+                        loadComponent: () => import('./pages/common/view-page/view-page').then(m => m.ViewPage),
+                    },
+                    {
+                        path: 'view-highlighted',
+                        loadComponent: () => import('./pages/common/view-highlighted/view-highlighted').then(m => m.ViewHighlighted),
+                        data: { breadcrumb: '' }
+                    },
+                    { path: '', redirectTo: 'view-page', pathMatch: 'full' }
+                ]
             },
-            { path: '', redirectTo: 'view-page', pathMatch: 'full' }
-        ]
-    },
-            
+
             {
                 path: 'billing-tax-report',
                 loadComponent: () =>

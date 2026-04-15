@@ -12,7 +12,7 @@ import { MatDividerModule } from '@angular/material/divider';
 @Component({
   selector: 'app-repcheck-csvfile',
   standalone: true,
-  imports: [CommonModule, MatDividerModule, TableComponent, ReactiveFormsModule, FormsModule, MatIconModule],
+  imports: [CommonModule, MatDividerModule, TableComponent, ReactiveFormsModule, FormsModule, MatIconModule, DropAreaComponent, SelectComponent, TextboxComponent, TextareaComponent],
   templateUrl: './repcheck-csvfile.html',
   styleUrl: './repcheck-csvfile.scss',
 })

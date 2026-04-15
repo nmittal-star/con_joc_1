@@ -1,0 +1,240 @@
+/* ================================
+   SERVICE COMPLIANCE (SMART LAYOUT)
+================================ */
+
+.service-compliance-layout {
+  background: #f9fafb;
+  min-height: 80vh;
+  padding: 16px 0;
+}
+
+/* SCROLL */
+.table-scroll-container {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background: #fff;
+
+  &::-webkit-scrollbar {
+    height: 8px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+    border-radius: 4px;
+  }
+}
+
+/* TABLE */
+.compliance-table {
+  width: 100%;
+  min-width: 1200px;
+  border-collapse: collapse;
+  table-layout: auto;
+  font-size: 13px;
+  border-right: 1px solid #1f2021;
+
+  th, td {
+    padding: 8px 10px;
+    border-bottom: 1px solid #e5e7eb;
+    border-right: 1px solid #f3f4f6;
+    text-align: center;
+    vertical-align: middle;
+  }
+
+  th:last-child,
+  td:last-child {
+    border-right: none;
+  }
+
+  /* HEADER */
+  thead {
+    th {
+      background: #EEEEEE;
+      color: #EEEEEE;
+      font-weight: 600;
+      border-bottom: 1px solid #a0a3a9;  
+      font-size: 13px;
+      border-right: 1px solid #a0a3a8;
+      color: #45474b;
+    }
+
+    .sub-header th {
+      background: #f9fafb;
+      color: #9ca3af;
+      font-size: 11px;
+    }
+  }
+
+  /* ROW */
+  tbody tr:hover {
+    background: #f9fafb;
+  }
+
+  /* =========================
+     SMART COLUMN RULES
+  ========================= */
+
+  /* STATUS COLUMN (fixed wide) */
+  th.sticky-col,
+  td.disposition-cell {
+    width: 240px;
+    min-width: 150px;
+  }
+
+  .disposition-cell {
+    text-align: left !important;
+    white-space: normal;
+
+    .cell-content {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+    }
+
+    .status-key {
+      font-weight: 600;
+      color: #111827;
+      font-size: 12px;
+      // margin-bottom: 2px;
+    }
+
+    .status-label {
+      font-size: 10px;
+      color: #6b7280;
+    }
+  }
+
+  /* ACTION COLUMN (fixed medium) */
+  th:last-child,
+  td:last-child {
+    width: 150px;
+    min-width: 150px;
+  }
+
+  /* FLEXIBLE DATA COLUMNS */
+  tbody td:not(.disposition-cell):not(:last-child) {
+    min-width: 140px;   // 🔥 base size
+  }
+
+  /* =========================
+     FIELD SIZE INTELLIGENCE
+  ========================= */
+
+  .field-group {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0;
+
+    mat-form-field {
+      width: 100%;
+      max-width: 80px;
+        
+    }
+  }
+
+  /* Smaller dropdowns (like Status Yes/No) */
+  td:nth-child(2),
+  td:nth-child(8) {
+    mat-form-field {
+      max-width: 120px; 
+    }
+  }
+
+  /* Medium fields (reason / scope) */
+  td:nth-child(3),
+  td:nth-child(4),
+  td:nth-child(5),
+  td:nth-child(9),
+  td:nth-child(10) {
+    mat-form-field {
+      max-width: 160px;
+    }
+  }
+
+  /* Large fields (long labels like "Add Numbers...") */
+  td:nth-child(6),
+  td:nth-child(7),
+  td:nth-child(11) {
+    mat-form-field {
+      max-width: 200px;
+    }
+  }
+
+  /* MATERIAL FIX */
+  ::ng-deep {
+    .mat-mdc-form-field {
+      width: 100%;
+    }
+
+    .mdc-text-field {
+      height: 25px !important;
+    }
+
+    .mat-mdc-select {
+      font-size: 13px;
+    }
+  }
+
+  /* BUTTON */
+  .update-btn {
+    display: block;
+    margin: 0 auto;
+    width: 120px;
+    padding: 6px 10px;
+    background: #6366f1;
+    color: #fff;
+    border-radius: 6px;
+    border: none;
+    font-size: 12px;
+    cursor: pointer;
+
+    &:hover {
+      background: #4f46e5;
+    }
+  }
+
+  /* EMPTY */
+  .dash {
+    color: #9ca3af;
+  }
+}
+
+/* STICKY LEFT */
+.sticky-col {
+  position: sticky;
+  left: 0;
+  background: #fff;
+  z-index: 3;
+  border-right: 1px solid #e5e7eb;
+}
+/* CENTER ALIGN SELECT VALUE */
+::ng-deep .mat-mdc-select-value {
+  display: flex;
+  align-items: center;     // vertical center
+  justify-content: center; // horizontal center
+  width: 100%;
+}
+
+/* CENTER ALIGN PLACEHOLDER */
+::ng-deep .mat-mdc-select-placeholder {
+  text-align: center;
+  width: 100%;
+}
+
+/* FIX TRIGGER HEIGHT + ALIGNMENT */
+::ng-deep .mat-mdc-select-trigger {
+  height: 32px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* FIX TEXT FIELD WRAPPER */
+::ng-deep .mdc-text-field {
+  display: flex;
+  align-items: center !important;
+  
+}

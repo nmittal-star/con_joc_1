@@ -1,0 +1,127 @@
+ .billing-container {
+      padding: 24px;
+      min-height: 100vh;
+      background: #f8fafc;
+    }
+ 
+    .page-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+ 
+    .header-icon {
+      font-size: 40px;
+      width: 40px;
+      height: 40px;
+      color: #3b5bdb;
+    }
+ 
+    .page-title {
+      margin: 0;
+      font-size: 12px;
+      font-weight: 500;
+      color: #161616;
+      letter-spacing: -0.5px;
+    }
+ 
+    .page-subtitle {
+      margin: 4px 0 0;
+      color: #64748b;
+      font-size: 14px;
+    }
+ 
+    .main-tabs {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.06);
+      overflow: hidden;
+    }
+ 
+    .sub-tab-wrapper {
+      padding: 16px 24px 24px;
+    }
+ 
+    .sub-tabs {
+      background: #f8fafc;
+      border-radius: 8px;
+    }
+ 
+    .tab-icon {
+      margin-right: 6px;
+      font-size: 18px;
+      vertical-align: middle;
+    }
+ 
+    .tab-icon-sm {
+      margin-right: 4px;
+      font-size: 16px;
+      vertical-align: middle;
+    }
+ 
+    ::ng-deep .main-tabs .mat-mdc-tab-header {
+      background: #e1e5ea;
+      border-radius: 12px 12px 0 0;
+    }
+ 
+    ::ng-deep .main-tabs .mat-mdc-tab {
+      color: rgba(255,255,255,0.7) !important;
+    }
+ 
+    ::ng-deep .main-tabs .mat-mdc-tab.mdc-tab--active {
+      color: white !important;
+    }
+ 
+    ::ng-deep .main-tabs .mdc-tab-indicator__content--underline {
+      border-color: #60a5fa !important;
+    }
+ 
+    ::ng-deep .sub-tabs .mat-mdc-tab-header {
+      background: #eef2ff;
+      border-radius: 8px 8px 0 0;
+    }
+ 
+    ::ng-deep .sub-tabs .mat-mdc-tab {
+      color: #4338ca !important;
+      opacity: 0.6;
+    }
+ 
+    ::ng-deep .sub-tabs .mat-mdc-tab.mdc-tab--active {
+      opacity: 1;
+      color: #3b5bdb !important;
+    }
+ 
+    ::ng-deep .sub-tabs .mdc-tab-indicator__content--underline {
+      border-color: #3b5bdb !important;
+    }
+ 
+    ::ng-deep .mat-mdc-tab-body-content {
+      padding: 0;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #e2e8f0;
+  border-radius: 10px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #cbd5e1;
+}
+
+/* Chrome, Safari, Edge, Opera - Hide arrows */
+/* Remove spinner arrows from number inputs */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
