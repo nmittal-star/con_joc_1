@@ -1,3 +1,5 @@
+@use '../../common/general-setting/general-setting';
+
 /* Dual Listbox Styles */
 
 .dual-listbox-container {
@@ -9,8 +11,8 @@
 .dual-listbox-list {
 	display: flex;
 	flex-direction: column;
-	align-items: center;
-	min-width: 200px;
+	align-items: stretch;
+	width: 100%;
 }
 .dual-listbox-title {
 	font-weight: 300;
@@ -19,10 +21,10 @@
 	word-wrap: break-word;
 }
 .dual-listbox-select {
-	width: 180px;
-	min-width: 120px;
-	max-width: 220px;
-	height: 220px;
+	width: 100% !important;
+	max-width: 95% !important;
+	min-height: 260px;
+	height: auto;
 	border-radius: 0.5rem;
 	border: 1px solid #dbeafe;
 	background: #fff;
@@ -49,7 +51,6 @@
 	color: #7b8ca6;
 	cursor: not-allowed;
 }
-@import '../../common/general-setting/general-setting.scss';
 
 /* Give the form fields a slate-50 interior to contrast against the white cards. */
 .general-setting-form {

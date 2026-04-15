@@ -19,18 +19,63 @@
           [class.single-tab]="config.tabs!.length === 1"
           color="primary">
           @for (tab of config.tabs; track tab.path) {
-            <a
-              mat-tab-link
-              [routerLink]="tab.path"
-              [relativeTo]="config.parentRoute"
-              (click)="activeTab = tab.path ?? ''"
-              [active]="activeTab === tab.path"
-              [disabled]="config.tabs!.length === 1">
-              @if (tab.icon) {
-                <mat-icon class="tab-icon">{{ tab.icon }}</mat-icon>
-              }
-              {{ tab.title | translate }}
-            </a>
+            @if (hasChildren(tab)) {
+              <button
+                mat-tab-link
+                type="button"
+                [matMenuTriggerFor]="servicesMenu"
+                [active]="activeTab === tab.path"
+                [disabled]="config.tabs!.length === 1"
+                aria-label="Open Services menu">
+                @if (tab.icon) {
+                  <mat-icon class="tab-icon">{{ tab.icon }}</mat-icon>
+                }
+                {{ tab.title | translate }}
+                <mat-icon class="tab-icon tab-icon--dropdown">arrow_drop_down</mat-icon>
+              </button>
+
+              <mat-menu #servicesMenu="matMenu" xPosition="after" yPosition="below">
+                @for (child of tab.children; track child.path) {
+                  @if (hasChildren(child)) {
+                    <button mat-menu-item [matMenuTriggerFor]="subMenu">
+                      {{ child.title | translate }}
+                    </button>
+                    <mat-menu #subMenu="matMenu">
+                      @for (grandchild of child.children!; track grandchild.path) {
+                        <button
+                          mat-menu-item
+                          [routerLink]="[tab.path, child.path, grandchild.path]"
+                          [relativeTo]="config.parentRoute"
+                          (click)="activeTab = tab.path ?? ''">
+                          {{ grandchild.title | translate }}
+                        </button>
+                      }
+                    </mat-menu>
+                  } @else {
+                    <button
+                      mat-menu-item
+                      [routerLink]="[tab.path, child.path]"
+                      [relativeTo]="config.parentRoute"
+                      (click)="activeTab = tab.path ?? ''">
+                      {{ child.title | translate }}
+                    </button>
+                  }
+                }
+              </mat-menu>
+            } @else {
+              <a
+                mat-tab-link
+                [routerLink]="tab.path"
+                [relativeTo]="config.parentRoute"
+                (click)="activeTab = tab.path ?? ''"
+                [active]="activeTab === tab.path"
+                [disabled]="config.tabs!.length === 1">
+                @if (tab.icon) {
+                  <mat-icon class="tab-icon">{{ tab.icon }}</mat-icon>
+                }
+                {{ tab.title | translate }}
+              </a>
+            }
           }
         </nav>
       </div>
@@ -47,18 +92,63 @@
           [class.single-tab]="config.tabs!.length === 1"
           color="primary">
           @for (tab of config.tabs; track tab.path) {
-            <a
-              mat-tab-link
-              [routerLink]="tab.path"
-              [relativeTo]="config.parentRoute"
-              (click)="activeTab = tab.path ?? ''"
-              [active]="activeTab === tab.path"
-              [disabled]="config.tabs!.length === 1">
-              @if (tab.icon) {
-                <mat-icon class="tab-icon">{{ tab.icon }}</mat-icon>
-              }
-              {{ tab.title | translate }}
-            </a>
+            @if (hasChildren(tab)) {
+              <button
+                mat-tab-link
+                type="button"
+                [matMenuTriggerFor]="servicesMenuCompact"
+                [active]="activeTab === tab.path"
+                [disabled]="config.tabs!.length === 1"
+                aria-label="Open Services menu">
+                @if (tab.icon) {
+                  <mat-icon class="tab-icon">{{ tab.icon }}</mat-icon>
+                }
+                {{ tab.title | translate }}
+                <mat-icon class="tab-icon tab-icon--dropdown">arrow_drop_down</mat-icon>
+              </button>
+
+              <mat-menu #servicesMenuCompact="matMenu" xPosition="after" yPosition="below">
+                @for (child of tab.children; track child.path) {
+                  @if (hasChildren(child)) {
+                    <button mat-menu-item [matMenuTriggerFor]="subMenuCompact">
+                      {{ child.title | translate }}
+                    </button>
+                    <mat-menu #subMenuCompact="matMenu">
+                      @for (grandchild of child.children!; track grandchild.path) {
+                        <button
+                          mat-menu-item
+                          [routerLink]="[tab.path, child.path, grandchild.path]"
+                          [relativeTo]="config.parentRoute"
+                          (click)="activeTab = tab.path ?? ''">
+                          {{ grandchild.title | translate }}
+                        </button>
+                      }
+                    </mat-menu>
+                  } @else {
+                    <button
+                      mat-menu-item
+                      [routerLink]="[tab.path, child.path]"
+                      [relativeTo]="config.parentRoute"
+                      (click)="activeTab = tab.path ?? ''">
+                      {{ child.title | translate }}
+                    </button>
+                  }
+                }
+              </mat-menu>
+            } @else {
+              <a
+                mat-tab-link
+                [routerLink]="tab.path"
+                [relativeTo]="config.parentRoute"
+                (click)="activeTab = tab.path ?? ''"
+                [active]="activeTab === tab.path"
+                [disabled]="config.tabs!.length === 1">
+                @if (tab.icon) {
+                  <mat-icon class="tab-icon">{{ tab.icon }}</mat-icon>
+                }
+                {{ tab.title | translate }}
+              </a>
+            }
           }
         </nav>
       </div>

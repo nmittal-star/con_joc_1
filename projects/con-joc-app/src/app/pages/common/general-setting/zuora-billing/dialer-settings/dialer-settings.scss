@@ -1,0 +1,21 @@
+.fields-grid {
+ display: grid;
+/* This forces every item to take up 100% of the row width */
+grid-template-columns: 1fr; 
+gap: 20px;
+padding: 20px;
+/* Optional: 'start' is usually better for single-column vertical stacks */
+align-items: start; 
+
+}
+
+.field-item {
+  width: 100%;
+}
+.charge-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1rem;
+  max-width: 600px; // Limits width so the textarea doesn't stretch too far
+}

@@ -3,9 +3,8 @@
 <!-- Card 1: Form Fields -->
 @if (form) {
   <div class="max-w-7xl mx-auto mb-6">
-    <div class="bg-white rounded-2xl border border-slate-200 shadow-[0_12px_30px_rgba(15,23,42,0.08)] px-3 py-1">
-      <h3 class="text-xs font-semibold mt-2 mb-4">Guidelines</h3>
-      <div class="border-b border-slate-100 mb-4"></div>
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-[0_12px_30px_rgba(15,23,42,0.08)] px-4 py-4">
+      <h3 class="text-base font-semibold text-slate-900 mt-1 mb-3 pl-0.5 pb-3 border-b border-slate-200">Guidelines</h3>
       <!-- FORM GRID -->
       <div class="w-full mb-4">
         <form [formGroup]="form" class="general-setting-form grid grid-cols-2 gap-x-0 gap-y-0 w-full text-left mb-4">
@@ -19,7 +18,7 @@
                   <eh-textarea [formGroup]="form" [config]="field" [label]="field.label" [rows]="1" class="w-full"></eh-textarea>
                 }
                 @if (field.type !== 'select' && field.type !== 'textarea') {
-                  <eh-textbox [formGroup]="form" [config]="field" [label]="field.label" class="w-full"></eh-textbox>
+                  <eh-textbox [formGroup]="form" [config]="field" [fControlName]="field.name" class="w-full"></eh-textbox>
                 }
               </div>
             </div>
@@ -32,12 +31,11 @@
 
 <!-- Card 2: Rich Text Editor -->
 <div class="max-w-7xl mx-auto mb-6">
-  <div class="bg-white rounded-2xl border border-slate-200 shadow-[0_12px_30px_rgba(15,23,42,0.08)] px-3 py-3">
-    <h3 class="text-xs font-semibold mt-2 mb-4">Content</h3>
-    <div class="border-b border-slate-100 mb-3"></div>
+  <div class="bg-white rounded-2xl border border-slate-200 shadow-[0_12px_30px_rgba(15,23,42,0.08)] px-4 py-4">
+    <h3 class="text-base font-semibold text-slate-900 mt-1 mb-3 pl-0.5 pb-3 border-b border-slate-200">Content</h3>
 
     <!-- Toolbar -->
-    <div class="tiptap-toolbar flex flex-wrap items-center gap-1 p-2 mb-2 bg-slate-50 rounded-lg border border-slate-200">
+    <div class="tiptap-toolbar" style="display: flex; flex-direction: row; flex-wrap: wrap; align-items: center; gap: 0.25rem; padding: 0.5rem; margin-bottom: 0.5rem; background: #f8fafc; border-radius: 0.5rem; border: 1px solid #e2e8f0;">
 
       <!-- Text style -->
       <button type="button" class="tb-btn" [class.active]="isActive('bold')" (click)="editor.chain().focus().toggleBold().run()" title="Bold">
@@ -118,6 +116,8 @@
     </div>
 
     <!-- Editor area -->
-    <div #editorContainer class="tiptap-container"></div>
+    <div #editorContainer class="tiptap-container"
+         style="min-height: 220px; padding: 0.75rem 1rem; border: 1px solid #e2e8f0; border-radius: 0.5rem; background-color: #f8fafc; font-size: 0.9rem; line-height: 1.6; color: #1e293b; cursor: text; outline: none;">
+    </div>
   </div>
 </div>

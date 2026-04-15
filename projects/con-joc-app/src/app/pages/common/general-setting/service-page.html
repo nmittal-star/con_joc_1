@@ -1,0 +1,379 @@
+<section class="service-page-layout">
+  <div class="max-w-7xl mx-auto w-full flex items-center justify-between gap-2 mb-8">
+    <h2 class="text-2xl font-bold text-slate-900 m-0">{{ sectionTitle() }}</h2>
+    @if (isCampaignRegistryPage()) {
+      <eh-button class="flex end" type="primary" label="Create Brand" (click)="openComplianceForm()"></eh-button>
+    }
+  </div>
+
+  @if (isCampaignRegistryPage()) {
+    <div class="max-w-7xl mx-auto w-full mt-6">
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-[0_12px_30px_rgba(15,23,42,0.08)] px-4 py-4">
+        <!-- <h3 class="text-2xl font-bold text-slate-800">Campaign Registry Brands</h3> -->
+        <div class="mt-6">
+          <app-generic-table [columns]="brandColumns" [rows]="brandRows" [config]="brandTableConfig" title="Brand List"></app-generic-table>
+        </div>
+      </div>
+    </div>
+  }
+
+  @if (isIVAPage()) {
+    <div class="max-w-7xl mx-auto w-full mt-6">
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-[0_12px_30px_rgba(15,23,42,0.08)] px-4 py-4">
+        <div class="flex items-end gap-4">
+          <div class="w-64">
+            <eh-select [formGroup]="ivaForm" [config]="managedServiceConfig"></eh-select>
+            <div class="mt-2 flex items-center gap-2">
+              <label>Sync Intents with NLU</label>
+              <mat-icon class="text-blue-500">sync</mat-icon>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+
+  @if (isAgentAIPage) {
+    <!-- Agent AI Card -->
+    <div class="max-w-7xl mx-auto w-full mt-6">
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-[0_12px_30px_rgba(15,23,42,0.08)] px-4 py-4">
+        <h3 class="text-2xl font-bold mb-5 text-slate-800">Agent AI</h3>
+        <div class="space-y-4">
+          <div>
+            <eh-select [formGroup]="agentAIForm" [config]="symblStreamingConfig"></eh-select>
+            <p class="text-sm text-gray-600 mt-1">(Please note that the Symbl Streaming integration can only be enabled for the account when it's approved by the product and SLT. The Agent AI product is currently in Alpha testing run and is not available for General Audience.)</p>
+          </div>
+          <div>
+            <eh-select [formGroup]="agentAIForm" [config]="callCenterAIReportConfig"></eh-select>
+          </div>
+          <div>
+            <eh-select [formGroup]="agentAIForm" [config]="ccaiReportConfig"></eh-select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Call Summary Card -->
+    <div class="max-w-7xl mx-auto w-full mt-6">
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-[0_12px_30px_rgba(15,23,42,0.08)] px-4 py-4">
+        <h3 class="text-2xl font-bold mb-5 text-slate-800">Call Summary</h3>
+        <div class="space-y-4">
+          <div>
+            <eh-select [formGroup]="callSummaryForm" [config]="enableCallSummaryConfig"></eh-select>
+          </div>
+          <div [formGroup]="callSummaryForm">
+            <eh-textarea formControlName="callSummaryPrompt" label="Call Summary Prompt" [rows]="4"></eh-textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 3: Dual Listboxes -->
+    <div class="max-w-7xl mx-auto w-full mt-6">
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-[0_12px_30px_rgba(15,23,42,0.08)] px-4 py-4">
+        <h3 class="text-2xl font-bold mb-5 text-slate-800">Agent AI Clients</h3>
+        <!-- DUAL LISTBOX -->
+        <div class="dual-listbox-section">
+          <div class="dual-listbox-section">
+            <div class="flex flex-col md:flex-row gap-10 items-stretch justify-center mb-8 ">
+              <!-- LEFT -->
+              <div class="bg-white rounded-2xl border border-slate-200 shadow-[0_14px_34px_rgba(15,23,42,0.10)] p-4 max-w-full" style="width: 450px;">
+                <div class="dual-listbox-list flex-1 items-start">
+                  <div class="dual-listbox-title text-left font-semibold mb-2 flex items-center gap-2">
+                    <span class="material-icons text-primary">list</span>
+                    Clients within this Agent AI
+                    <span class="ml-2 text-xs text-gray-500">({{ availableItems.length }})</span>
+                  </div>
+                  <div class="border-b border-slate-200 mb-3"></div>
+                  <div
+                    cdkDropList
+                    #availableList="cdkDropList"
+                    [cdkDropListData]="availableItems"
+                    [cdkDropListConnectedTo]="[selectedList]"
+                    (cdkDropListDropped)="dropAvailable($event)"
+                    class="dual-listbox-select w-full text-base min-h-[200px] bg-white border border-gray-300 rounded shadow-sm focus:ring-2 focus:ring-primary flex flex-col"
+                    style="width: 100%; max-width: 100%; min-height: 250px;"
+                  >
+                    <div class="sticky top-0 z-10 bg-white border-b flex items-center gap-2 px-2 py-1">
+                      <input
+                        type="checkbox"
+                        class="accent-primary"
+                        [checked]="selectedAvailable.length === availableItems.length && availableItems.length > 0"
+                        (click)="selectAllAvailable()"
+                        aria-label="Select all available"
+                      />
+                      <button type="button" class="text-md px-2 py-1 rounded bg-primary/10 text-primary hover:bg-primary/20 transition" (click)="selectAllAvailable()">
+                        Select All
+                      </button>
+                    </div>
+                    @for (item of availableItems; track item; let index = $index) {
+                      <div
+                        cdkDrag
+                        (click)="toggleSelectAvailable(item)"
+                        [class.bg-gray-100]="selectedAvailable.includes(item)"
+                        [class.bg-slate-50]="!selectedAvailable.includes(item) && index % 2 === 0"
+                        [class.bg-white]="!selectedAvailable.includes(item) && index % 2 !== 0"
+                        class="p-2 border-b cursor-pointer flex items-center select-none transition-colors duration-150"
+                      >
+                        <input
+                          type="checkbox"
+                          class="mr-2 accent-primary"
+                          [checked]="selectedAvailable.includes(item)"
+                          (click)="$event.stopPropagation(); toggleSelectAvailable(item)"
+                          tabindex="-1"
+                          aria-label="Select {{ item }}"
+                        />
+                        <span>{{ item }}</span>
+                      </div>
+                    }
+                  </div>
+                </div>
+                <div class="flex items-center justify-start ml-2 mt-4 md:mt-0">
+                  <eh-button [disabled]="selectedAvailable.length === 0" type="primary" [label]="'>'" (click)="moveToSelected()" class="mt-4">
+                    <span class="material-icons">chevron_right</span>
+                  </eh-button>
+                </div>
+              </div>
+
+              <!-- RIGHT -->
+              <div class="bg-white rounded-2xl border border-slate-200 shadow-[0_14px_34px_rgba(15,23,42,0.10)] p-4 max-w-full" style="width: 450px;">
+                <div class="dual-listbox-list flex-1 items-start">
+                  <div class="dual-listbox-title text-left font-semibold mb-2 flex items-center gap-2">
+                    <span class="material-icons text-primary">list_alt</span>
+                    Clients NOT within this Agent AI
+                    <span class="ml-2 text-xs text-gray-500">({{ selectedItems.length }})</span>
+                  </div>
+                  <div class="border-b border-slate-200 mb-3"></div>
+                  <div
+                    cdkDropList
+                    #selectedList="cdkDropList"
+                    [cdkDropListData]="selectedItems"
+                    [cdkDropListConnectedTo]="[availableList]"
+                    (cdkDropListDropped)="dropSelected($event)"
+                    class="dual-listbox-select w-full text-base min-h-[200px] bg-white border border-gray-300 rounded shadow-sm focus:ring-2 focus:ring-primary flex flex-col"
+                    style="width: 100%; max-width: 100%; min-height: 250px;"
+                  >
+                    <div class="sticky top-0 z-10 bg-white border-b flex items-center gap-2 px-2 py-1">
+                      <input
+                        type="checkbox"
+                        class="accent-primary"
+                        [checked]="selectedSelected.length === selectedItems.length && selectedItems.length > 0"
+                        (click)="selectAllSelected()"
+                        aria-label="Select all selected"
+                      />
+                      <button type="button" class="text-md px-2 py-1 rounded bg-primary/10 text-primary hover:bg-primary/20 transition" (click)="selectAllSelected()">
+                        Select All
+                      </button>
+                    </div>
+                    @for (item of selectedItems; track item; let index = $index) {
+                      <div
+                        cdkDrag
+                        (click)="toggleSelectSelected(item)"
+                        [class.bg-gray-100]="selectedSelected.includes(item)"
+                        [class.bg-slate-50]="!selectedSelected.includes(item) && index % 2 === 0"
+                        [class.bg-white]="!selectedSelected.includes(item) && index % 2 !== 0"
+                        class="p-2 border-b cursor-pointer flex items-center select-none transition-colors duration-150"
+                      >
+                        <input
+                          type="checkbox"
+                          class="mr-2 accent-primary"
+                          [checked]="selectedSelected.includes(item)"
+                          (click)="$event.stopPropagation(); toggleSelectSelected(item)"
+                          tabindex="-1"
+                          aria-label="Select {{ item }}"
+                        />
+                        <span>{{ item }}</span>
+                      </div>
+                    }
+                  </div>
+                </div>
+                <div class="flex items-center justify-end mt-4 md:mt-0">
+                  <eh-button [disabled]="selectedSelected.length === 0" type="primary" [label]="'<'" (click)="moveToAvailable()" class="mt-4">
+                    <span class="material-icons">chevron_left</span>
+                  </eh-button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+
+  @if (isCompliancePage()) {
+    <div class="max-w-7xl mx-auto w-full mt-6">
+      <app-service-compliance></app-service-compliance>
+    </div>
+  }
+  @if (isSFDCPage()) {
+     <div class="max-w-7xl mx-auto w-full ">
+  <div class="bg-white rounded-2xl border border-slate-200 shadow-lg p-6">
+    <!-- Form -->
+    <form [formGroup]="sfdcConfigForm" class="grid grid-cols-1 md:grid-cols-2">
+
+      <!-- DATE -->
+      <div class="flex flex-col">
+        <label class="text-sm font-medium text-slate-600">
+          Sync Date
+        </label>
+        <eh-datepicker
+          [formGroup]="sfdcConfigForm"
+          [config]="dateFieldConfig">
+        </eh-datepicker>
+      </div>
+
+      <!-- QUANTITY -->
+      <div class="flex flex-col">
+        <label class="text-sm font-medium text-slate-600">
+          SFDC Quantity
+        </label>
+        <eh-textbox
+          [formGroup]="sfdcConfigForm"
+          [config]="quantityFieldConfig">
+        </eh-textbox>
+      </div>
+
+      <!-- ORG ID -->
+      <div class="flex flex-col md:col-span-2">
+        <label class="text-sm font-medium text-slate-600">
+          SFDC Organization ID
+        </label>
+        <eh-textbox
+          [formGroup]="sfdcConfigForm"
+          [config]="orgFieldConfig">
+        </eh-textbox>
+      </div>
+
+      <!-- BUTTON -->
+      <div class="md:col-span-2 flex justify-end">
+        <eh-button
+          class="!px-6 !py-2"
+          type="primary"
+          label="Apply Changes">
+        </eh-button>
+      </div>
+
+    </form>
+
+  </div>
+</div>
+  }
+  @if (isAiStats()) {
+      <div class="max-w-7xl mx-auto w-full flex flex-col">
+
+  <!-- TABS -->
+  <div class="border-b border-slate-200">
+    <div class="flex gap-2">
+
+      @for (tab of aiTabs; track tab.key) {
+        <button
+          (click)="aiStatsTabControl.setValue(tab.key)"
+          class="relative px-4 py-2 text-sm font-medium transition"
+          [class.text-blue-600]="aiStatsTabControl.value === tab.key"
+          [class.text-slate-500]="aiStatsTabControl.value !== tab.key"
+        >
+          {{ tab.label }}
+
+          <!-- ACTIVE UNDERLINE -->
+          @if (aiStatsTabControl.value === tab.key) {
+            <span class="absolute left-0 bottom-0 w-full h-[2px] bg-blue-600 rounded-full"></span>
+          }
+        </button>
+      }
+
+    </div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="pt-4">
+
+    @if (aiStatsTabControl.value === 'overview') {
+      <div class="mt-6">
+          <app-generic-table [columns]="ccaiColumns" [rows]="ccaiRows" [config]="ccaiTableConfig" title="CCAI List"></app-generic-table>
+        </div>
+    }
+
+    @if (aiStatsTabControl.value === 'metrics') {
+      <div class="mt-6">
+          <app-generic-table [columns]="ccairecColumns" [rows]="ccairecRows" [config]="ccairecTableConfig" title="CCAI List"></app-generic-table>
+        </div>
+    }
+
+  </div>
+
+</div>  
+
+  }
+
+  <div class="max-w-7xl mx-auto w-full mt-6">
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-[0_12px_30px_rgba(15,23,42,0.08)] px-4 py-4">
+      <h3 class="text-2xl font-bold mb-5 ml-0 text-left tracking-tight text-slate-800">Account Notes</h3>
+      <div class="border-b border-slate-100 mt-4"></div>
+      <eh-textarea
+        [formGroup]="accountNotesForm"
+        fControlName="accountNotes"
+        label=""
+        placeholder="Enter any notes about this account..."
+      ></eh-textarea>
+    </div>
+  </div>
+</section>
+
+<ng-template #complianceDrawerTemplate>
+  <form class="drawer-form" [formGroup]="complianceForm" (ngSubmit)="submitComplianceForm()">
+    <div class="drawer-section-title">Organization</div>
+    <div class="row">
+      <div class="field"><eh-textbox [formGroup]="complianceForm" fControlName="displayName" label="Display Name"></eh-textbox></div>
+      <div class="field"><eh-textbox [formGroup]="complianceForm" fControlName="companyName" label="Company Name"></eh-textbox></div>
+    </div>
+    <div class="row">
+      <div class="field"><eh-textbox [formGroup]="complianceForm" fControlName="ein" label="EIN"></eh-textbox></div>
+      <div class="field"><eh-textbox [formGroup]="complianceForm" fControlName="website" label="Website"></eh-textbox></div>
+    </div>
+
+    <div class="drawer-section-title">Contact</div>
+    <div class="row">
+      <div class="field"><eh-textbox [formGroup]="complianceForm" fControlName="phone" label="Phone" placeholder="Enter phone number" [isPhone]="true"></eh-textbox></div>
+      <div class="field"><eh-textbox [formGroup]="complianceForm" fControlName="email" label="Email" type="email"></eh-textbox></div>
+    </div>
+
+    <div class="drawer-section-title">Address</div>
+    <div class="row">
+      <div class="field"><eh-textbox [formGroup]="complianceForm" fControlName="street" label="Street"></eh-textbox></div>
+    </div>
+    <div class="row">
+      <div class="field"><eh-textbox [formGroup]="complianceForm" fControlName="city" label="City" placeholder="Enter a valid city"></eh-textbox></div>
+      <div class="field"><eh-select [formGroup]="complianceForm" [config]="stateConfig"></eh-select></div>
+    </div>
+    <div class="row">
+      <div class="field"><eh-textbox [formGroup]="complianceForm" fControlName="zipCode" label="Zip Code" placeholder="Enter a valid zip code"></eh-textbox></div>
+      <div class="field"><eh-select [formGroup]="complianceForm" [config]="countryConfig"></eh-select></div>
+    </div>
+
+    <div class="drawer-section-title">Account Details</div>
+    <div class="row">
+      <div class="field"><eh-select [formGroup]="complianceForm" [config]="relationshipConfig"></eh-select></div>
+      <div class="field"><eh-select [formGroup]="complianceForm" [config]="verticalConfig"></eh-select></div>
+    </div>
+    <div class="row">
+      <div class="field"><eh-textbox [formGroup]="complianceForm" fControlName="verificationStatus" label="Verification Status" [disabled]="true"></eh-textbox></div>
+    </div>
+  </form>
+</ng-template>
+
+<ng-template #complianceDrawerFooterTemplate>
+  <div class="drawer-footer-actions">
+    <eh-button type="secondary" label="Cancel" (click)="closeComplianceForm()"></eh-button>
+    <eh-button type="primary" label="Save" (click)="submitComplianceForm()"></eh-button>
+  </div>
+</ng-template>
+
+<eh-drawer
+  #complianceDrawer
+  class="service-brand-drawer closed"
+  [contentTemplate]="complianceDrawerTemplate"
+  [config]="complianceDrawerConfig"
+  [footerTemplate]="complianceDrawerFooterTemplate"
+  (onClose)="handleComplianceDrawerClose()">
+</eh-drawer>

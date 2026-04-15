@@ -59,3 +59,87 @@ app-view-highlighted eh-select .mat-mdc-select-trigger,
 app-view-highlighted eh-select .mat-mdc-select-value {
 	background-color: transparent !important;
 }
+
+/* ── Custom dialog panel ─────────────────────────────────────────────────── */
+
+/* 1. Overlay pane — must match so the shadow/border isn't clipped at the top */
+.custom-dialog-panel.cdk-overlay-pane {
+  border-radius: 1rem !important;
+}
+
+/* 2. Outer container */
+.custom-dialog-panel .mat-mdc-dialog-container {
+  border-radius: 1rem !important;
+  overflow: hidden !important;
+  padding: 0 !important;
+  box-shadow:
+    0 4px 6px -1px rgba(15, 23, 42, 0.08),
+    0 20px 40px -8px rgba(15, 23, 42, 0.14) !important;
+//   border: 1px solid #e2e8f0 !important;
+  background: #ffffff !important;
+}
+
+/* 3. MDC surface — the actual white box */
+.custom-dialog-panel .mdc-dialog__surface {
+  border-radius: 1rem !important;
+  overflow: hidden !important;
+  background: #ffffff !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+}
+
+/* 4. Kill the ::before spacer Material injects above the title */
+.custom-dialog-panel .mat-mdc-dialog-title::before {
+  display: none !important;
+  height: 0 !important;
+}
+
+/* Close button — nudge down so it aligns with the title text */
+.custom-dialog-panel [mat-dialog-close],
+.custom-dialog-panel button[aria-label="Close"],
+.custom-dialog-panel .mat-mdc-dialog-close {
+  margin-top: 2px !important;
+}
+
+/* 5. Title bar */
+.custom-dialog-panel .mat-mdc-dialog-title {
+  font-size: 1.15rem !important;
+  font-weight: 600 !important;
+  color: #1e293b !important;
+//   padding: 1.5rem 1.75rem 0.75rem !important;
+  border-bottom: 1px solid #f1f5f9;
+  margin: 0 !important;
+}
+
+/* 6. Content area */
+.custom-dialog-panel .mat-mdc-dialog-content {
+  padding: 1.25rem 1.5rem !important;
+  margin: 0 !important;
+  max-height: 60vh !important;
+  overflow-y: auto !important;
+  color: #334155 !important;
+  background: #ffffff !important;
+}
+
+/* 7. Form fields inside dialog */
+.custom-dialog-panel .mat-mdc-dialog-content .mat-mdc-text-field-wrapper,
+.custom-dialog-panel .mat-mdc-dialog-content .mdc-text-field {
+  background-color: #f8fafc !important;
+  border-radius: 0.5rem !important;
+}
+
+.custom-dialog-panel .mat-mdc-dialog-content .mat-mdc-form-field-subscript-wrapper {
+  display: none !important;
+  height: 0 !important;
+}
+
+/* 8. Action bar */
+.custom-dialog-panel .mat-mdc-dialog-actions {
+  padding: 0.875rem 1.5rem 1.25rem !important;
+  margin: 0 !important;
+  border-top: 1px solid #f1f5f9 !important;
+  gap: 0.625rem !important;
+  justify-content: flex-end !important;
+  background: #ffffff !important;
+  min-height: unset !important;
+}

@@ -3,7 +3,7 @@ import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { Sort } from '@angular/material/sort';
-import { ButtonType, CheckboxComponent, DialogService, DrawerComponent, FieldConfig, PaginationConfig, SelectComponent, SnackbarConfig, TableColumn, TableComponent, TableConfig, TableFilterConfig, TextboxComponent, UserData } from '@eh-library/common';
+import { ButtonType, DialogService, DrawerComponent, FieldConfig, PaginationConfig, SelectComponent, SnackbarConfig, TableColumn, TableComponent, TableConfig, TableFilterConfig, TextboxComponent, UserData } from '@eh-library/common';
 import { BehaviorSubject, Observable, Subject, takeUntil } from 'rxjs';
 import { AccountGroupsDataService } from '../../../data-access/omni/account-groups/account-group.api';
 import { Router } from '@angular/router';
@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-account-groups',
   standalone: true,
-  imports: [CommonModule, TableComponent, ReactiveFormsModule, FormsModule, MatIconModule,TextboxComponent,CheckboxComponent,SelectComponent],
+  imports: [CommonModule, TableComponent, ReactiveFormsModule, FormsModule, MatIconModule, TextboxComponent, SelectComponent],
   templateUrl: './account-groups.html',
   styleUrl: './account-groups.scss',
 })

@@ -8,9 +8,11 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { MatMenuModule } from '@angular/material/menu';
 
 export interface NavTabWithIcon extends NavTab {
   icon?: string;
+  children?: NavTabWithIcon[];
 }
 
 export interface SubHeaderConfig {
@@ -24,7 +26,7 @@ export interface SubHeaderConfig {
 @Component({
   selector: 'app-sub-header',
   standalone:true,
-  imports: [BreadcrumbsComponent, TranslateModule, MatTabsModule, MatIconModule, MatButtonModule, RouterModule],
+  imports: [BreadcrumbsComponent, TranslateModule, MatTabsModule, MatIconModule, MatButtonModule, MatMenuModule, RouterModule],
   templateUrl: './sub-header.html',
   styleUrl: './sub-header.scss',
 })
@@ -54,6 +56,10 @@ export class SubHeader {
 
   onTabChange(index: number) {
     this.tabChange.emit(index);
+  }
+
+  hasChildren(tab: NavTabWithIcon): boolean {
+    return (tab.children?.length ?? 0) > 0;
   }
 
   ngOnChanges() {

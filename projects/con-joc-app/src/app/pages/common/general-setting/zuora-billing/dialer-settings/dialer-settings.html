@@ -1,0 +1,78 @@
+<router-outlet></router-outlet>
+
+@if(isLicensesPage()) {
+  <div class="mt-6">
+    <app-generic-table [columns]="licenseColumns" [rows]="licenseRows"
+      [config]="licenseTableConfig" title="License List"></app-generic-table>
+  </div>
+}
+@if(isLicensesAddonsPage()) {
+  <form [formGroup]="licenseAddForm">
+    <div class="fields-grid">
+      @for (field of formFields; track field.controlName) {
+        <div class="field-item">
+          <eh-select [formGroup]="licenseAddForm" [config]="field.config"></eh-select>
+        </div>
+      }
+    </div>
+  </form>
+  <form [formGroup]="licenseAddonsForm">
+    <div class="fields-grid">
+      @for (field of textboxFields; track field.name) {
+        <div class="field-item">
+          <eh-textbox [formGroup]="licenseAddonsForm" [config]="asFieldConfig(field)"
+            [fControlName]="field.name" [label]="field.label" class="w-full"></eh-textbox>
+        </div>
+      }
+    </div>
+  </form>
+}
+@if(isAccountAddonsPage()) {
+  <form [formGroup]="accountAddonsForm">
+    <div class="fields-grid">
+      @for (field of accountAddonFields; track field.controlName) {
+        <div class="field-item">
+          <eh-select [formGroup]="accountAddonsForm" [config]="field.config"></eh-select>
+        </div>
+      }
+    </div>
+  </form>
+  <form [formGroup]="quantityForm">
+    <div class="fields-grid">
+      @for (field of quantityFields; track field.name) {
+        <div class="field-item">
+          <eh-textbox [formGroup]="quantityForm" [config]="field.config"
+            [fControlName]="field.name" [label]="field.label" class="w-full"></eh-textbox>
+        </div>
+      }
+    </div>
+  </form>
+}
+@if(isInboundNumberPage()) {
+  <div class="mt-6">
+    <app-generic-table [columns]="inboundColumns" [rows]="inboundRows"
+      [config]="inboundTableConfig" [extraButtons]="inboundExtraButtons"
+      title="Inbound Numbers"></app-generic-table>
+  </div>
+}
+@if(isOneTimeChargePage()) {
+  <form [formGroup]="chargeForm">
+    <div class="charge-section">
+      <div class="field-item">
+        <eh-textbox [formGroup]="chargeForm" [config]="amountConfig"
+          fControlName="amount" label="*Amount:" class="w-full"></eh-textbox>
+      </div>
+      <div class="field-item">
+        <eh-textarea [formGroup]="chargeForm" fControlName="memo" label="*Memo:"
+          placeholder="Enter memo details..."></eh-textarea>
+      </div>
+    </div>
+  </form>
+}
+@if(isMinutesPage()) {
+  <div class="mt-6">
+    <app-generic-table [columns]="minutesColumns" [rows]="minutesRows"
+      [config]="minutesTableConfig" [extraButtons]="minutesExtraButtons"
+      title="Minutes/Credit"></app-generic-table>
+  </div>
+}

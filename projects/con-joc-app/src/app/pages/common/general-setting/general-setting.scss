@@ -89,7 +89,9 @@
 	grid-template-columns: 1fr 1fr !important;
 	margin: 0 !important;
 	max-width: 100% !important;
-	justify-items: start !important;
+	column-gap: 1.5rem !important;
+	row-gap: 0.25rem !important;
+	justify-items: stretch !important;
 	text-align: left !important;
 }
 
@@ -223,6 +225,45 @@
   }
 }
 
+.trunk-callout {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+	margin-top: 1.5rem;
+  padding: 0.875rem 1.125rem;
+  border-radius: 0.75rem;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+
+  .trunk-callout-icon {
+    color: #3b82f6;
+    flex-shrink: 0;
+    font-size: 1.1rem;
+    width: 1.1rem;
+    height: 1.1rem;
+    margin-top: 1px;
+  }
+
+  .trunk-callout-body {
+    .trunk-callout-label {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: #1d4ed8;
+      margin-bottom: 0.25rem;
+    }
+
+    p {
+      margin: 0;
+      font-size: 0.82rem;
+      color: #3b5fa8;
+      line-height: 1.6;
+    }
+  }
+}
+
 .general-setting-form .mat-radio-button {
 	font-size: 0.95rem !important;
 	margin-right: 0.5rem !important;
@@ -238,4 +279,37 @@
 .general-setting-form .label-container {
 	color: #7b8ca6 !important;
 	font-weight: 500 !important;
+}
+
+/* Contact drawer form styles */
+.drawer-form {
+  width: 100%;
+  padding: 0 4px;
+}
+
+.drawer-section-title {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #64748b;
+  margin: 1.25rem 0 0.5rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.row {
+  display: flex;
+  gap: 1.25rem;
+  margin-bottom: 0.1rem;
+}
+
+.field {
+  flex: 1;
+}
+
+.drawer-footer-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
 }

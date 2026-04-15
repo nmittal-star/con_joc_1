@@ -7,8 +7,7 @@ import {
   Breadcrumb,
   BreadcrumbService,
   TabsConfig,
-  HeaderComponent,
-  RouteService
+  HeaderComponent
 } from '@eh-library/common';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MatIconModule } from '@angular/material/icon';
@@ -154,16 +153,12 @@ export class Layout {
     private breadcrumbService: BreadcrumbService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private routeService: RouteService,
     // private authService: UserDataService,
     // private translationService:TranslationService,
     private translate: TranslateService
   ) {
     this.router.events.subscribe(() => {
       const child = this.activatedRoute.firstChild;
-      console.log(" child tabs ", this.routeService.getTabs());
-      console.log("active tab ", this.routeService.getTabPath());
-      console.log("parent route ", this.routeService.getPageRoute());
 
       if (child) {
         child.data.subscribe((data: any) => {
@@ -171,12 +166,26 @@ export class Layout {
             breadcrumb: data['breadcrumb'] ?? true,
             showtabs: data['showtabs'] ?? false,
             tabs: data['tabs'] ?? [],
-            activeTab: this.routeService.getTabPath(),
-            parentRoute: this.routeService.getPageRoute(),
+            activeTab: this.resolveActiveTab(child),
+            parentRoute: child,
           };
         });
       }
     });
+  }
+
+  private resolveActiveTab(baseRoute: ActivatedRoute): string {
+    let activeRoute = baseRoute;
+
+    while (activeRoute.firstChild) {
+      activeRoute = activeRoute.firstChild;
+    }
+
+    while (activeRoute.parent && activeRoute.parent !== baseRoute) {
+      activeRoute = activeRoute.parent;
+    }
+
+    return activeRoute.routeConfig?.path ?? '';
   }
 
   ngOnInit(): void {

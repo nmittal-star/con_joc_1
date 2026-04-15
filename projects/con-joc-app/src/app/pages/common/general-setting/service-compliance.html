@@ -1,0 +1,148 @@
+
+<mat-card class="w-full mb-4 shadow-sm border border-gray-200 rounded-lg p-4">
+
+  <div class="flex items-center h-[40px] mt-2 gap-2">
+
+    <!-- Label -->
+    <label class="text-lg font-medium text-gray-700 ml-2 mb-3">
+      Enable RND :
+    </label>
+    <eh-select
+      [formGroup]="complianceForm"
+      [config]="enableRNDConfig"
+      class="w-full max-w-[550px] mt-2"
+    ></eh-select>
+
+  </div>
+
+</mat-card>
+<div class="service-compliance-layout p-4 bg-gray-200 min-h-screen">
+  <mat-card class="w-full shadow-md border border-gray-200 rounded-lg overflow-hidden">
+
+    <div class="table-scroll-container overflow-x-auto">
+      <form [formGroup]="complianceForm">
+
+        <table class="compliance-table w-full min-w-[1200px] border-collapse text-sm">
+
+          <!-- HEADER -->
+          <thead class="font-semibold bg-gray-100 text-xs text-gray-500 py-1 px-2 border-b border-gray-300">
+            <tr class="h-[40px] hover:bg-gray-50 transition">
+              <th rowspan="2"
+                  class="sticky-col px-2 py-1 text-left font-semibold border-r border-gray-300 bg-gray-100">
+                Status
+              </th>
+
+              <th [attr.colspan]="maxDncFields"
+                  class="px-2 py-1 text-center font-semibold border-r border-gray-300">
+                DNC Configuration
+              </th>
+
+              <th [attr.colspan]="maxSmsFields"
+                  class="py-1 px-2 text-center font-semibold border-r border-gray-300">
+                SMS Opt-Out
+              </th>
+
+              <th rowspan="2"
+                  class="px-2 py-1 text-center font-semibold">
+                Action
+              </th>
+            </tr>
+
+            <tr class="h-[40px] hover:bg-gray-50 transition">
+              @for (field of maxDncConfig; track field.name) {
+                <th class="px-2 py-1.5 text-center border-r border-gray-200">
+                  {{ field.label }}
+                </th>
+              }
+
+              @for (field of maxSmsConfig; track field.name) {
+                <th class="px-3 py-2 text-center border-r border-gray-200">
+                  {{ field.label }}
+                </th>
+              }
+            </tr>
+          </thead>
+
+          <!-- BODY -->
+          <tbody formArrayName="rows" class="divide-y divide-gray-200 bg-white">
+
+            @for (row of rowGroups; track row; let i = $index) {
+
+              <tr [formGroupName]="i"
+                  class="hover:bg-gray-50 transition h-[40px] hover:bg-gray-50 transition">
+
+                <!-- STATUS -->
+                <td class="sticky-col disposition-cell border-r border-gray-200 bg-white">
+                  <div class="flex items-center h-[40px]">
+                    <div>
+                      <div class="status-key font-semibold text-gray-900 text-sm">
+                        {{ complianceRows[i].key }}
+                      </div>
+                      <div class="status-label text-xs text-gray-500">
+                        {{ complianceRows[i].label }}
+                      </div>
+                    </div>
+                  </div>
+                </td>
+
+                <!-- DNC -->
+                @for (field of maxDncConfig; track field.name; let idx = $index) {
+                  <td class="text-center border-r border-gray-100">
+                    @if (complianceRows[i].dnc[idx]) {
+                      <div class="flex justify-center">
+                        <mat-form-field appearance="outline" class="absolute top-3 w-full max-w-[140px] scale-90">
+                          <mat-select [formControlName]="complianceRows[i].dnc[idx].name!">
+                            @for (opt of complianceRows[i].dnc[idx].options; track opt.value) {
+                              <mat-option [value]="opt.value">
+                                {{ opt.key }}
+                              </mat-option>
+                            }
+                          </mat-select>
+                        </mat-form-field>
+                      </div>
+                    } @else {
+                      <span class="text-gray-400">-</span>
+                    }
+                  </td>
+                }
+
+                <!-- SMS -->
+                @for (field of maxSmsConfig; track field.name; let idx = $index) {
+                  <td class="px-3 py-2 text-center border-r border-gray-100">
+                    @if (complianceRows[i].sms[idx]) {
+                      <div class="flex justify-center">
+                        <mat-form-field appearance="outline" class="absolute top-3 w-full max-w-[140px] scale-90">
+                          <mat-select [formControlName]="complianceRows[i].sms[idx].name!">
+                            @for (opt of complianceRows[i].sms[idx].options; track opt.value) {
+                              <mat-option [value]="opt.value">
+                                {{ opt.key }}
+                              </mat-option>
+                            }
+                          </mat-select>
+                        </mat-form-field>
+                      </div>
+                    } @else {
+                      <span class="text-gray-400">-</span>
+                    }
+                  </td>
+                }
+
+                <!-- ACTION -->
+                <td class="px-2 py-1 text-center">
+                  <eh-button
+                    class="primary" label="Update Option">
+                    Update Option
+                  </eh-button>
+                </td>
+
+              </tr>
+            }
+
+          </tbody>
+        </table>
+
+      </form>
+    </div>
+
+  </mat-card>
+</div>
