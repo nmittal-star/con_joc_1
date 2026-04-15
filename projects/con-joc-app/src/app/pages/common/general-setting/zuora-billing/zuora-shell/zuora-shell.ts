@@ -12,7 +12,7 @@ export class ZuoraShell {
   private readonly route = inject(ActivatedRoute);
 
   readonly sectionTitle = computed(
-    () => (this.route.snapshot.data['sectionTitle'] as string | undefined) ?? 'Services'
+    () => (this.route.snapshot.data['sectionTitle'] as string | undefined) ?? 'Zuora Billing'
   );
 
   readonly accountId = computed(

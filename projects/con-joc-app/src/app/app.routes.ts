@@ -12,8 +12,8 @@ const generalSettingTabs = [
             {
                 title: 'Dialer Settings', path: 'dialer-settings', children: [
                     { title: 'Licenses', path: 'licenses' },
-                    { title: 'Licenses Addons', path: 'licenses-addons' },
-                    { title: 'Account Addons', path: 'account-addons' },
+                    { title: 'License Add-ons', path: 'license-addons' },
+                    { title: 'Account Add-ons', path: 'account-addons' },
                     { title: 'Inbound Numbers', path: 'inbound-numbers' },
                     { title: 'One-Time Charge', path: 'one-time-charge' },
                     { title: 'Minutes/Credit', path: 'minutes-credit' },

@@ -89,7 +89,9 @@
 	grid-template-columns: 1fr 1fr !important;
 	margin: 0 !important;
 	max-width: 100% !important;
-	justify-items: start !important;
+	column-gap: 1.5rem !important;
+	row-gap: 0.25rem !important;
+	justify-items: stretch !important;
 	text-align: left !important;
 }
 

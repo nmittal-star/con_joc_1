@@ -36,6 +36,12 @@
 }
 
 .general-setting-form {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  column-gap: 1.5rem !important;
+  row-gap: 0.25rem !important;
+  justify-items: stretch !important;
+
   ::ng-deep .mat-mdc-text-field-wrapper,
   ::ng-deep .mdc-text-field,
   ::ng-deep .mdc-text-field--filled {
@@ -65,21 +71,14 @@
 }
 
 .tiptap-container {
-  ::ng-deep .tiptap-editor {
-    min-height: 200px;
-    padding: 0.75rem 1rem;
-    border: 1px solid #e2e8f0;
-    border-radius: 0.5rem;
-    outline: none;
-    font-size: 0.9rem;
-    line-height: 1.6;
-    color: #1e293b;
-    background-color: #f8fafc;
+  &:focus-within {
+    border-color: #94a3b8 !important;
+    box-shadow: 0 0 0 3px rgba(148, 163, 184, 0.2);
+  }
 
-    &:focus {
-      border-color: #94a3b8;
-      box-shadow: 0 0 0 3px rgba(148, 163, 184, 0.2);
-    }
+  ::ng-deep .tiptap-editor {
+    outline: none;
+    min-height: 180px;
 
     h1 { font-size: 1.5rem; font-weight: 700; margin: 0.5rem 0; }
     h2 { font-size: 1.25rem; font-weight: 600; margin: 0.4rem 0; }

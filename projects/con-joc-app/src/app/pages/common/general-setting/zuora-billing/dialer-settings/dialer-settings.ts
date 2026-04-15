@@ -1,8 +1,8 @@
 import { Component, computed, inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { RouterOutlet } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
-import { MatTabGroup, MatTab, MatTabNav, MatTabLink, MatTabNavPanel } from '@angular/material/tabs';
+import { MatTabGroup, MatTab } from '@angular/material/tabs';
 import { CheckboxComponent, TextboxComponent, SelectComponent, RadioButtonComponent, TextareaComponent, DrawerComponent, ButtonComponent, TableColumn, UserData, TableConfig, FieldConfig, ButtonType } from '@eh-library/common';
 import { GenericTable } from '../../../generic-table/generic-table';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -15,13 +15,8 @@ const YES_NO_OPTIONS = [
   selector: 'app-dialer-settings',
   imports: [ReactiveFormsModule,
     RouterOutlet,
-    RouterLink,
-    RouterLinkActive,
     MatTabGroup,
     MatTab,
-    MatTabNav,
-    MatTabLink,
-    MatTabNavPanel,
     CheckboxComponent,
     TextboxComponent,
     SelectComponent,

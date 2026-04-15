@@ -12,7 +12,7 @@ import { MatMenuModule } from '@angular/material/menu';
 
 export interface NavTabWithIcon extends NavTab {
   icon?: string;
-  children?: NavTab[];
+  children?: NavTabWithIcon[];
 }
 
 export interface SubHeaderConfig {
