@@ -1,0 +1,76 @@
+@use '../general-setting';
+
+.aol-page-layout {
+  display: block;
+  width: 100%;
+}
+
+.aol-field-wrap {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  ::ng-deep .mat-mdc-form-field-subscript-wrapper {
+    display: none;
+  }
+}
+
+.aol-label-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.25rem;
+  margin-bottom: 0.25rem;
+}
+
+.aol-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #0c0c0c;
+}
+
+.aol-save-row {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e2e8f0;
+}
+
+.aol-max-error {
+  font-size: 0.72rem;
+  color: #ef4444;
+  padding-left: 2px;
+}
+
+.aol-tooltip-icon {
+  position: relative;
+  font-size: 1rem !important;
+  color: #94a3b8;
+  cursor: default;
+  flex-shrink: 0;
+
+  &::after {
+    content: attr(data-tooltip);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    position: absolute;
+    bottom: calc(100% + 6px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: #1e293b;
+    color: #fff;
+    font-size: 0.72rem;
+    padding: 3px 8px;
+    border-radius: 4px;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+    z-index: 100;
+  }
+
+  &:hover::after {
+    opacity: 1;
+  }
+}

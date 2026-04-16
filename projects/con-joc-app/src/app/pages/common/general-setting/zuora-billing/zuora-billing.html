@@ -223,4 +223,18 @@
       <app-generic-table [columns]="invoicesColumns" [rows]="subscriptionRows" [config]="invoicesTableConfig"
         title="Invoice Details"></app-generic-table>
 }
+
+<div style="margin-top: 1.5rem; max-width: 80rem; margin-left: auto; margin-right: auto;">
+  <div style="background: #fff; border-radius: 1rem; border: 1px solid #e2e8f0; box-shadow: 0 12px 30px rgba(15,23,42,0.08); padding: 1rem;">
+    <h3 style="font-size: 0.9375rem; font-weight: 600; color: #0f172a; margin: 0.25rem 0 0.75rem 0.125rem; padding-bottom: 0.75rem; border-bottom: 1px solid #e2e8f0;">Account Notes</h3>
+    <div style="margin-top: 1rem;">
+      <eh-textarea
+        [formGroup]="accountNotesForm"
+        fControlName="accountNotes"
+        label=""
+        placeholder="Enter any notes about this account..."
+      ></eh-textarea>
+    </div>
+  </div>
+</div>
 </div>

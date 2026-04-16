@@ -7,46 +7,52 @@
   </div>
 }
 @if(isLicensesAddonsPage()) {
-  <form [formGroup]="licenseAddForm">
-    <div class="fields-grid">
-      @for (field of formFields; track field.controlName) {
-        <div class="field-item">
+  <div style="max-width: 80rem; margin: 1.5rem auto 0;">
+    <div style="background: #fff; border-radius: 1rem; border: 1px solid #e2e8f0; box-shadow: 0 12px 30px rgba(15,23,42,0.08); padding: 1.5rem;">
+      <h3 style="font-size: 0.9375rem; font-weight: 600; color: #0f172a; margin: 0.25rem 0 0.75rem 0.125rem; padding-bottom: 0.75rem; border-bottom: 1px solid #e2e8f0;">License Add-ons</h3>
+
+      <form [formGroup]="licenseAddForm" style="display: grid; grid-template-columns: 1fr 1fr; column-gap: 1.5rem; row-gap: 0.25rem; margin-top: 1rem;">
+        @for (field of formFields; track field.controlName) {
           <eh-select [formGroup]="licenseAddForm" [config]="field.config"></eh-select>
-        </div>
-      }
-    </div>
-  </form>
-  <form [formGroup]="licenseAddonsForm">
-    <div class="fields-grid">
-      @for (field of textboxFields; track field.name) {
-        <div class="field-item">
+        }
+      </form>
+
+      <form [formGroup]="licenseAddonsForm" style="display: grid; grid-template-columns: 1fr 1fr; column-gap: 1.5rem; row-gap: 0.25rem; margin-top: 0.5rem;">
+        @for (field of textboxFields; track field.name) {
           <eh-textbox [formGroup]="licenseAddonsForm" [config]="asFieldConfig(field)"
             [fControlName]="field.name" [label]="field.label" class="w-full"></eh-textbox>
-        </div>
-      }
+        }
+      </form>
+
+      <div style="display: flex; justify-content: flex-end; margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #e2e8f0;">
+        <eh-button type="primary" label="Save Changes"></eh-button>
+      </div>
     </div>
-  </form>
+  </div>
 }
 @if(isAccountAddonsPage()) {
-  <form [formGroup]="accountAddonsForm">
-    <div class="fields-grid">
-      @for (field of accountAddonFields; track field.controlName) {
-        <div class="field-item">
+  <div style="max-width: 80rem; margin: 1.5rem auto 0;">
+    <div style="background: #fff; border-radius: 1rem; border: 1px solid #e2e8f0; box-shadow: 0 12px 30px rgba(15,23,42,0.08); padding: 1.5rem;">
+      <h3 style="font-size: 0.9375rem; font-weight: 600; color: #0f172a; margin: 0.25rem 0 0.75rem 0.125rem; padding-bottom: 0.75rem; border-bottom: 1px solid #e2e8f0;">Account Add-ons</h3>
+
+      <form [formGroup]="accountAddonsForm" style="display: grid; grid-template-columns: 1fr 1fr; column-gap: 1.5rem; row-gap: 0.25rem; margin-top: 1rem;">
+        @for (field of accountAddonFields; track field.controlName) {
           <eh-select [formGroup]="accountAddonsForm" [config]="field.config"></eh-select>
-        </div>
-      }
-    </div>
-  </form>
-  <form [formGroup]="quantityForm">
-    <div class="fields-grid">
-      @for (field of quantityFields; track field.name) {
-        <div class="field-item">
+        }
+      </form>
+
+      <form [formGroup]="quantityForm" style="display: grid; grid-template-columns: 1fr 1fr; column-gap: 1.5rem; row-gap: 0.25rem; margin-top: 0.5rem;">
+        @for (field of quantityFields; track field.name) {
           <eh-textbox [formGroup]="quantityForm" [config]="field.config"
             [fControlName]="field.name" [label]="field.label" class="w-full"></eh-textbox>
-        </div>
-      }
+        }
+      </form>
+
+      <div style="display: flex; justify-content: flex-end; margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #e2e8f0;">
+        <eh-button type="primary" label="Save Changes"></eh-button>
+      </div>
     </div>
-  </form>
+  </div>
 }
 @if(isInboundNumberPage()) {
   <div class="mt-6">
@@ -56,23 +62,43 @@
   </div>
 }
 @if(isOneTimeChargePage()) {
-  <form [formGroup]="chargeForm">
-    <div class="charge-section">
-      <div class="field-item">
+  <div style="max-width: 80rem; margin: 1.5rem auto 0;">
+    <div style="background: #fff; border-radius: 1rem; border: 1px solid #e2e8f0; box-shadow: 0 12px 30px rgba(15,23,42,0.08); padding: 1.5rem;">
+      <h3 style="font-size: 0.9375rem; font-weight: 600; color: #0f172a; margin: 0.25rem 0 0.75rem 0.125rem; padding-bottom: 0.75rem; border-bottom: 1px solid #e2e8f0;">One-Time Charge</h3>
+
+      <form [formGroup]="chargeForm" style="display: grid; grid-template-columns: 1fr 1fr; column-gap: 1.5rem; row-gap: 0.25rem; margin-top: 1rem;">
         <eh-textbox [formGroup]="chargeForm" [config]="amountConfig"
           fControlName="amount" label="*Amount:" class="w-full"></eh-textbox>
-      </div>
-      <div class="field-item">
         <eh-textarea [formGroup]="chargeForm" fControlName="memo" label="*Memo:"
           placeholder="Enter memo details..."></eh-textarea>
+      </form>
+
+      <div style="display: flex; justify-content: flex-end; margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #e2e8f0;">
+        <eh-button type="primary" label="Save Changes"></eh-button>
       </div>
     </div>
-  </form>
+  </div>
 }
 @if(isMinutesPage()) {
   <div class="mt-6">
     <app-generic-table [columns]="minutesColumns" [rows]="minutesRows"
       [config]="minutesTableConfig" [extraButtons]="minutesExtraButtons"
       title="Minutes/Credit"></app-generic-table>
+  </div>
+}
+
+@if (isLeafRoute()) {
+  <div style="margin-top: 1.5rem; max-width: 80rem; margin-left: auto; margin-right: auto;">
+    <div style="background: #fff; border-radius: 1rem; border: 1px solid #e2e8f0; box-shadow: 0 12px 30px rgba(15,23,42,0.08); padding: 1rem;">
+      <h3 style="font-size: 0.9375rem; font-weight: 600; color: #0f172a; margin: 0.25rem 0 0.75rem 0.125rem; padding-bottom: 0.75rem; border-bottom: 1px solid #e2e8f0;">Account Notes</h3>
+      <div style="margin-top: 1rem;">
+        <eh-textarea
+          [formGroup]="accountNotesForm"
+          fControlName="accountNotes"
+          label=""
+          placeholder="Enter any notes about this account..."
+        ></eh-textarea>
+      </div>
+    </div>
   </div>
 }

@@ -36,6 +36,13 @@ export class DialerSettings {
     quantity: new FormControl(1)
   });
   private readonly route = inject(ActivatedRoute);
+  private readonly fb = inject(FormBuilder);
+
+  readonly accountNotesForm = this.fb.group({ accountNotes: [''] });
+
+  isLeafRoute(): boolean {
+    return !this.route.firstChild;
+  }
 
 
   private readonly fieldLabels: Record<string, string> = {

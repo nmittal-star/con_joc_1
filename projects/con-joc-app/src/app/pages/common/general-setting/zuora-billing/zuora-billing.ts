@@ -34,6 +34,8 @@ export class ZuoraBilling {
   private fb = inject(FormBuilder);
   sectionTitle = computed(() => 'Zuora Billing');
 
+  readonly accountNotesForm = this.fb.group({ accountNotes: [''] });
+
   // 1. Define the Calculator Form
   calcForm = this.fb.group({
     rows: this.fb.array([])

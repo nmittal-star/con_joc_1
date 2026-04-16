@@ -1,0 +1,60 @@
+<section class="aol-page-layout">
+
+  <div class="max-w-7xl mx-auto w-full flex items-center justify-between gap-2 mb-8">
+    <h2 class="text-2xl font-bold text-slate-900 m-0">Additional Object Limitations</h2>
+  </div>
+
+  <div class="max-w-7xl mx-auto w-full">
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-[0_12px_30px_rgba(15,23,42,0.08)] px-6 py-6 mb-4">
+      <form [formGroup]="aolForm" class="general-setting-form mt-4">
+        @for (field of fields; track field.name) {
+          <div class="aol-field-wrap">
+            <div class="aol-label-row">
+              <span class="aol-label">{{ field.label }}</span>
+              <span
+                class="aol-tooltip-icon material-icons"
+                [attr.data-tooltip]="'Max: ' + (field.max | number)"
+              >info_outline</span>
+            </div>
+            <eh-textbox
+              [formGroup]="aolForm"
+              [fControlName]="field.name"
+              [config]="field.config"
+              class="w-full"
+            ></eh-textbox>
+            @if (aolForm.get(field.name)?.errors?.['max'] && aolForm.get(field.name)?.touched) {
+              <span class="aol-max-error">Value cannot exceed {{ field.max | number }}</span>
+            }
+          </div>
+        }
+        <div class="aol-save-row">
+          <eh-button type="primary" label="Save Changes" (click)="save()"></eh-button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="max-w-7xl mx-auto w-full" style="margin-top: 1.5rem;">
+    <app-generic-table
+      title="Active Licenses"
+      [columns]="tableColumns"
+      [rows]="tableRows"
+      [config]="tableConfig"
+    ></app-generic-table>
+  </div>
+
+  <div class="max-w-7xl mx-auto w-full" style="margin-top: 1.5rem;">
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-[0_12px_30px_rgba(15,23,42,0.08)] px-4 py-4">
+      <h3 style="font-size: 0.9375rem; font-weight: 600; color: #0f172a; margin: 0.25rem 0 0.75rem 0.125rem; padding-bottom: 0.75rem; border-bottom: 1px solid #e2e8f0;">Account Notes</h3>
+      <div style="margin-top: 1rem;">
+        <eh-textarea
+          [formGroup]="accountNotesForm"
+          fControlName="accountNotes"
+          label=""
+          placeholder="Enter any notes about this account..."
+        ></eh-textarea>
+      </div>
+    </div>
+  </div>
+
+</section>

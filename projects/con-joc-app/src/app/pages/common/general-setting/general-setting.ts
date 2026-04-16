@@ -34,10 +34,11 @@ export class GeneralSetting implements OnInit, OnChanges {
   @ViewChild('editTrunkSettingsTemplate', { static: true }) editTrunkSettingsTemplate!: TemplateRef<unknown>;
   @ViewChild('contactDrawer') contactDrawer!: DrawerComponent;
 
-  private readonly tableVariantByRoute: Record<string, 'user' | 'trunks' | 'contacts'> = {
+  private readonly tableVariantByRoute: Record<string, 'user' | 'trunks' | 'contacts' | 'attachments'> = {
     user: 'user',
     trunks: 'trunks',
     contacts: 'contacts',
+    attachments: 'attachments',
   };
 
     get chunkedFields() {
@@ -59,7 +60,7 @@ export class GeneralSetting implements OnInit, OnChanges {
 
   heading = 'General Setting';
   mode: 'form' | 'table' = 'form';
-  tableVariant: 'user' | 'trunks' | 'contacts' = 'user';
+  tableVariant: 'user' | 'trunks' | 'contacts' | 'attachments' = 'user';
   tableRows: UserData[] = [];
 
   readonly recordRemoteSessionConfig: FieldConfig = {
@@ -140,6 +141,30 @@ export class GeneralSetting implements OnInit, OnChanges {
       actions: [
         { icon: 'edit', tooltip: 'Edit Contact', callback: (row: any) => this.openContactDrawer(row) },
       ],
+    },
+  ];
+
+  readonly attachmentColumns: TableColumn[] = [
+    { key: 'fileName',   label: 'File Name',   sortable: true,  searchable: true  },
+    { key: 'fileType',   label: 'Type',        sortable: true,  searchable: true  },
+    { key: 'fileSize',   label: 'Size',        sortable: true,  searchable: false },
+    { key: 'uploadedBy', label: 'Uploaded By', sortable: true,  searchable: true  },
+    { key: 'uploadDate', label: 'Upload Date', sortable: true,  searchable: false },
+    {
+      key: 'actions', label: 'Action', type: 'action', sortable: false,
+      actions: [
+        { icon: 'download', tooltip: 'Download', callback: () => undefined },
+        { icon: 'delete',   tooltip: 'Delete',   callback: () => undefined },
+      ],
+    },
+  ];
+
+  readonly attachmentExtraButtons = [
+    {
+      label: 'Upload File',
+      type: 'primary' as ButtonType,
+      icon: 'upload',
+      click: () => undefined,
     },
   ];
 
@@ -300,19 +325,24 @@ export class GeneralSetting implements OnInit, OnChanges {
   get activeColumns(): TableColumn[] {
     if (this.tableVariant === 'trunks') return this.trunkColumns;
     if (this.tableVariant === 'contacts') return this.contactColumns;
+    if (this.tableVariant === 'attachments') return this.attachmentColumns;
     return this.userColumns;
   }
 
   get activeExtraButtons(): { label: string; type?: ButtonType; icon?: string; disabled?: boolean; click?: () => void }[] {
     if (this.tableVariant === 'trunks') return this.trunkExtraButtons;
     if (this.tableVariant === 'contacts') return this.contactExtraButtons;
+    if (this.tableVariant === 'attachments') return this.attachmentExtraButtons;
     return [];
   }
 
   get activeTableConfig(): TableConfig {
     return {
       ...this.tableConfig,
-      showExtraButtons: this.tableVariant === 'trunks' || this.tableVariant === 'contacts',
+      showSearch: this.tableVariant === 'attachments',
+      showPagination: this.tableVariant === 'attachments',
+      usePagination: this.tableVariant === 'attachments',
+      showExtraButtons: this.tableVariant === 'trunks' || this.tableVariant === 'contacts' || this.tableVariant === 'attachments',
     };
   }
 
@@ -336,6 +366,12 @@ export class GeneralSetting implements OnInit, OnChanges {
         recordRemoteSession: [''],
         loginUrl: [''],
       });
+
+      if (this.tableVariant === 'attachments') {
+        this.tableRows = [];
+        this.cdr.markForCheck();
+        return;
+      }
 
       const load$ =
         this.tableVariant === 'trunks'   ? this.trunksDataService.getTrunks() :

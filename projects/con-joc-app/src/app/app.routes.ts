@@ -656,13 +656,13 @@ export const routes: Routes = [
                     },
                     {
                         path: 'attachments',
-                        loadComponent: () => import('./pages/common/general-setting/general-setting-tab').then(m => m.GeneralSettingTab),
-                        data: { breadcrumb: 'Attachments', sectionTitle: 'Attachments' }
+                        loadComponent: () => import('./pages/common/general-setting/general-setting').then(m => m.GeneralSetting),
+                        data: { breadcrumb: 'Attachments', mode: 'table' }
                     },
                     {
                         path: 'aol',
-                        loadComponent: () => import('./pages/common/general-setting/general-setting-tab').then(m => m.GeneralSettingTab),
-                        data: { breadcrumb: 'Additional Object Limitations', sectionTitle: 'Additional Object Limitations' }
+                        loadComponent: () => import('./pages/common/general-setting/aol/aol-page').then(m => m.AolPage),
+                        data: { breadcrumb: 'Additional Object Limitations' }
                     },
                     {
                         path: 'tools',

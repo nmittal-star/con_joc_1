@@ -1,9 +1,11 @@
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { TextareaComponent } from '@eh-library/common';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-general-setting-tab',
-  imports: [],
+  imports: [ReactiveFormsModule, TextareaComponent],
   template: `
     <section class="settings-card section-card">
       <div class="general-setting-header">
@@ -16,6 +18,20 @@ import { ActivatedRoute } from '@angular/router';
       <div class="section-placeholder">
         <p>Account ID: {{ accountId() }}</p>
         <p>Use this route as the destination for the {{ sectionTitle() }} settings form or table.</p>
+      </div>
+
+      <div style="margin-top: 1.5rem;">
+        <div style="background: #fff; border-radius: 1rem; border: 1px solid #e2e8f0; box-shadow: 0 12px 30px rgba(15,23,42,0.08); padding: 1rem;">
+          <h3 style="font-size: 0.9375rem; font-weight: 600; color: #0f172a; margin: 0.25rem 0 0.75rem 0.125rem; padding-bottom: 0.75rem; border-bottom: 1px solid #e2e8f0;">Account Notes</h3>
+          <div style="margin-top: 1rem;">
+            <eh-textarea
+              [formGroup]="accountNotesForm"
+              fControlName="accountNotes"
+              label=""
+              placeholder="Enter any notes about this account..."
+            ></eh-textarea>
+          </div>
+        </div>
       </div>
     </section>
   `,
@@ -51,6 +67,9 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class GeneralSettingTab {
   private readonly route = inject(ActivatedRoute);
+  private readonly fb = inject(FormBuilder);
+
+  readonly accountNotesForm = this.fb.group({ accountNotes: [''] });
 
   readonly sectionTitle = computed(() => this.route.snapshot.data['sectionTitle'] as string ?? 'General Settings');
   readonly accountId = computed(() => this.route.snapshot.paramMap.get('id') ?? this.route.parent?.snapshot.paramMap.get('id') ?? '');
